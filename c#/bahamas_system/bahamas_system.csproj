@@ -39,19 +39,23 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TA-Lib-Core">
-      <HintPath>..\..\..\..\Downloads\ta-lib-0.4.0-msvc\ta-lib\dotnet\src\Release\TA-Lib-Core.dll</HintPath>
+    <Reference Include="TA-Lib-Core, Version=1.0.2813.38892, Culture=neutral, PublicKeyToken=fdb2a6b268f56aa5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\ta-lib-0.4.0-msvc\ta-lib\dotnet\src\Release\TA-Lib-Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bahamas_system\DataManager.cs" />
-    <Compile Include="bahamas_system\Engine.cs" />
-    <Compile Include="bahamas_system\Validator.cs" />
+    <Compile Include="Bahamas_System\DataManager.cs" />
+    <Compile Include="Bahamas_System\Engine.cs" />
+    <Compile Include="Bahamas_System\Validator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bahamas_System\GE\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
