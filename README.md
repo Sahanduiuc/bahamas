@@ -1,4 +1,4 @@
-# Bahamas Trading Strategies
+# Bahamas Trading Systems
 
 ##Resources 
 
