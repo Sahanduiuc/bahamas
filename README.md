@@ -8,4 +8,6 @@
   
   [3] Algorithmic Trading: Winning Strategies and Their Rationale by Ernie Chan (Backtesting, developing Mean Reverison/Momentum strategies and Risk management) https://github.com/spinlockirqsave/books/blob/master/trading/Algorithmic%20Trading%20Winning%20Strategies%20and%20Their%20Rationale.pdf
   
+  [4] An Introduction to Genetic Algorithms by Mitchell Melanie http://www.boente.eti.br/fuzzy/ebook-fuzzy-mitchell.pdf
+  
   
