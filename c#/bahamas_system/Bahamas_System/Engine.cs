@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace system
+namespace bahamas_system.Bahamas_System
 {
-    class Program
+    public class Engine
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
