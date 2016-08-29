@@ -47,6 +47,17 @@
   <ItemGroup>
     <Compile Include="Bahamas_System\DataManager.cs" />
     <Compile Include="Bahamas_System\Engine.cs" />
+    <Compile Include="Bahamas_System\GE\GESystem.cs" />
+    <Compile Include="Bahamas_System\GE\GEFactory.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleAdd.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleDiv.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleMul.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleSub.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\IOperator.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Functions\Function.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Terminals\Terminal.cs" />
+    <Compile Include="Bahamas_System\GE\Node.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Terminals\ValueTerminal.cs" />
     <Compile Include="Bahamas_System\Validator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,9 +65,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Bahamas_System\GE\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
