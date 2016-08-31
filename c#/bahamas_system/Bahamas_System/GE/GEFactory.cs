@@ -10,14 +10,14 @@ namespace bahamas_system.Bahamas_System.GE
 {
     public class GEFactory
     {
-        private Node targetNode;
+        private Operator targetOperator;
         private Dictionary<Type, Action> handlingFunctions;
 
         public GEFactory()
         {
             handlingFunctions = new Dictionary<Type, Action>
             {
-                {typeof(SimpleAdd<Double>),TypeSimpleFunction},
+                {typeof(SimpleAdd),TypeSimpleFunction},
                 {typeof(SimpleMul),TypeSimpleFunction},
                 {typeof(SimpleDiv),TypeSimpleFunction},
                 {typeof(SimpleSub),TypeSimpleFunction}
@@ -28,9 +28,9 @@ namespace bahamas_system.Bahamas_System.GE
         /// Creates the left and right subnodes of a given node
         /// </summary>
         /// <param name="targetNode"></param>
-        public void SetUpNode(Node targetNode)
+        public void SetUpNode(Operator targetNode)
         {
-            this.targetNode = targetNode;
+            this.targetOperator = targetNode;
         }
 
         /// <summary>
@@ -48,12 +48,12 @@ namespace bahamas_system.Bahamas_System.GE
             
         }
 
-        private IOperator GetRandFunction()
+        private Operator GetRandFunction()
         {
             return null;
         }
 
-        private IOperator GetRandVarTerminal()
+        private Operator GetRandVarTerminal()
         {
             return null;
         }
@@ -63,7 +63,7 @@ namespace bahamas_system.Bahamas_System.GE
         /// Value range between MAX and MIN defined
         /// </summary>
         /// <returns></returns>
-        private IOperator GetRandValTerminal(double MAX,double MIN)
+        private Operator GetRandValTerminal(double MAX,double MIN)
         {
             return null;
         }

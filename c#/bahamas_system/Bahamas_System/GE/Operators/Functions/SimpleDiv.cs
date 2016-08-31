@@ -8,19 +8,13 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
 {
     public class SimpleDiv : Function
     {
-        private readonly double val00;
-        private readonly double val01;
-        public double ReturnValue { get; private set; }
-
-        public SimpleDiv(double val00, double val01)
+        public SimpleDiv()
         {
-            this.val00 = val00;
-            this.val01 = val01;
         }
 
-        public override void Evaluate()
+        public override ExpressionResult Evaluate()
         {
-            ReturnValue = val00 / val01;
+            return new ExpressionResult();
         }
     }
 }

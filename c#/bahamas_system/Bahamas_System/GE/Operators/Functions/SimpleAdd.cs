@@ -6,23 +6,20 @@ using System.Threading.Tasks;
 
 namespace bahamas_system.Bahamas_System.GE.Operators.Functions
 {
-    public class SimpleAdd<T>: Function
+    public class SimpleAdd: Function
     {
-        private readonly double val00;
-        private readonly double val01;
-        private readonly Node baseNode;
-
-        //public double ReturnValue { get; private set; }
-
-        public SimpleAdd(Node baseNode)
+        public SimpleAdd()
         {
             //TODO Handle setting local vals
         }
 
-        public override void Evaluate()
+        public override ExpressionResult Evaluate()
         {
-            baseNode.LeftNode.Operator.Evaluate();
+            this.LeftOperator.Evaluate();
+            this.RightOperator.Evaluate();
             //ReturnValue = val00 + val01;
+
+            return new ExpressionResult();
         }
     }
 }

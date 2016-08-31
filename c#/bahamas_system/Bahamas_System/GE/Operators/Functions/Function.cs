@@ -1,7 +1,7 @@
 ﻿namespace bahamas_system.Bahamas_System.GE.Operators.Functions
 {
-    public abstract class Function: IOperator
+    public abstract class Function: Operator
     {
-        public abstract void Evaluate();
+        public abstract override ExpressionResult Evaluate();
     }
 }

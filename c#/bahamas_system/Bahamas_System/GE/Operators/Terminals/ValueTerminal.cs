@@ -4,6 +4,6 @@
     {
         public double ReturnValue { get; set; }
 
-        public override void Evaluate(){}
+        public override ExpressionResult Evaluate(){ return new ExpressionResult(); }
     }
 }
