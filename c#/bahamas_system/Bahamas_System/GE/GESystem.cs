@@ -64,7 +64,7 @@ namespace bahamas_system.Bahamas_System.GE
 
 
             Random rnd = new Random();
-            for (int iteration = 0; iteration < MaxPoolSize; iteration++)
+            for (int variationNum = 0; variationNum < MaxPoolSize; variationNum++)
             {
                 //Create root node    
                 Operator rootOperator = null;
@@ -83,6 +83,9 @@ namespace bahamas_system.Bahamas_System.GE
                         break;
                     default: break;                            
                 }
+
+                //Create the sub-operators for the root operator
+                factory.SetUpOperator(rootOperator);
              }
         }
     }

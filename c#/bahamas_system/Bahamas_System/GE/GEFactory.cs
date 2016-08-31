@@ -27,10 +27,11 @@ namespace bahamas_system.Bahamas_System.GE
         /// <summary>
         /// Creates the left and right subnodes of a given node
         /// </summary>
-        /// <param name="targetNode"></param>
-        public void SetUpNode(Operator targetNode)
+        /// <param name="targetOperator"></param>
+        public void SetUpOperator(Operator targetOperator)
         {
-            this.targetOperator = targetNode;
+            this.targetOperator = targetOperator;
+            handlingFunctions[targetOperator.GetType()].Invoke();
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace bahamas_system.Bahamas_System.GE
         private void TypeSimpleFunction()
         {
             //Get rand for Sub-Function vs Terminal
-
+            
         }
 
         private void TypeTerminal()
@@ -54,6 +55,11 @@ namespace bahamas_system.Bahamas_System.GE
         }
 
         private Operator GetRandVarTerminal()
+        {
+            return null;
+        }
+
+        private Operator GetRandFuncOrVar()
         {
             return null;
         }

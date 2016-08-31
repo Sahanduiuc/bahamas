@@ -17,7 +17,6 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
         {
             this.LeftOperator.Evaluate();
             this.RightOperator.Evaluate();
-            //ReturnValue = val00 + val01;
 
             return new ExpressionResult();
         }
