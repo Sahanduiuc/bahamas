@@ -11,6 +11,9 @@ from yahoo_finance import Share
 from datetime import datetime, timedelta
 
 
+DATE_FORMAT = '%Y-%m-%d'
+
+
 def get_sec_filing_urls(ticker):
     """ Returns a list of 8-K URLs for the given security.
 
@@ -116,10 +119,10 @@ def get_historical_prices(ticker, start_date, end_date):
 
     """
     # Need to get dates +/- 1 day
-    start_date = datetime.strptime(start_date, '%Y-%m-%d')
-    start_date_minus_1 = (start_date - timedelta(days=1)).strftime('%Y-%m-%d')
-    end_date = datetime.strptime(end_date, '%Y-%m-%d')
-    end_date_plus_1 = (end_date + timedelta(days=1)).strftime('%Y-%m-%d')
+    start_date = datetime.strptime(start_date, DATE_FORMAT)
+    start_date_minus_1 = (start_date - timedelta(days=1)).strftime(DATE_FORMAT)
+    end_date = datetime.strptime(end_date, DATE_FORMAT)
+    end_date_plus_1 = (end_date + timedelta(days=1)).strftime(DATE_FORMAT)
 
     security = Share(ticker)
     prices = security.get_historical(start_date_minus_1, end_date_plus_1)

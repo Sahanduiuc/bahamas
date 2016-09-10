@@ -70,9 +70,9 @@ def compute_state_transitions(earnings_dates, prices):
                                             earnings_date - timedelta(days=1))
 
             if price_on_earnings_plus_1 > price_on_earnings_minus_1:
-                states.append(0)
+                states.append(0)    # Long position
             else:
-                states.append(1)
+                states.append(1)    # Short position
         except KeyError:
             # Ignore out-of-range dates
             logging.warn("Skipping out-of-range date {}".format(earnings_date))
