@@ -62,31 +62,44 @@ namespace bahamas_system.Bahamas_System.GE
 
             //TODO Generate random strats
 
-
+            //Random entry point    
             Random rnd = new Random();
-            for (int variationNum = 0; variationNum < MaxPoolSize; variationNum++)
+            GenerateOperators("SIGNAL",rnd);
+        }
+
+        private void GenerateOperators(string grammarID, Random rnd)
+        {
+            LinkedList<string> signalGrammar = geGrammar[grammarID].
+                ElementAt(rnd.Next(geGrammar[grammarID].Count));
+
+            //Genrate selected signal functions
+            for (int i = 0; i < signalGrammar.Count; i++)
             {
-                //Create root node    
-                Operator rootOperator = null;
-                //Select rand function for root node
-                int functionNum = rnd.Next(4);
-
-                switch (functionNum)
+                //Is sub grammar exists
+                if (geGrammar.ContainsKey(signalGrammar.ElementAt(i)))
                 {
-                    case 0: rootOperator = new SimpleAdd();
-                        break;
-                    case 1: rootOperator = new SimpleSub();
-                        break;
-                    case 2: rootOperator = new SimpleDiv(); 
-                        break;
-                    case 3: rootOperator = new SimpleMul(); 
-                        break;
-                    default: break;                            
+                    GenerateOperators(signalGrammar.ElementAt(i),rnd);
                 }
+                else
+                {
+                    try
+                    {
+                        int val = Int32.Parse(signalGrammar.ElementAt(i));
+                    }
+                    catch (Exception)
+                    {
+                        switch (signalGrammar.ElementAt(i))
+                        {
+                            case "SMA": break;
+                        }
+                    }
 
-                //Create the sub-operators for the root operator
-                factory.SetUpOperator(rootOperator);
-             }
+                    //Make function/terminal 
+  
+                    //push to stack
+
+                }
+            }            
         }
     }
 }
