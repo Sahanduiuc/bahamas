@@ -23,6 +23,8 @@ namespace bahamas_system.Bahamas_System.GE
         private List<Operator> generationResults;
         private GEFactory factory;
         private Dictionary<string, List<LinkedList<string>>> geGrammar;
+        private Stack<Operator> operatorStack;
+        private Stack<double> resultsStack; 
 
         public GESystem(double mutationRate, double crossOverRate,
             UInt16 maxPoolSize,UInt16 maxGenerations, UInt16 maxTreeSize)
@@ -35,6 +37,8 @@ namespace bahamas_system.Bahamas_System.GE
 
             factory = new GEFactory();
             geGrammar = new Dictionary<string, List<LinkedList<string>>>();
+            operatorStack = new Stack<Operator>();
+            resultsStack = new Stack<double>();
         }
 
         public void Initiate()
@@ -59,8 +63,6 @@ namespace bahamas_system.Bahamas_System.GE
                     geGrammar.Add(item.Name,optionsList);
                 }
             }
-
-            //TODO Generate random strats
 
             //Random entry point    
             Random rnd = new Random();
@@ -90,7 +92,8 @@ namespace bahamas_system.Bahamas_System.GE
                     {
                         switch (signalGrammar.ElementAt(i))
                         {
-                            case "SMA": break;
+                            case "SMA": 
+                                break;
                         }
                     }
 
