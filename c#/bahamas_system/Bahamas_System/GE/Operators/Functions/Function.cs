@@ -2,6 +2,6 @@
 {
     public abstract class Function: Operator
     {
-        public abstract override ExpressionResult Evaluate();
+        public abstract override ExpressionResult Evaluate(int delta);
     }
 }

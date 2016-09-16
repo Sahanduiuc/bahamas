@@ -43,6 +43,9 @@ namespace bahamas_system.Bahamas_System.GE
 
         public void Initiate()
         {
+            SMA testSMA = new SMA();
+            ExpressionResult test = testSMA.Evaluate(0);
+
             //Read Strategy Grammar
             using (StreamReader reader = new StreamReader("teststrat.json"))
             {
@@ -64,7 +67,7 @@ namespace bahamas_system.Bahamas_System.GE
                 }
             }
 
-            //Random entry point    
+            //Random entry point on main grammar 
             Random rnd = new Random();
             GenerateOperators("SIGNAL",rnd);
         }

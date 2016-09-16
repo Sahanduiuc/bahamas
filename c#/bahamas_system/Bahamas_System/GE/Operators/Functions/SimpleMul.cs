@@ -12,7 +12,7 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
         {
         }
 
-        public override ExpressionResult Evaluate()
+        public override ExpressionResult Evaluate(int delta)
         {
             return new ExpressionResult();
         }

@@ -11,6 +11,6 @@
         public Operator LeftOperator;
         public Operator RightOperator;
 
-        public abstract ExpressionResult Evaluate();
+        public abstract ExpressionResult Evaluate(int delta);
     }
 }

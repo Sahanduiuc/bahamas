@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="TA-Lib-Core, Version=1.0.2813.38892, Culture=neutral, PublicKeyToken=fdb2a6b268f56aa5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\ta-lib-0.4.0-msvc\ta-lib\dotnet\src\Release\TA-Lib-Core.dll</HintPath>
+      <HintPath>.\TA-Lib-Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -57,6 +57,7 @@
     <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleDiv.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleMul.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleSub.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Functions\SMA.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Operator.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Functions\Function.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Terminals\Terminal.cs" />
