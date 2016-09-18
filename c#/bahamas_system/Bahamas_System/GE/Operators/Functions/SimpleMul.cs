@@ -16,5 +16,10 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
         {
 
         }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

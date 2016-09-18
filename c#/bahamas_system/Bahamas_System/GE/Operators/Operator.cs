@@ -9,5 +9,6 @@
     public abstract class Operator
     {
         public abstract void Evaluate(int delta);
+        public abstract override string ToString();
     }
 }

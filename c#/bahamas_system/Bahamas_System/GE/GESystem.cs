@@ -27,8 +27,8 @@ namespace bahamas_system.Bahamas_System.GE
         private Dictionary<string, List<LinkedList<string>>> geGrammar;
 
         //TODO Portfolio Manager Implementation
-        private float buyingPower = 10000;
         private bool prevEvaluation = false;
+        private int units = 500;
 
         public GESystem(double mutationRate, double crossOverRate,
             UInt16 maxPoolSize,UInt16 maxGenerations, UInt16 maxTreeSize)
@@ -44,6 +44,8 @@ namespace bahamas_system.Bahamas_System.GE
 
             StrategyManager.OperatorList = new Collection<Operator>();
             StrategyManager.ResultsStack = new Stack<ExpressionResult>();
+
+            PortfolioManager.OpenPositions = new Collection<Position>();
         }
 
         private List<string[]> parseCSV(string path)
@@ -98,8 +100,10 @@ namespace bahamas_system.Bahamas_System.GE
             //Random entry point on main grammar 
             Random rnd = new Random();
             GenerateOperators("SIGNAL", rnd);
+            StrategyManager.PrintSelectedStrategy();
 
             //Evaluate Strategy
+            Console.Write("BackTesting Strategy");
             int i;
             string curDir = Directory.GetCurrentDirectory();
             string fileName = curDir + @"\msft.csv";
@@ -108,20 +112,49 @@ namespace bahamas_system.Bahamas_System.GE
             double[] closingPricesArr = new double[nCount - 1];
             for (i = 200; i < nCount - 1; i++)
             {
+                if(i % 100 == 0)
+                    Console.Write(".");
+
                 bool evaluationResult = EvaluateStrategyAtDelta(i);
+                DateTime currentDateTime = DateTime.Parse(parsedData[i + 1][0]);
+                float currentPrice = float.Parse(parsedData[i + 1][6]);
 
-                if (evaluationResult && !prevEvaluation)
+                //Open a new LONG Position
+                if (evaluationResult && !prevEvaluation &&
+                    !PortfolioManager.OpenPositions.Any())
                 {
-                    Console.Write(parsedData[i + 1][0]);
-                    Console.WriteLine("     BUY");
-                    double currentPrice = Convert.ToDouble(parsedData[i + 1][6]);
+                    //Console.Write(parsedData[i + 1][0]);
+                    //Console.WriteLine("     BUY {0} Unit(s) of {1} at {2}", units,"MSFT",currentPrice);
+                    
+                    Position position = new Position
+                    {
+                        Ticker = "MSFT",
+                        PutPrice = currentPrice,
+                        PutTimestamp = currentDateTime,
+                        Units = units
+                    };
+                    PortfolioManager.OpenPositions.Add(position);
+                    PortfolioManager.Capital -= (units*currentPrice);
+                    StrategyManager.TradeCount++;
                 }
+                //CLOSE position after expiry
+                else if(PortfolioManager.OpenPositions.Any())
+                {
+                    TimeSpan elapsedTimeSpan = currentDateTime -
+                                               PortfolioManager.OpenPositions[0].PutTimestamp;
+                    if (elapsedTimeSpan.Days >= 10)
+                    {
+                        //Console.Write(parsedData[i + 1][0]);
+                        //Console.WriteLine("     SELL {0} Unit(s) of {1} at {2}", units,"MSFT", currentPrice);
 
+                        PortfolioManager.Capital += (units*currentPrice);
+                        PortfolioManager.OpenPositions.Clear();
+                    }
+                }
                 prevEvaluation = evaluationResult;
             }
 
-
-            Console.WriteLine("sds");
+            StrategyManager.PrintStrategyPerformace();
         }
 
         private bool EvaluateStrategyAtDelta(int delta)

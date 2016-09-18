@@ -67,5 +67,10 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
 
             //Console.WriteLine(optInPeriod + " - " + result.ValueResult);
         }
+
+        public override string ToString()
+        {
+            return "SMA";
+        }
     }
 }

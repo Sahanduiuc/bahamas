@@ -34,5 +34,10 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
 
             StrategyManager.ResultsStack.Push(result);
         }
+
+        public override string ToString()
+        {
+            return type.ToString();
+        }
     }
 }

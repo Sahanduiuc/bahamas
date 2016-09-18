@@ -15,5 +15,10 @@
             result.ValueResult = ReturnValue;
             StrategyManager.ResultsStack.Push(result);
         }
+
+        public override string ToString()
+        {
+            return ReturnValue.ToString();
+        }
     }
 }
