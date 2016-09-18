@@ -13,12 +13,9 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
             //TODO Handle setting local vals
         }
 
-        public override ExpressionResult Evaluate(int delta)
+        public override void Evaluate(int delta)
         {
-            this.LeftOperator.Evaluate(delta);
-            this.RightOperator.Evaluate(delta);
 
-            return new ExpressionResult();
         }
     }
 }

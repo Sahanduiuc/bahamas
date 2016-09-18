@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using bahamas_system.Bahamas_System.GE.Operators;
 using bahamas_system.Bahamas_System.GE.Operators.Functions;
+using bahamas_system.Bahamas_System.GE.Operators.Terminals;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -23,8 +25,10 @@ namespace bahamas_system.Bahamas_System.GE
         private List<Operator> generationResults;
         private GEFactory factory;
         private Dictionary<string, List<LinkedList<string>>> geGrammar;
-        private Stack<Operator> operatorStack;
-        private Stack<double> resultsStack; 
+
+        //TODO Portfolio Manager Implementation
+        private float buyingPower = 10000;
+        private bool prevEvaluation = false;
 
         public GESystem(double mutationRate, double crossOverRate,
             UInt16 maxPoolSize,UInt16 maxGenerations, UInt16 maxTreeSize)
@@ -37,15 +41,39 @@ namespace bahamas_system.Bahamas_System.GE
 
             factory = new GEFactory();
             geGrammar = new Dictionary<string, List<LinkedList<string>>>();
-            operatorStack = new Stack<Operator>();
-            resultsStack = new Stack<double>();
+
+            StrategyManager.OperatorList = new Collection<Operator>();
+            StrategyManager.ResultsStack = new Stack<ExpressionResult>();
+        }
+
+        private List<string[]> parseCSV(string path)
+        {
+            List<string[]> parsedData = new List<string[]>();
+
+            try
+            {
+                using (StreamReader readFile = new StreamReader(path))
+                {
+                    string line;
+                    string[] row;
+
+                    while ((line = readFile.ReadLine()) != null)
+                    {
+                        row = line.Split(',');
+                        parsedData.Add(row);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return parsedData;
         }
 
         public void Initiate()
         {
-            SMA testSMA = new SMA();
-            ExpressionResult test = testSMA.Evaluate(0);
-
             //Read Strategy Grammar
             using (StreamReader reader = new StreamReader("teststrat.json"))
             {
@@ -63,13 +91,53 @@ namespace bahamas_system.Bahamas_System.GE
                         }
                         optionsList.Add(operatorList);
                     }
-                    geGrammar.Add(item.Name,optionsList);
+                    geGrammar.Add(item.Name, optionsList);
                 }
             }
 
             //Random entry point on main grammar 
             Random rnd = new Random();
-            GenerateOperators("SIGNAL",rnd);
+            GenerateOperators("SIGNAL", rnd);
+
+            //Evaluate Strategy
+            int i;
+            string curDir = Directory.GetCurrentDirectory();
+            string fileName = curDir + @"\msft.csv";
+            List<string[]> parsedData = parseCSV(fileName);            
+            int nCount = parsedData.Count;
+            double[] closingPricesArr = new double[nCount - 1];
+            for (i = 200; i < nCount - 1; i++)
+            {
+                bool evaluationResult = EvaluateStrategyAtDelta(i);
+
+                if (evaluationResult && !prevEvaluation)
+                {
+                    Console.Write(parsedData[i + 1][0]);
+                    Console.WriteLine("     BUY");
+                    double currentPrice = Convert.ToDouble(parsedData[i + 1][6]);
+                }
+
+                prevEvaluation = evaluationResult;
+            }
+
+
+            Console.WriteLine("sds");
+        }
+
+        private bool EvaluateStrategyAtDelta(int delta)
+        {
+            StrategyManager.CurrentOperatorIndex = 0;
+
+            while (StrategyManager.CurrentOperatorIndex < 
+                StrategyManager.OperatorList.Count)
+            {
+                StrategyManager.OperatorList[StrategyManager.CurrentOperatorIndex].
+                    Evaluate(delta);
+
+                StrategyManager.CurrentOperatorIndex++;
+            }
+
+            return StrategyManager.ResultsStack.Pop().BinaryResult;
         }
 
         private void GenerateOperators(string grammarID, Random rnd)
@@ -90,20 +158,28 @@ namespace bahamas_system.Bahamas_System.GE
                     try
                     {
                         int val = Int32.Parse(signalGrammar.ElementAt(i));
+                        StrategyManager.OperatorList.Add(new ValueTerminal(val));
                     }
                     catch (Exception)
                     {
                         switch (signalGrammar.ElementAt(i))
                         {
-                            case "SMA": 
+                            case "SMA": StrategyManager.OperatorList.Add(new SMA());
+                                break;
+                            case "GTRE": StrategyManager.OperatorList.Add(
+                                new Comparator(ComparatorType.GRTE));
+                                break;
+                            case "LSTE": StrategyManager.OperatorList.Add(
+                                new Comparator(ComparatorType.LSTE));
+                                break;
+                            case "AND": StrategyManager.OperatorList.Add(
+                                new LogicalOperator(LogicalOperators.AND));
+                                break;
+                            case "OR": StrategyManager.OperatorList.Add(
+                                new LogicalOperator(LogicalOperators.OR));
                                 break;
                         }
                     }
-
-                    //Make function/terminal 
-  
-                    //push to stack
-
                 }
             }            
         }

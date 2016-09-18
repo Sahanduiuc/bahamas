@@ -1,7 +1,7 @@
 {
-  "SIGNAL"  :   [ ["FUNC","COMP","FUNC"] , ["FUNC","COMP","FUNC","LGCL","FUNC","COMP","FUNC"] ],
-  "COMP"    :   [ [">="] , ["<="]  ],
-  "FUNC"    :   [ ["SMA","RNG"] ],
+  "SIGNAL"  :   [ ["FUNC","FUNC","COMP"] ],
+  "COMP"    :   [ ["GTRE"] , ["LSTE"]  ],
+  "FUNC"    :   [ ["RNG","SMA"] ],
   "LGCL"    :   [ ["OR"] , ["AND"]  ],
   "RNG"     :   [ [5] , [10] , [20] , [50] , [80] , [160] ]
 }

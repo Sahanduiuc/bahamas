@@ -11,7 +11,7 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
 {
     public class SMA: Function
     {
-        public List<string[]> parseCSV(string path)
+        private List<string[]> parseCSV(string path)
         {
             List<string[]> parsedData = new List<string[]>();
 
@@ -37,7 +37,7 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
             return parsedData;
         }
 
-        public override ExpressionResult Evaluate(int delta)
+        public override void Evaluate(int delta)
         {
             int i;
             string curDir = Directory.GetCurrentDirectory();
@@ -49,8 +49,8 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
                 closingPricesArr[i] = Convert.ToDouble(parsedData[i + 1][6]);
 
             int startIdx = 0;
-            int endIdx = 100;
-            int optInPeriod = 10;
+            int endIdx = nCount - 2;
+            int optInPeriod = (int) StrategyManager.ResultsStack.Pop().ValueResult;
 
             double[] outVals = new double[endIdx - startIdx + 1]; ;
             double[] inReal = closingPricesArr;
@@ -62,8 +62,10 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
                 out outBegIdx, out outNBElement, outVals);
 
             ExpressionResult result = new ExpressionResult();
-            result.ValueResult = outVals[delta];
-            return result;
+            result.ValueResult = (float) outVals[delta-optInPeriod+1];
+            StrategyManager.ResultsStack.Push(result);
+
+            //Console.WriteLine(optInPeriod + " - " + result.ValueResult);
         }
     }
 }

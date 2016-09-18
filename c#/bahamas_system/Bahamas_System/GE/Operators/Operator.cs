@@ -3,14 +3,11 @@
     public struct ExpressionResult
     {
         public bool BinaryResult;
-        public double ValueResult;
+        public float ValueResult;
     }
 
     public abstract class Operator
     {
-        public Operator LeftOperator;
-        public Operator RightOperator;
-
-        public abstract ExpressionResult Evaluate(int delta);
+        public abstract void Evaluate(int delta);
     }
 }

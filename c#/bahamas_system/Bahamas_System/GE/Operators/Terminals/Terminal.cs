@@ -2,6 +2,6 @@
 {
     public abstract class Terminal: Operator
     {
-        public abstract override ExpressionResult Evaluate(int delta);
+        public abstract override void Evaluate(int delta);
     }
 }
