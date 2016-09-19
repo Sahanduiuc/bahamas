@@ -23,12 +23,24 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
 
         public override void Evaluate(int delta)
         {
-            throw new NotImplementedException();
+            bool bool00 = StrategyManager.ResultsStack.Pop().BinaryResult;
+            bool bool01 = StrategyManager.ResultsStack.Pop().BinaryResult;
+            ExpressionResult result = new ExpressionResult();
+            switch (type)
+            {
+                case LogicalOperators.AND:
+                    result.BinaryResult = bool00 && bool01;
+                    break;
+                case LogicalOperators.OR:
+                    result.BinaryResult = bool00 || bool01;
+                    break;
+            }
+            StrategyManager.ResultsStack.Push(result);
         }
 
         public override string ToString()
         {
-            throw new NotImplementedException();
+            return type.ToString();
         }
     }
 }

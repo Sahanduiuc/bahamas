@@ -20,5 +20,12 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
         public static Collection<Position> OpenPositions;
         public static float StartingCapital = 10000;
         public static float Capital = StartingCapital;
+
+        public static void ResetPortfolio()
+        {
+            StartingCapital = 10000;
+            Capital = StartingCapital;
+            OpenPositions.Clear();
+        }
     }
 }

@@ -1,5 +1,5 @@
 {
-  "SIGNAL"  :   [ ["FUNC","FUNC","COMP"] ],
+  "SIGNAL"  :   [ [ "FUNC", "FUNC", "COMP" ] , [ "FUNC", "FUNC", "COMP", "FUNC", "FUNC", "COMP", "LGCL" ] ],
   "COMP"    :   [ ["GTRE"] , ["LSTE"]  ],
   "FUNC"    :   [ ["RNG","SMA"] ],
   "LGCL"    :   [ ["OR"] , ["AND"]  ],

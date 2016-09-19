@@ -42,7 +42,7 @@ namespace bahamas_system.Bahamas_System.GE
             factory = new GEFactory();
             geGrammar = new Dictionary<string, List<LinkedList<string>>>();
 
-            StrategyManager.OperatorList = new Collection<Operator>();
+            StrategyManager.StrategyCollection = new Collection<Strategy>();
             StrategyManager.ResultsStack = new Stack<ExpressionResult>();
 
             PortfolioManager.OpenPositions = new Collection<Position>();
@@ -97,74 +97,89 @@ namespace bahamas_system.Bahamas_System.GE
                 }
             }
 
-            //Random entry point on main grammar 
             Random rnd = new Random();
-            GenerateOperators("SIGNAL", rnd);
-            StrategyManager.PrintSelectedStrategy();
 
-            //Evaluate Strategy
-            Console.Write("BackTesting Strategy");
-            int i;
-            string curDir = Directory.GetCurrentDirectory();
-            string fileName = curDir + @"\msft.csv";
-            List<string[]> parsedData = parseCSV(fileName);            
-            int nCount = parsedData.Count;
-            double[] closingPricesArr = new double[nCount - 1];
-            for (i = 200; i < nCount - 1; i++)
+            //Generate Individual strategies
+            for (int strategyNum = 0; strategyNum < 2000; strategyNum++)
             {
-                if(i % 100 == 0)
-                    Console.Write(".");
+                PortfolioManager.ResetPortfolio();
 
-                bool evaluationResult = EvaluateStrategyAtDelta(i);
-                DateTime currentDateTime = DateTime.Parse(parsedData[i + 1][0]);
-                float currentPrice = float.Parse(parsedData[i + 1][6]);
+                Console.WriteLine("");
+                Strategy strategy = new Strategy
+                {
+                    OperatorList = new Collection<Operator>(),
+                    TradeCount = 0
+                };
 
-                //Open a new LONG Position
-                if (evaluationResult && !prevEvaluation &&
-                    !PortfolioManager.OpenPositions.Any())
+                GenerateOperators("SIGNAL", rnd,strategy);
+                StrategyManager.PrintSelectedStrategy(strategy);
+
+                //Evaluate Strategy
+                Console.Write("BackTesting Strategy");
+                int i;
+                string curDir = Directory.GetCurrentDirectory();
+                string fileName = curDir + @"\msft.csv";
+                List<string[]> parsedData = parseCSV(fileName);
+                int nCount = parsedData.Count;
+                double[] closingPricesArr = new double[nCount - 1];
+                for (i = 200; i < nCount - 1; i++)
                 {
-                    //Console.Write(parsedData[i + 1][0]);
-                    //Console.WriteLine("     BUY {0} Unit(s) of {1} at {2}", units,"MSFT",currentPrice);
-                    
-                    Position position = new Position
-                    {
-                        Ticker = "MSFT",
-                        PutPrice = currentPrice,
-                        PutTimestamp = currentDateTime,
-                        Units = units
-                    };
-                    PortfolioManager.OpenPositions.Add(position);
-                    PortfolioManager.Capital -= (units*currentPrice);
-                    StrategyManager.TradeCount++;
-                }
-                //CLOSE position after expiry
-                else if(PortfolioManager.OpenPositions.Any())
-                {
-                    TimeSpan elapsedTimeSpan = currentDateTime -
-                                               PortfolioManager.OpenPositions[0].PutTimestamp;
-                    if (elapsedTimeSpan.Days >= 10)
+                    if (i % 100 == 0)
+                        Console.Write(".");
+
+                    bool evaluationResult = EvaluateStrategyAtDelta(strategy,i);
+                    DateTime currentDateTime = DateTime.Parse(parsedData[i + 1][0]);
+                    float currentPrice = float.Parse(parsedData[i + 1][6]);
+
+                    //Open a new LONG Position
+                    if (evaluationResult && !prevEvaluation &&
+                        !PortfolioManager.OpenPositions.Any())
                     {
                         //Console.Write(parsedData[i + 1][0]);
-                        //Console.WriteLine("     SELL {0} Unit(s) of {1} at {2}", units,"MSFT", currentPrice);
+                        //Console.WriteLine("     BUY {0} Unit(s) of {1} at {2}", units,"MSFT",currentPrice);
 
-                        PortfolioManager.Capital += (units*currentPrice);
-                        PortfolioManager.OpenPositions.Clear();
+                        Position position = new Position
+                        {
+                            Ticker = "MSFT",
+                            PutPrice = currentPrice,
+                            PutTimestamp = currentDateTime,
+                            Units = units
+                        };
+                        PortfolioManager.OpenPositions.Add(position);
+                        PortfolioManager.Capital -= (units * currentPrice);
+                        strategy.TradeCount++;
                     }
-                }
-                prevEvaluation = evaluationResult;
-            }
+                    //CLOSE position after expiry
+                    else if (PortfolioManager.OpenPositions.Any())
+                    {
+                        TimeSpan elapsedTimeSpan = currentDateTime -
+                                                   PortfolioManager.OpenPositions[0].PutTimestamp;
+                        if (elapsedTimeSpan.Days >= 7)
+                        {
+                            //Console.Write(parsedData[i + 1][0]);
+                            //Console.WriteLine("     SELL {0} Unit(s) of {1} at {2}", units,"MSFT", currentPrice);
 
-            StrategyManager.PrintStrategyPerformace();
+                            PortfolioManager.Capital += (units * currentPrice);
+                            PortfolioManager.OpenPositions.Clear();
+                        }
+                    }
+                    prevEvaluation = evaluationResult;
+                }
+
+                StrategyManager.ResultsStack.Clear();
+                StrategyManager.StrategyCollection.Add(strategy);
+                StrategyManager.PrintStrategyPerformace(strategy);
+            }
         }
 
-        private bool EvaluateStrategyAtDelta(int delta)
+        private bool EvaluateStrategyAtDelta(Strategy strategy,int delta)
         {
             StrategyManager.CurrentOperatorIndex = 0;
 
             while (StrategyManager.CurrentOperatorIndex < 
-                StrategyManager.OperatorList.Count)
+                strategy.OperatorList.Count)
             {
-                StrategyManager.OperatorList[StrategyManager.CurrentOperatorIndex].
+                strategy.OperatorList[StrategyManager.CurrentOperatorIndex].
                     Evaluate(delta);
 
                 StrategyManager.CurrentOperatorIndex++;
@@ -173,7 +188,7 @@ namespace bahamas_system.Bahamas_System.GE
             return StrategyManager.ResultsStack.Pop().BinaryResult;
         }
 
-        private void GenerateOperators(string grammarID, Random rnd)
+        private void GenerateOperators(string grammarID, Random rnd,Strategy strategy)
         {
             LinkedList<string> signalGrammar = geGrammar[grammarID].
                 ElementAt(rnd.Next(geGrammar[grammarID].Count));
@@ -184,31 +199,31 @@ namespace bahamas_system.Bahamas_System.GE
                 //Is sub grammar exists
                 if (geGrammar.ContainsKey(signalGrammar.ElementAt(i)))
                 {
-                    GenerateOperators(signalGrammar.ElementAt(i),rnd);
+                    GenerateOperators(signalGrammar.ElementAt(i),rnd,strategy);
                 }
                 else
                 {
                     try
                     {
                         int val = Int32.Parse(signalGrammar.ElementAt(i));
-                        StrategyManager.OperatorList.Add(new ValueTerminal(val));
+                        strategy.OperatorList.Add(new ValueTerminal(val));
                     }
                     catch (Exception)
                     {
                         switch (signalGrammar.ElementAt(i))
                         {
-                            case "SMA": StrategyManager.OperatorList.Add(new SMA());
+                            case "SMA": strategy.OperatorList.Add(new SMA());
                                 break;
-                            case "GTRE": StrategyManager.OperatorList.Add(
+                            case "GTRE": strategy.OperatorList.Add(
                                 new Comparator(ComparatorType.GRTE));
                                 break;
-                            case "LSTE": StrategyManager.OperatorList.Add(
+                            case "LSTE": strategy.OperatorList.Add(
                                 new Comparator(ComparatorType.LSTE));
                                 break;
-                            case "AND": StrategyManager.OperatorList.Add(
+                            case "AND": strategy.OperatorList.Add(
                                 new LogicalOperator(LogicalOperators.AND));
                                 break;
-                            case "OR": StrategyManager.OperatorList.Add(
+                            case "OR": strategy.OperatorList.Add(
                                 new LogicalOperator(LogicalOperators.OR));
                                 break;
                         }
