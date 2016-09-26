@@ -29,6 +29,7 @@ namespace bahamas_system.Bahamas_System.GE
         //TODO Portfolio Manager Implementation
         private bool prevEvaluation = false;
         private int units = 500;
+        private int depth = 0;
 
         public GESystem(double mutationRate, double crossOverRate,
             UInt16 maxPoolSize,UInt16 maxGenerations, UInt16 maxTreeSize)
@@ -111,6 +112,7 @@ namespace bahamas_system.Bahamas_System.GE
                     TradeCount = 0
                 };
 
+                depth = 0;
                 GenerateOperators("SIGNAL", rnd,strategy);
                 StrategyManager.PrintSelectedStrategy(strategy);
 
@@ -124,8 +126,8 @@ namespace bahamas_system.Bahamas_System.GE
                 double[] closingPricesArr = new double[nCount - 1];
                 for (i = 200; i < nCount - 1; i++)
                 {
-                    if (i % 100 == 0)
-                        Console.Write(".");
+                    //if (i % 100 == 0)
+                    //    Console.Write(".");
 
                     bool evaluationResult = EvaluateStrategyAtDelta(strategy,i);
                     DateTime currentDateTime = DateTime.Parse(parsedData[i + 1][0]);
@@ -135,8 +137,8 @@ namespace bahamas_system.Bahamas_System.GE
                     if (evaluationResult && !prevEvaluation &&
                         !PortfolioManager.OpenPositions.Any())
                     {
-                        //Console.Write(parsedData[i + 1][0]);
-                        //Console.WriteLine("     BUY {0} Unit(s) of {1} at {2}", units,"MSFT",currentPrice);
+                        Console.Write(parsedData[i + 1][0]);
+                        Console.WriteLine("     BUY {0} Unit(s) of {1} at {2}", units,"MSFT",currentPrice);
 
                         Position position = new Position
                         {
@@ -156,11 +158,33 @@ namespace bahamas_system.Bahamas_System.GE
                                                    PortfolioManager.OpenPositions[0].PutTimestamp;
                         if (elapsedTimeSpan.Days >= 7)
                         {
-                            //Console.Write(parsedData[i + 1][0]);
-                            //Console.WriteLine("     SELL {0} Unit(s) of {1} at {2}", units,"MSFT", currentPrice);
+                            Console.Write(parsedData[i + 1][0]);
+                            Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (EXPIRY)", units,"MSFT", currentPrice);
 
-                            PortfolioManager.Capital += (units * currentPrice);
+                            PortfolioManager.Capital += (units*currentPrice);
                             PortfolioManager.OpenPositions.Clear();
+                        }
+                        else
+                        {
+                            float priceDifference = currentPrice -
+                                                    PortfolioManager.OpenPositions[0].PutPrice;
+
+                            if ((priceDifference*units) < -10)
+                            {
+                                Console.Write(parsedData[i + 1][0]);
+                                Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (STOPLOSS)", units, "MSFT", currentPrice);
+
+                                PortfolioManager.Capital += (units * currentPrice);
+                                PortfolioManager.OpenPositions.Clear();
+                            }
+                            else if ((priceDifference*units) >= 100)
+                            {
+                                Console.Write(parsedData[i + 1][0]);
+                                Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (TAKEPROFIT)", units, "MSFT", currentPrice);
+
+                                PortfolioManager.Capital += (units * currentPrice);
+                                PortfolioManager.OpenPositions.Clear();
+                            }
                         }
                     }
                     prevEvaluation = evaluationResult;
@@ -199,6 +223,7 @@ namespace bahamas_system.Bahamas_System.GE
                 //Is sub grammar exists
                 if (geGrammar.ContainsKey(signalGrammar.ElementAt(i)))
                 {
+                    depth++;
                     GenerateOperators(signalGrammar.ElementAt(i),rnd,strategy);
                 }
                 else
@@ -206,6 +231,7 @@ namespace bahamas_system.Bahamas_System.GE
                     try
                     {
                         int val = Int32.Parse(signalGrammar.ElementAt(i));
+                        Console.WriteLine(depth);
                         strategy.OperatorList.Add(new ValueTerminal(val));
                     }
                     catch (Exception)
@@ -229,7 +255,8 @@ namespace bahamas_system.Bahamas_System.GE
                         }
                     }
                 }
-            }            
+            }
+            depth--;
         }
     }
 }
