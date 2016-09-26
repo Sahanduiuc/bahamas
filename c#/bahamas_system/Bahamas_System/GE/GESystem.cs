@@ -25,6 +25,7 @@ namespace bahamas_system.Bahamas_System.GE
         private List<Operator> generationResults;
         private GEFactory factory;
         private Dictionary<string, List<LinkedList<string>>> geGrammar;
+        private Dictionary<string, List<LinkedList<string>>> geGrammarLimited;
 
         //TODO Portfolio Manager Implementation
         private bool prevEvaluation = false;
@@ -42,6 +43,7 @@ namespace bahamas_system.Bahamas_System.GE
 
             factory = new GEFactory();
             geGrammar = new Dictionary<string, List<LinkedList<string>>>();
+            geGrammarLimited = new Dictionary<string, List<LinkedList<string>>>();
 
             StrategyManager.StrategyCollection = new Collection<Strategy>();
             StrategyManager.ResultsStack = new Stack<ExpressionResult>();
@@ -97,6 +99,26 @@ namespace bahamas_system.Bahamas_System.GE
                     geGrammar.Add(item.Name, optionsList);
                 }
             }
+            //Read Strategy Grammer (Limited set)
+            using (StreamReader reader = new StreamReader("teststrat_limited.json"))
+            {
+                string readString = reader.ReadToEnd();
+                dynamic array = JsonConvert.DeserializeObject(readString);
+                foreach (JProperty item in array)
+                {
+                    List<LinkedList<string>> optionsList = new List<LinkedList<string>>();
+                    foreach (var options in item.Value)
+                    {
+                        LinkedList<string> operatorList = new LinkedList<string>();
+                        foreach (var op in options)
+                        {
+                            operatorList.AddLast(op.ToString());
+                        }
+                        optionsList.Add(operatorList);
+                    }
+                    geGrammarLimited.Add(item.Name, optionsList);
+                }
+            }
 
             Random rnd = new Random();
 
@@ -129,7 +151,7 @@ namespace bahamas_system.Bahamas_System.GE
                     //if (i % 100 == 0)
                     //    Console.Write(".");
 
-                    bool evaluationResult = EvaluateStrategyAtDelta(strategy,i);
+                    bool evaluationResult = EvaluateStrategyAtDelta(strategy, i);
                     DateTime currentDateTime = DateTime.Parse(parsedData[i + 1][0]);
                     float currentPrice = float.Parse(parsedData[i + 1][6]);
 
@@ -138,7 +160,7 @@ namespace bahamas_system.Bahamas_System.GE
                         !PortfolioManager.OpenPositions.Any())
                     {
                         Console.Write(parsedData[i + 1][0]);
-                        Console.WriteLine("     BUY {0} Unit(s) of {1} at {2}", units,"MSFT",currentPrice);
+                        Console.WriteLine("     BUY {0} Unit(s) of {1} at {2}", units, "MSFT", currentPrice);
 
                         Position position = new Position
                         {
@@ -159,9 +181,9 @@ namespace bahamas_system.Bahamas_System.GE
                         if (elapsedTimeSpan.Days >= 7)
                         {
                             Console.Write(parsedData[i + 1][0]);
-                            Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (EXPIRY)", units,"MSFT", currentPrice);
+                            Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (EXPIRY)", units, "MSFT", currentPrice);
 
-                            PortfolioManager.Capital += (units*currentPrice);
+                            PortfolioManager.Capital += (units * currentPrice);
                             PortfolioManager.OpenPositions.Clear();
                         }
                         else
@@ -169,7 +191,7 @@ namespace bahamas_system.Bahamas_System.GE
                             float priceDifference = currentPrice -
                                                     PortfolioManager.OpenPositions[0].PutPrice;
 
-                            if ((priceDifference*units) < -10)
+                            if ((priceDifference * units) < -10)
                             {
                                 Console.Write(parsedData[i + 1][0]);
                                 Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (STOPLOSS)", units, "MSFT", currentPrice);
@@ -177,7 +199,7 @@ namespace bahamas_system.Bahamas_System.GE
                                 PortfolioManager.Capital += (units * currentPrice);
                                 PortfolioManager.OpenPositions.Clear();
                             }
-                            else if ((priceDifference*units) >= 100)
+                            else if ((priceDifference * units) >= 100)
                             {
                                 Console.Write(parsedData[i + 1][0]);
                                 Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (TAKEPROFIT)", units, "MSFT", currentPrice);
@@ -214,8 +236,13 @@ namespace bahamas_system.Bahamas_System.GE
 
         private void GenerateOperators(string grammarID, Random rnd,Strategy strategy)
         {
-            LinkedList<string> signalGrammar = geGrammar[grammarID].
-                ElementAt(rnd.Next(geGrammar[grammarID].Count));
+            LinkedList<string> signalGrammar;
+            if(depth >= 3)
+                signalGrammar = geGrammarLimited[grammarID].
+                    ElementAt(rnd.Next(geGrammarLimited[grammarID].Count));
+            else
+                signalGrammar = geGrammar[grammarID].
+                    ElementAt(rnd.Next(geGrammar[grammarID].Count));
 
             //Genrate selected signal functions
             for (int i = 0; i < signalGrammar.Count; i++)
@@ -231,7 +258,7 @@ namespace bahamas_system.Bahamas_System.GE
                     try
                     {
                         int val = Int32.Parse(signalGrammar.ElementAt(i));
-                        Console.WriteLine(depth);
+                        //Console.WriteLine(depth);
                         strategy.OperatorList.Add(new ValueTerminal(val));
                     }
                     catch (Exception)
