@@ -11,8 +11,17 @@ namespace bahamas_system.Bahamas_System.GE.Operators
     public struct Strategy
     {
         public Collection<Operator> OperatorList;
+        public int[] CodonPattern;
+
+        public int CodonLength;
 
         public int TradeCount;
+        public double Returns;
+
+        public void GetHash()
+        {
+            
+        }
     }
 
     public static class StrategyManager
@@ -41,6 +50,12 @@ namespace bahamas_system.Bahamas_System.GE.Operators
                 Console.Write(currentOperator.ToString() + " ");
             }
             Console.WriteLine("");
+        }
+
+        public static void CalculateStrategyPerformance(ref Strategy strategy)
+        {
+            strategy.Returns = (PortfolioManager.Capital -
+                PortfolioManager.StartingCapital)/PortfolioManager.StartingCapital*100.0f;
         }
     }
 }
