@@ -1,12 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using bahamas_system.Bahamas_System.GE.Operators.Functions;
+using bahamas_system.Bahamas_System.GE.Operators;
 
-namespace bahamas_system.Bahamas_System.GE.Operators
+namespace bahamas_system.Bahamas_System
 {
     public struct Strategy
     {
@@ -22,6 +19,11 @@ namespace bahamas_system.Bahamas_System.GE.Operators
         {
             
         }
+
+        public void AddTrade()
+        {
+            TradeCount++;
+        }
     }
 
     public static class StrategyManager
@@ -34,11 +36,12 @@ namespace bahamas_system.Bahamas_System.GE.Operators
         {
             Console.WriteLine("");
             Console.WriteLine("**************Strategy Performance**************");
-            Console.WriteLine("Total returns:   {0}",PortfolioManager.Capital -
-                PortfolioManager.StartingCapital);
+            Console.WriteLine("Total returns:   {0}", PortfolioManager.Capital -
+                                                      PortfolioManager.StartingCapital);
             Console.WriteLine("% returns:       {0}%", (PortfolioManager.Capital -
-                PortfolioManager.StartingCapital)/PortfolioManager.StartingCapital*100.0f);
-            Console.WriteLine("Trade Count:     {0}",strategy.TradeCount);
+                                                        PortfolioManager.StartingCapital)/
+                                                       PortfolioManager.StartingCapital*100.0f);
+            Console.WriteLine("Trade Count:     {0}", strategy.TradeCount);
             Console.WriteLine("************************************************");
         }
 
@@ -50,12 +53,6 @@ namespace bahamas_system.Bahamas_System.GE.Operators
                 Console.Write(currentOperator.ToString() + " ");
             }
             Console.WriteLine("");
-        }
-
-        public static void CalculateStrategyPerformance(ref Strategy strategy)
-        {
-            strategy.Returns = (PortfolioManager.Capital -
-                PortfolioManager.StartingCapital)/PortfolioManager.StartingCapital*100.0f;
         }
     }
 }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace bahamas_system.Bahamas_System.GE.Operators.Functions
+namespace bahamas_system.Bahamas_System
 {
     public struct Position
     {
