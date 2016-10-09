@@ -51,6 +51,8 @@ namespace bahamas_system.Bahamas_System.GE
             StrategyManager.ResultsStack = new Stack<ExpressionResult>();
 
             PortfolioManager.OpenPositions = new Collection<Position>();
+
+            DataManager.LoadDataForSymbol("msft");
         }
 
         private List<string[]> parseCSV(string path)
@@ -146,7 +148,6 @@ namespace bahamas_system.Bahamas_System.GE
             //Evaluate Initial Generation
             BackTestManager.EvaluateGeneration();
             PrintGenerationPerformance(true);
-
             
             for (int genNum = 0; genNum < MaxGenerations; genNum++)
             {

@@ -11,42 +11,14 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
 {
     public class SMA: Function
     {
-        private List<string[]> parseCSV(string path)
-        {
-            List<string[]> parsedData = new List<string[]>();
-
-            try
-            {
-                using (StreamReader readFile = new StreamReader(path))
-                {
-                    string line;
-                    string[] row;
-
-                    while ((line = readFile.ReadLine()) != null)
-                    {
-                        row = line.Split(',');
-                        parsedData.Add(row);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return parsedData;
-        }
-
         public override void Evaluate(int delta)
         {
             int i;
-            string curDir = Directory.GetCurrentDirectory();
-            string fileName = curDir + @"\msft.csv";
-            List<string[]> parsedData = parseCSV(fileName);
-            int nCount = parsedData.Count;
+            var equityData = DataManager.EquityTimeData["msft"];
+            int nCount = equityData.Count;
             double[] closingPricesArr = new double[nCount - 1];
             for (i = 0; i < nCount - 1; i++)
-                closingPricesArr[i] = Convert.ToDouble(parsedData[i + 1][6]);
+                closingPricesArr[i] = Convert.ToDouble(equityData[i + 1][6]);
 
             int startIdx = 0;
             int endIdx = nCount - 2;

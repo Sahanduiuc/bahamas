@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bahamas_system.Bahamas_System
 {
@@ -52,51 +49,23 @@ namespace bahamas_system.Bahamas_System
             StrategyManager.StrategyCollection = tempStrategies;
         }
 
-        private static List<string[]> parseCSV(string path)
-        {
-            List<string[]> parsedData = new List<string[]>();
-
-            try
-            {
-                using (StreamReader readFile = new StreamReader(path))
-                {
-                    string line;
-                    string[] row;
-
-                    while ((line = readFile.ReadLine()) != null)
-                    {
-                        row = line.Split(',');
-                        parsedData.Add(row);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return parsedData;
-        }
-
         private static void EvaluateStrategy(ref Strategy strategy)
         {
             PortfolioManager.ResetPortfolio();
 
             int i;
             bool prevEvaluation = false;
-            string curDir = Directory.GetCurrentDirectory();
-            string fileName = curDir + @"\msft.csv";
-            List<string[]> parsedData = parseCSV(fileName);
-            int nCount = parsedData.Count;
-            double[] closingPricesArr = new double[nCount - 1];
+            var equityData = DataManager.EquityTimeData["msft"];
+            int nCount = equityData.Count;
+            //double[] closingPricesArr = new double[nCount - 1];
             for (i = 200; i < nCount - 1; i++)
             {
                 //if (i % 100 == 0)
                 //    Console.Write(".");
 
                 bool evaluationResult = EvaluateStrategyAtDelta(strategy, i);
-                DateTime currentDateTime = DateTime.Parse(parsedData[i + 1][0]);
-                float currentPrice = float.Parse(parsedData[i + 1][6]);
+                DateTime currentDateTime = DateTime.Parse(equityData[i + 1][0]);
+                float currentPrice = float.Parse(equityData[i + 1][6]);
 
                 //Open a new LONG Position
                 if (evaluationResult && !prevEvaluation &&
