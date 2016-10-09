@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using bahamas_system.Bahamas_System.GE.Operators;
 using bahamas_system.Bahamas_System.GE.Operators.Functions;
 using bahamas_system.Bahamas_System.GE.Operators.Terminals;
@@ -53,32 +50,6 @@ namespace bahamas_system.Bahamas_System.GE
             PortfolioManager.OpenPositions = new Collection<Position>();
 
             DataManager.LoadDataForSymbol("msft");
-        }
-
-        private List<string[]> parseCSV(string path)
-        {
-            List<string[]> parsedData = new List<string[]>();
-
-            try
-            {
-                using (StreamReader readFile = new StreamReader(path))
-                {
-                    string line;
-                    string[] row;
-
-                    while ((line = readFile.ReadLine()) != null)
-                    {
-                        row = line.Split(',');
-                        parsedData.Add(row);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return parsedData;
         }
 
         public void Initiate()
@@ -148,7 +119,7 @@ namespace bahamas_system.Bahamas_System.GE
             //Evaluate Initial Generation
             BackTestManager.EvaluateGeneration();
             PrintGenerationPerformance(true);
-            
+           
             for (int genNum = 0; genNum < MaxGenerations; genNum++)
             {
                 Console.WriteLine("");
@@ -179,29 +150,47 @@ namespace bahamas_system.Bahamas_System.GE
                         StrategyManager.StrategyCollection[rnd.Next(StrategyManager.StrategyCollection.Count)],
                         StrategyManager.StrategyCollection[rnd.Next(StrategyManager.StrategyCollection.Count)]);
 
-                    int maxOperationPoint = strategy00.CodonLength < strategy01.CodonLength
-                        ? strategy00.CodonLength
-                        : strategy01.CodonLength;
+                    //Select between Crossover vs Mutation
+                    double operationSelection = rnd.NextDouble();
 
-                    int operationPoint = rnd.Next(1, maxOperationPoint);
+                    //Perform Crossover
+                    if (operationSelection <= CrossOverRate)
+                    {
+                        int maxOperationPoint = strategy00.CodonLength < strategy01.CodonLength
+                            ? strategy00.CodonLength
+                            : strategy01.CodonLength;
 
-                    //Perform Ripple CrossOver
-                    var strategy00SubA = strategy00.CodonPattern.Take(operationPoint).ToArray();
-                    var strategy00SubB = strategy00.CodonPattern.Skip(operationPoint).ToArray();
+                        int operationPoint = rnd.Next(1, maxOperationPoint);
 
-                    var strategy01SubA = strategy01.CodonPattern.Take(operationPoint).ToArray();
-                    var strategy01SubB = strategy01.CodonPattern.Skip(operationPoint).ToArray();
+                        //Perform Ripple CrossOver
+                        var strategy00SubA = strategy00.CodonPattern.Take(operationPoint).ToArray();
+                        var strategy00SubB = strategy00.CodonPattern.Skip(operationPoint).ToArray();
 
-                    int[] combinedCondonsA = strategy00SubA.Concat(strategy01SubB).ToArray();
-                    int[] combinedCondonsB = strategy01SubA.Concat(strategy00SubB).ToArray();
+                        var strategy01SubA = strategy01.CodonPattern.Take(operationPoint).ToArray();
+                        var strategy01SubB = strategy01.CodonPattern.Skip(operationPoint).ToArray();
 
-                    Strategy genStrategy00 = GenerateCodonStrategy(combinedCondonsA, rnd);
-                    Strategy genStrategy01 = GenerateCodonStrategy(combinedCondonsB, rnd);
-                
-                    tempStrategies.Add(genStrategy00);
-                    currentPoolSize++;
-                    tempStrategies.Add(genStrategy01);
-                    currentPoolSize++;
+                        int[] combinedCondonsA = strategy00SubA.Concat(strategy01SubB).ToArray();
+                        int[] combinedCondonsB = strategy01SubA.Concat(strategy00SubB).ToArray();
+
+                        Strategy genStrategy00 = GenerateCodonStrategy(combinedCondonsA, rnd);
+                        Strategy genStrategy01 = GenerateCodonStrategy(combinedCondonsB, rnd);
+
+                        tempStrategies.Add(genStrategy00);
+                        currentPoolSize++;
+                        tempStrategies.Add(genStrategy01);
+                        currentPoolSize++;
+                    }
+                    //Perform One-Point Mutation
+                    else
+                    {
+                        int operationPoint = rnd.Next(1, strategy00.CodonLength);
+                        var newCondonPattern = strategy00.CodonPattern;
+                        newCondonPattern[operationPoint] = rnd.Next(0, 128);
+
+                        Strategy genStrategy = GenerateCodonStrategy(newCondonPattern, rnd);
+                        tempStrategies.Add(genStrategy);
+                        currentPoolSize++;
+                    }
                 }
                 StrategyManager.StrategyCollection = tempStrategies;
 
@@ -210,6 +199,12 @@ namespace bahamas_system.Bahamas_System.GE
                 PrintGenerationPerformance(true);
 
             }
+
+            StrategyManager.PrintSelectedStrategy(
+                StrategyManager.StrategyCollection.First());
+            var testStat = StrategyManager.StrategyCollection.First();
+            BackTestManager.EvaluateStrategy(ref testStat, true);
+
             Console.WriteLine("");
         }
 
@@ -304,6 +299,8 @@ namespace bahamas_system.Bahamas_System.GE
                         switch (signalGrammar.ElementAt(i))
                         {
                             case "SMA": strategy.OperatorList.Add(new SMA());
+                                break;
+                            case "WMA": strategy.OperatorList.Add(new WMA());
                                 break;
                             case "GTRE": strategy.OperatorList.Add(
                                 new Comparator(ComparatorType.GRTE));

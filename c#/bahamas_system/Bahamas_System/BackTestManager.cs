@@ -7,7 +7,7 @@ namespace bahamas_system.Bahamas_System
 {
     public static class BackTestManager
     {
-        private static int TRADEUNITS = 500;
+        private static int TRADEUNITS = 100;
 
         /// <summary>
         /// 
@@ -49,7 +49,8 @@ namespace bahamas_system.Bahamas_System
             StrategyManager.StrategyCollection = tempStrategies;
         }
 
-        private static void EvaluateStrategy(ref Strategy strategy)
+        public static void EvaluateStrategy(ref Strategy strategy, 
+            bool printTrades = false)
         {
             PortfolioManager.ResetPortfolio();
 
@@ -71,9 +72,11 @@ namespace bahamas_system.Bahamas_System
                 if (evaluationResult && !prevEvaluation &&
                     !PortfolioManager.OpenPositions.Any())
                 {
-                    //Console.Write(parsedData[i + 1][0]);
-                    //Console.WriteLine("     BUY {0} Unit(s) of {1} at {2}", units, "MSFT", currentPrice);
-
+                    if (printTrades)
+                    {
+                        Console.Write(equityData[i + 1][0]);
+                        Console.WriteLine("     BUY {0} at {1}", "MSFT", currentPrice);
+                    }
                     Position position = new Position
                     {
                         Ticker = "MSFT",
@@ -86,40 +89,56 @@ namespace bahamas_system.Bahamas_System
                     strategy.TradeCount++;
                 }
                 //CLOSE position after expiry
-                else if (PortfolioManager.OpenPositions.Any())
+                else if (PortfolioManager.OpenPositions.Any() && !evaluationResult)
                 {
-                    TimeSpan elapsedTimeSpan = currentDateTime -
-                                               PortfolioManager.OpenPositions[0].PutTimestamp;
-                    if (elapsedTimeSpan.Days >= 7)
+                    //TimeSpan elapsedTimeSpan = currentDateTime -
+                    //                           PortfolioManager.OpenPositions[0].PutTimestamp;
+                    //if (elapsedTimeSpan.Days >= 7)
+                    //{
+                    //    if (printTrades)
+                    //    {
+                    //        Console.Write(equityData[i + 1][0]);
+                    //        Console.WriteLine("     SELL {0} at {1} (EXPIRY)", "MSFT", currentPrice);
+                    //    }
+
+                    //    PortfolioManager.Capital += (TRADEUNITS * currentPrice);
+                    //    PortfolioManager.OpenPositions.Clear();
+                    //}
+                    //else
+                    //{
+                    //    float priceDifference = currentPrice -
+                    //                            PortfolioManager.OpenPositions[0].PutPrice;
+
+                    //    if ((priceDifference * TRADEUNITS) < -10)
+                    //    {
+                    //        if (printTrades)
+                    //        {
+                    //            Console.Write(equityData[i + 1][0]);
+                    //            Console.WriteLine("     SELL {0} at {1} (STOPLOSS)", "MSFT", currentPrice);
+                    //        }
+                    //        PortfolioManager.Capital += (TRADEUNITS * currentPrice);
+                    //        PortfolioManager.OpenPositions.Clear();
+                    //    }
+                    //    else if ((priceDifference * TRADEUNITS) >= 100)
+                    //    {
+                    //        if (printTrades)
+                    //        {
+                    //            Console.Write(equityData[i + 1][0]);
+                    //            Console.WriteLine("     SELL {0} at {1} (TAKEPROFIT)", "MSFT", currentPrice);
+                    //        }
+                    //        PortfolioManager.Capital += (TRADEUNITS * currentPrice);
+                    //        PortfolioManager.OpenPositions.Clear();
+                    //    }
+                    //}
+
+                    if (printTrades)
                     {
-                        //Console.Write(parsedData[i + 1][0]);
-                        // Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (EXPIRY)", units, "MSFT", currentPrice);
-
-                        PortfolioManager.Capital += (TRADEUNITS * currentPrice);
-                        PortfolioManager.OpenPositions.Clear();
+                        Console.Write(equityData[i + 1][0]);
+                        Console.WriteLine("     SELL {0} at {1} (FLIP)", "MSFT", currentPrice);
                     }
-                    else
-                    {
-                        float priceDifference = currentPrice -
-                                                PortfolioManager.OpenPositions[0].PutPrice;
 
-                        if ((priceDifference * TRADEUNITS) < -10)
-                        {
-                            // Console.Write(parsedData[i + 1][0]);
-                            //Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (STOPLOSS)", units, "MSFT",currentPrice);
-
-                            PortfolioManager.Capital += (TRADEUNITS * currentPrice);
-                            PortfolioManager.OpenPositions.Clear();
-                        }
-                        else if ((priceDifference * TRADEUNITS) >= 100)
-                        {
-                            //Console.Write(parsedData[i + 1][0]);
-                            //Console.WriteLine("     SELL {0} Unit(s) of {1} at {2} (TAKEPROFIT)", units, "MSFT",currentPrice);
-
-                            PortfolioManager.Capital += (TRADEUNITS * currentPrice);
-                            PortfolioManager.OpenPositions.Clear();
-                        }
-                    }
+                    PortfolioManager.Capital += (TRADEUNITS * currentPrice);
+                    PortfolioManager.OpenPositions.Clear();
                 }
                 prevEvaluation = evaluationResult;
             }

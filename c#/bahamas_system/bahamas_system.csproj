@@ -56,6 +56,7 @@
     <Compile Include="Bahamas_System\GE\GEFactory.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Functions\Comparator.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Functions\LogicalOperator.cs" />
+    <Compile Include="Bahamas_System\GE\Operators\Functions\WMA.cs" />
     <Compile Include="Bahamas_System\PortfolioManager.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleAdd.cs" />
     <Compile Include="Bahamas_System\GE\Operators\Functions\SimpleDiv.cs" />

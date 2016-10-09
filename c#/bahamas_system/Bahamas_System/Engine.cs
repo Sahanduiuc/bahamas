@@ -13,7 +13,7 @@ namespace bahamas_system.Bahamas_System
 
         public Engine()
         {
-            geSystem = new GESystem(0,0,1000,50,0);
+            geSystem = new GESystem(0.1,0.9,1000,10,0);
             geSystem.Initiate();
         }
     }
