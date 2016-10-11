@@ -205,7 +205,7 @@ namespace bahamas_system.Bahamas_System.GE
             var testStat = StrategyManager.StrategyCollection.First();
             BackTestManager.EvaluateStrategy(ref testStat, true);
 
-            Console.WriteLine("");
+            Console.ReadKey();
         }
 
         private void PrintGenerationPerformance(bool print = false)

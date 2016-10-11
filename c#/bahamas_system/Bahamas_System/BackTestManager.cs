@@ -54,9 +54,10 @@ namespace bahamas_system.Bahamas_System
         {
             PortfolioManager.ResetPortfolio();
 
+            string targetInstrument = "msft";
             int i;
             bool prevEvaluation = false;
-            var equityData = DataManager.EquityTimeData["msft"];
+            var equityData = DataManager.EquityTimeData[targetInstrument];
             int nCount = equityData.Count;
             //double[] closingPricesArr = new double[nCount - 1];
             for (i = 200; i < nCount - 1; i++)
@@ -75,7 +76,7 @@ namespace bahamas_system.Bahamas_System
                     if (printTrades)
                     {
                         Console.Write(equityData[i + 1][0]);
-                        Console.WriteLine("     BUY {0} at {1}", "MSFT", currentPrice);
+                        Console.WriteLine("     BUY {0} at {1}", targetInstrument.ToUpper(), currentPrice);
                     }
                     Position position = new Position
                     {
@@ -134,7 +135,7 @@ namespace bahamas_system.Bahamas_System
                     if (printTrades)
                     {
                         Console.Write(equityData[i + 1][0]);
-                        Console.WriteLine("     SELL {0} at {1} (FLIP)", "MSFT", currentPrice);
+                        Console.WriteLine("     SELL {0} at {1} (FLIP)", targetInstrument.ToUpper(), currentPrice);
                     }
 
                     PortfolioManager.Capital += (TRADEUNITS * currentPrice);
