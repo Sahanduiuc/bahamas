@@ -12,7 +12,7 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Functions
         public override void Evaluate(int delta)
         {
             int i;
-            var equityData = DataManager.EquityTimeData["msft"];
+            var equityData = DataManager.GetEquityData("msft");
             int nCount = equityData.Count;
             double[] closingPricesArr = new double[nCount - 1];
             for (i = 0; i < nCount - 1; i++)

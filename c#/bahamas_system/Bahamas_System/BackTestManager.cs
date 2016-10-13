@@ -9,6 +9,9 @@ namespace bahamas_system.Bahamas_System
     {
         private static int TRADEUNITS = 100;
 
+        public static DateTime STARTDATETIME = DateTime.Parse("01/05/2008");
+        public static DateTime ENDDATETIME = DateTime.Parse("01/05/2010");
+
         /// <summary>
         /// 
         /// </summary>
@@ -57,7 +60,7 @@ namespace bahamas_system.Bahamas_System
             string targetInstrument = "msft";
             int i;
             bool prevEvaluation = false;
-            var equityData = DataManager.EquityTimeData[targetInstrument];
+            var equityData = DataManager.GetEquityData(targetInstrument);
             int nCount = equityData.Count;
             //double[] closingPricesArr = new double[nCount - 1];
             for (i = 200; i < nCount - 1; i++)

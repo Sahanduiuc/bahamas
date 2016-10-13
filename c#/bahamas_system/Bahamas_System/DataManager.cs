@@ -8,7 +8,7 @@ namespace bahamas_system.Bahamas_System
 {
     public static class DataManager
     {
-        public static Dictionary<string,List<string[]>> EquityTimeData = 
+        private static readonly Dictionary<string,List<string[]>> equityTimeData = 
             new Dictionary<string, List<string[]>>();
 
         public static void LoadDataForSymbol(string ticker)
@@ -17,7 +17,26 @@ namespace bahamas_system.Bahamas_System
             string fileName = curDir + @"\msft.csv";
             List<string[]> parsedData = ParseCSV(fileName);
 
-            EquityTimeData.Add("msft",parsedData);
+            equityTimeData.Add("msft",parsedData);
+        }
+
+        public static List<string[]> GetEquityData(string symbol)
+        {
+            var equityData = equityTimeData[symbol];
+            var resultData = new List<string[]>();
+
+            for (int index = 1; index < equityData.Count; index++)
+            {
+                var currentIndex = DateTime.Parse(equityData[index][0]);
+
+                if ((currentIndex - BackTestManager.ENDDATETIME).Days > 0)
+                    break;
+
+                if ((currentIndex - BackTestManager.STARTDATETIME).Days >= 0)
+                    resultData.Add(equityData[index]);
+            }
+
+            return resultData;
         }
 
         private static List<string[]> ParseCSV(string path)
