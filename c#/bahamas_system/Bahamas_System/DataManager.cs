@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using bahamas_system.Bahamas_System.GE;
 using bahamas_system.Bahamas_System.GE.Operators.Functions;
@@ -10,14 +11,29 @@ namespace bahamas_system.Bahamas_System
     {
         private static readonly Dictionary<string,List<string[]>> equityTimeData = 
             new Dictionary<string, List<string[]>>();
+        private static readonly Collection<string> tickerCollection = new Collection<string>()
+        {
+            "msft",
+            "spdr"
+        };
 
-        public static void LoadDataForSymbol(string ticker)
+        public static Collection<string> TickerCollection { get { return tickerCollection; } } 
+
+        public static void LoadData()
+        {
+            foreach (var ticker in tickerCollection)
+            {
+                LoadDataForSymbol(ticker);
+            }
+        }
+
+        private static void LoadDataForSymbol(string ticker)
         {
             string curDir = Directory.GetCurrentDirectory();
-            string fileName = curDir + @"\msft.csv";
+            string fileName = curDir + @"\"+ticker+".csv";
             List<string[]> parsedData = ParseCSV(fileName);
 
-            equityTimeData.Add("msft",parsedData);
+            equityTimeData.Add(ticker,parsedData);
         }
 
         public static List<string[]> GetEquityData(string symbol)
@@ -63,6 +79,12 @@ namespace bahamas_system.Bahamas_System
             }
 
             return parsedData;
+        }
+
+        //TODO
+        private static void ValidateDataSet()
+        {
+            
         }
     }
 }

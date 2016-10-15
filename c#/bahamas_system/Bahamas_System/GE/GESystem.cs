@@ -49,7 +49,8 @@ namespace bahamas_system.Bahamas_System.GE
 
             PortfolioManager.OpenPositions = new Collection<Position>();
 
-            DataManager.LoadDataForSymbol("msft");
+            //Load Data
+            DataManager.LoadData();
         }
 
         public void Initiate()
@@ -315,6 +316,10 @@ namespace bahamas_system.Bahamas_System.GE
                                 new LogicalOperator(LogicalOperators.OR));
                                 break;
                         }
+
+                        if(DataManager.TickerCollection.Contains(signalGrammar.ElementAt(i)))
+                            strategy.OperatorList.Add(new StringTerminal(
+                                signalGrammar.ElementAt(i)));
                     }
                 }
             }

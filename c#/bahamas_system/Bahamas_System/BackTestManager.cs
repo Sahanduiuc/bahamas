@@ -7,10 +7,12 @@ namespace bahamas_system.Bahamas_System
 {
     public static class BackTestManager
     {
-        private static int TRADEUNITS = 100;
+        private static readonly int TRADEUNITS = 100;
+        private static readonly string TARGETINSTRUMENT = "msft";
+        private static int STARTINDEX = 200;
 
-        public static DateTime STARTDATETIME = DateTime.Parse("01/05/2008");
-        public static DateTime ENDDATETIME = DateTime.Parse("01/05/2010");
+        public static DateTime STARTDATETIME = DateTime.Parse("01/01/2012");
+        public static DateTime ENDDATETIME = DateTime.Parse("01/12/2013");
 
         /// <summary>
         /// 
@@ -25,7 +27,7 @@ namespace bahamas_system.Bahamas_System
             int stratNum = 0;
             foreach (var strategy in StrategyManager.StrategyCollection)
             {
-                if (stratNum % 10 == 0)
+                if (stratNum % 1 == 0)
                     Console.Write(".");
 
                 Strategy tempStrategy = strategy;
@@ -56,14 +58,12 @@ namespace bahamas_system.Bahamas_System
             bool printTrades = false)
         {
             PortfolioManager.ResetPortfolio();
-
-            string targetInstrument = "msft";
-            int i;
+            
             bool prevEvaluation = false;
-            var equityData = DataManager.GetEquityData(targetInstrument);
+            var equityData = DataManager.GetEquityData(TARGETINSTRUMENT);
             int nCount = equityData.Count;
             //double[] closingPricesArr = new double[nCount - 1];
-            for (i = 200; i < nCount - 1; i++)
+            for (int i = STARTINDEX; i < nCount - 1; i++)
             {
                 //if (i % 100 == 0)
                 //    Console.Write(".");
@@ -79,11 +79,11 @@ namespace bahamas_system.Bahamas_System
                     if (printTrades)
                     {
                         Console.Write(equityData[i + 1][0]);
-                        Console.WriteLine("     BUY {0} at {1}", targetInstrument.ToUpper(), currentPrice);
+                        Console.WriteLine("     BUY {0} at {1}", TARGETINSTRUMENT.ToUpper(), currentPrice);
                     }
                     Position position = new Position
                     {
-                        Ticker = "MSFT",
+                        Ticker = TARGETINSTRUMENT.ToUpper(),
                         PutPrice = currentPrice,
                         PutTimestamp = currentDateTime,
                         Units = TRADEUNITS
@@ -138,7 +138,7 @@ namespace bahamas_system.Bahamas_System
                     if (printTrades)
                     {
                         Console.Write(equityData[i + 1][0]);
-                        Console.WriteLine("     SELL {0} at {1} (FLIP)", targetInstrument.ToUpper(), currentPrice);
+                        Console.WriteLine("     SELL {0} at {1} (FLIP)", TARGETINSTRUMENT.ToUpper(), currentPrice);
                     }
 
                     PortfolioManager.Capital += (TRADEUNITS * currentPrice);
