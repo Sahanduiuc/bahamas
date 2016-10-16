@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="OpenCL Files">
+      <UniqueIdentifier>{D011BB44-1BF7-4113-997B-A081035B40D8}</UniqueIdentifier>
+      <Extensions>cl</Extensions>
+    </Filter>
+    <Filter Include="BahamasSystem">
+      <UniqueIdentifier>{ce6238cd-9e0c-481e-965b-58784812c464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UnitTests">
+      <UniqueIdentifier>{ded4c278-f444-4c32-a0c2-6c7145ae1516}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BahamasSystem.cpp">
+      <Filter>BahamasSystem</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BahamasSystem.h">
+      <Filter>BahamasSystem</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
