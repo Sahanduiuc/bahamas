@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace bahamas_system.Bahamas_System
 {
-    public static class BackTestManager
+    public static class BackTester
     {
         private static readonly int TRADEUNITS = 100;
         private static readonly string TARGETINSTRUMENT = "msft";

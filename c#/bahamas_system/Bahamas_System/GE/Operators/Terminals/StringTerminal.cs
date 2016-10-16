@@ -8,7 +8,7 @@ namespace bahamas_system.Bahamas_System.GE.Operators.Terminals
 {
     public class StringTerminal : Terminal
     {
-        private string returnValue;
+        private readonly string returnValue;
 
         public StringTerminal(string value)
         {

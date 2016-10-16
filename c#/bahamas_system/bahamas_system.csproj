@@ -49,7 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bahamas_System\BackTestManager.cs" />
+    <Compile Include="Bahamas_System\BackTester.cs" />
     <Compile Include="Bahamas_System\DataManager.cs" />
     <Compile Include="Bahamas_System\Engine.cs" />
     <Compile Include="Bahamas_System\GE\GESystem.cs" />

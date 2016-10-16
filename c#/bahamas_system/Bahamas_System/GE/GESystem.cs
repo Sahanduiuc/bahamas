@@ -102,7 +102,7 @@ namespace bahamas_system.Bahamas_System.GE
             //Generate Individual strategies
             for (int strategyNum = 0; strategyNum < MaxPoolSize; strategyNum++)
             {
-                if(strategyNum % 10 == 0)
+                if(strategyNum % 1 == 0)
                     Console.Write(".");
 
                 //Console.WriteLine("");
@@ -118,7 +118,7 @@ namespace bahamas_system.Bahamas_System.GE
             }//End Strategy Creation
 
             //Evaluate Initial Generation
-            BackTestManager.EvaluateGeneration();
+            BackTester.EvaluateGeneration();
             PrintGenerationPerformance(true);
            
             for (int genNum = 0; genNum < MaxGenerations; genNum++)
@@ -139,7 +139,7 @@ namespace bahamas_system.Bahamas_System.GE
                 //Tournament Based Selection
                 while (currentPoolSize < MaxPoolSize)
                 {
-                    if (currentPoolSize % 10 == 0)
+                    if (currentPoolSize % 1 == 0)
                         Console.Write(".");
 
                     //Select 2 individuals using Tournament basis
@@ -196,7 +196,7 @@ namespace bahamas_system.Bahamas_System.GE
                 StrategyManager.StrategyCollection = tempStrategies;
 
                 //Print Generation Statistics
-                BackTestManager.EvaluateGeneration();
+                BackTester.EvaluateGeneration();
                 PrintGenerationPerformance(true);
 
             }
@@ -204,7 +204,7 @@ namespace bahamas_system.Bahamas_System.GE
             StrategyManager.PrintSelectedStrategy(
                 StrategyManager.StrategyCollection.First());
             var testStat = StrategyManager.StrategyCollection.First();
-            BackTestManager.EvaluateStrategy(ref testStat, true);
+            BackTester.EvaluateStrategy(ref testStat, true);
 
             Console.ReadKey();
         }

@@ -27,15 +27,6 @@ namespace bahamas_system.Bahamas_System
             }
         }
 
-        private static void LoadDataForSymbol(string ticker)
-        {
-            string curDir = Directory.GetCurrentDirectory();
-            string fileName = curDir + @"\"+ticker+".csv";
-            List<string[]> parsedData = ParseCSV(fileName);
-
-            equityTimeData.Add(ticker,parsedData);
-        }
-
         public static List<string[]> GetEquityData(string symbol)
         {
             var equityData = equityTimeData[symbol];
@@ -45,14 +36,24 @@ namespace bahamas_system.Bahamas_System
             {
                 var currentIndex = DateTime.Parse(equityData[index][0]);
 
-                if ((currentIndex - BackTestManager.ENDDATETIME).Days > 0)
+                if ((currentIndex - BackTester.ENDDATETIME).Days > 0)
                     break;
 
-                if ((currentIndex - BackTestManager.STARTDATETIME).Days >= 0)
+                if ((currentIndex - BackTester.STARTDATETIME).Days >= 0)
                     resultData.Add(equityData[index]);
             }
 
             return resultData;
+        }
+
+#region Private Methods
+        private static void LoadDataForSymbol(string ticker)
+        {
+            string curDir = Directory.GetCurrentDirectory();
+            string fileName = curDir + @"\"+ticker+".csv";
+            List<string[]> parsedData = ParseCSV(fileName);
+
+            equityTimeData.Add(ticker,parsedData);
         }
 
         private static List<string[]> ParseCSV(string path)
@@ -86,5 +87,6 @@ namespace bahamas_system.Bahamas_System
         {
             
         }
+#endregion
     }
 }
