@@ -4,6 +4,7 @@
     {
         public bool BinaryResult;
         public float ValueResult;
+        public string StringResult;
     }
 
     public abstract class Operator
