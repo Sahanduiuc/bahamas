@@ -3,17 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Backtester", "..\..\..\..\..\Users\Shamitha\Desktop\bahamas\bahamassystem\bahamassystem.vcxproj", "{E99F5DFC-113A-4BC3-8253-90A6AC0C9A9D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BahamasSystem", "BahamasSystem.vcxproj", "{ADB38B40-7826-4770-A806-F35F7B62044F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GE", "..\..\..\..\..\Users\Shamitha\Desktop\bahamas\bahamassystem\GE\GE.vcxproj", "{6A9A283A-F23F-4541-A5FF-121AC7C5EFD7}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PortfolioManager", "..\..\..\..\..\Users\Shamitha\Desktop\bahamas\bahamassystem\PortfolioManager\PortfolioManager.vcxproj", "{8D8DA487-7377-407B-A2C8-39FFDEF0FD88}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Program", "..\..\..\..\..\Users\Shamitha\Desktop\bahamas\bahamassystem\Program\Program.vcxproj", "{950FE854-3F0A-49B9-8D3D-A46C31B1BDEE}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "..\..\..\..\..\Users\Shamitha\Desktop\bahamas\bahamassystem\UnitTests\UnitTests.vcxproj", "{9757CB21-B840-49A6-B057-9F322E543DD6}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataHandler", "..\..\..\..\..\Users\Shamitha\Desktop\bahamas\bahamassystem\DataHandler\DataHandler.vcxproj", "{6D5C56D2-4DC2-4995-A751-C118E641AB2C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "UnitTests\UnitTests.vcxproj", "{ECBCA32C-DC3B-4C8D-AE73-C90441BE74D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,30 +13,14 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E99F5DFC-113A-4BC3-8253-90A6AC0C9A9D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E99F5DFC-113A-4BC3-8253-90A6AC0C9A9D}.Debug|Win32.Build.0 = Debug|Win32
-		{E99F5DFC-113A-4BC3-8253-90A6AC0C9A9D}.Release|Win32.ActiveCfg = Release|Win32
-		{E99F5DFC-113A-4BC3-8253-90A6AC0C9A9D}.Release|Win32.Build.0 = Release|Win32
-		{6A9A283A-F23F-4541-A5FF-121AC7C5EFD7}.Debug|Win32.ActiveCfg = Debug|Win32
-		{6A9A283A-F23F-4541-A5FF-121AC7C5EFD7}.Debug|Win32.Build.0 = Debug|Win32
-		{6A9A283A-F23F-4541-A5FF-121AC7C5EFD7}.Release|Win32.ActiveCfg = Release|Win32
-		{6A9A283A-F23F-4541-A5FF-121AC7C5EFD7}.Release|Win32.Build.0 = Release|Win32
-		{8D8DA487-7377-407B-A2C8-39FFDEF0FD88}.Debug|Win32.ActiveCfg = Debug|Win32
-		{8D8DA487-7377-407B-A2C8-39FFDEF0FD88}.Debug|Win32.Build.0 = Debug|Win32
-		{8D8DA487-7377-407B-A2C8-39FFDEF0FD88}.Release|Win32.ActiveCfg = Release|Win32
-		{8D8DA487-7377-407B-A2C8-39FFDEF0FD88}.Release|Win32.Build.0 = Release|Win32
-		{950FE854-3F0A-49B9-8D3D-A46C31B1BDEE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{950FE854-3F0A-49B9-8D3D-A46C31B1BDEE}.Debug|Win32.Build.0 = Debug|Win32
-		{950FE854-3F0A-49B9-8D3D-A46C31B1BDEE}.Release|Win32.ActiveCfg = Release|Win32
-		{950FE854-3F0A-49B9-8D3D-A46C31B1BDEE}.Release|Win32.Build.0 = Release|Win32
-		{9757CB21-B840-49A6-B057-9F322E543DD6}.Debug|Win32.ActiveCfg = Debug|Win32
-		{9757CB21-B840-49A6-B057-9F322E543DD6}.Debug|Win32.Build.0 = Debug|Win32
-		{9757CB21-B840-49A6-B057-9F322E543DD6}.Release|Win32.ActiveCfg = Release|Win32
-		{9757CB21-B840-49A6-B057-9F322E543DD6}.Release|Win32.Build.0 = Release|Win32
-		{6D5C56D2-4DC2-4995-A751-C118E641AB2C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{6D5C56D2-4DC2-4995-A751-C118E641AB2C}.Debug|Win32.Build.0 = Debug|Win32
-		{6D5C56D2-4DC2-4995-A751-C118E641AB2C}.Release|Win32.ActiveCfg = Release|Win32
-		{6D5C56D2-4DC2-4995-A751-C118E641AB2C}.Release|Win32.Build.0 = Release|Win32
+		{ADB38B40-7826-4770-A806-F35F7B62044F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ADB38B40-7826-4770-A806-F35F7B62044F}.Debug|Win32.Build.0 = Debug|Win32
+		{ADB38B40-7826-4770-A806-F35F7B62044F}.Release|Win32.ActiveCfg = Release|Win32
+		{ADB38B40-7826-4770-A806-F35F7B62044F}.Release|Win32.Build.0 = Release|Win32
+		{ECBCA32C-DC3B-4C8D-AE73-C90441BE74D2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ECBCA32C-DC3B-4C8D-AE73-C90441BE74D2}.Debug|Win32.Build.0 = Debug|Win32
+		{ECBCA32C-DC3B-4C8D-AE73-C90441BE74D2}.Release|Win32.ActiveCfg = Release|Win32
+		{ECBCA32C-DC3B-4C8D-AE73-C90441BE74D2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
