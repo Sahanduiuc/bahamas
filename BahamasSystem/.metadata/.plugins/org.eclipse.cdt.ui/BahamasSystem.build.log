@@ -1,0 +1,15 @@
+03:09:38 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 
+
+03:09:38 Build Finished (took 220ms)
+

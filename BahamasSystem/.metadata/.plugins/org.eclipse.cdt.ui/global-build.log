@@ -1,0 +1,159 @@
+01:55:46 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+make: Nothing to be done for 'all'.
+01:55:52 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 
+02:06:18 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 
+02:06:32 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 
+02:06:56 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+In file included from ../src/BahamasSystem.cpp:10:0:
+../src/CSVImporter:6:1: error: expected ‘;’ after class definition
+src/subdir.mk:18: recipe for target 'src/BahamasSystem.o' failed
+ }
+ ^
+make: *** [src/BahamasSystem.o] Error 1
+02:07:05 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 
+02:09:08 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+../src/BahamasSystem.cpp:10:23: fatal error: CSVImporter: No such file or directory
+compilation terminated.
+src/subdir.mk:18: recipe for target 'src/BahamasSystem.o' failed
+make: *** [src/BahamasSystem.o] Error 1
+02:09:17 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 
+02:22:39 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 
+03:02:57 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+In file included from ../src/BahamasSystem.cpp:11:0:
+../src/DataImporter.h: In member function ‘std::vector<std::__cxx11::basic_string<char> > CSVImporter::csv_read_row(std::__cxx11::string&, char)’:
+../src/DataImporter.h:9:31: error: variable ‘std::stringstream ss’ has initializer but incomplete type
+      std::stringstream ss(line);
+                               ^
+make: *** [src/BahamasSystem.o] Error 1
+src/subdir.mk:18: recipe for target 'src/BahamasSystem.o' failed
+03:03:13 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+In file included from ../src/BahamasSystem.cpp:11:0:
+../src/DataImporter.h: In member function ‘std::vector<std::__cxx11::basic_string<char> > CSVImporter::csv_read_row(std::__cxx11::string&, char)’:
+../src/DataImporter.h:12:39: error: no matching function for call to ‘CSVImporter::csv_read_row(std::stringstream&, char&)’
+      return csv_read_row(ss, delimiter);
+                                       ^
+../src/DataImporter.h:9:27: note: candidate: std::vector<std::__cxx11::basic_string<char> > CSVImporter::csv_read_row(std::__cxx11::string&, char)
+  std::vector<std::string> csv_read_row(std::string &line, char delimiter)
+                           ^
+../src/DataImporter.h:9:27: note:   no known conversion for argument 1 from ‘std::stringstream {aka std::__cxx11::basic_stringstream<char>}’ to ‘std::__cxx11::string& {aka std::__cxx11::basic_string<char>&}’
+make: *** [src/BahamasSystem.o] Error 1
+src/subdir.mk:18: recipe for target 'src/BahamasSystem.o' failed
+03:03:37 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 
+03:09:27 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+In file included from ../src/BahamasSystem.cpp:11:0:
+../src/DataImporter.h: In member function ‘void CSVImporter::ImportCSVData()’:
+../src/DataImporter.h:8:27: error: variable ‘std::ifstream dataStream’ has initializer but incomplete type
+   std::ifstream dataStream("msft.csv");
+                           ^
+src/subdir.mk:18: recipe for target 'src/BahamasSystem.o' failed
+make: *** [src/BahamasSystem.o] Error 1
+03:09:38 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/BahamasSystem.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/BahamasSystem.d" -MT"src/BahamasSystem.o" -o "src/BahamasSystem.o" "../src/BahamasSystem.cpp"
+Finished building: ../src/BahamasSystem.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++  -o "BahamasSystem"  ./src/BahamasSystem.o   
+Finished building target: BahamasSystem
+ 

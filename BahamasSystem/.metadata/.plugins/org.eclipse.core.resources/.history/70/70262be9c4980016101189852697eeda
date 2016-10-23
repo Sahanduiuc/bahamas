@@ -1,0 +1,14 @@
+#include <vector>
+#include <sstream>
+#include <istream>
+
+class CSVImporter{
+public:
+
+private:
+	std::vector<std::string> csv_read_row(std::string &line, char delimiter)
+	{
+	    std::stringstream ss(line);
+	    return csv_read_row(ss, delimiter);
+	}
+};
