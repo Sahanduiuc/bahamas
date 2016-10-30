@@ -8,11 +8,15 @@
 
 #include <iostream>
 
-#include "DataImporter.h"
+#include "OHLCVDataParser.h"
+
 
 using namespace std;
 
 int main() {
+
+	OHLCVDataParser ohclvParser;
+	ohclvParser.ImportInstrumentData("msft");
 
 	std::cout << "fdf";
 

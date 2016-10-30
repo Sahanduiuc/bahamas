@@ -2,16 +2,47 @@
 #include <sstream>
 #include <istream>
 #include <fstream>
+#include <functional>
+#include <iostream>
+#include <boost/coroutine/all.hpp>
 
 class CSVImporter{
 public:
-	void ImportCSVData(){
+	/*
+	void ImportCSVData(boost::coroutines::asymmetric_coroutine<std::vector<std::string> >::push_type &sink){
 		std::ifstream dataStream("msft.csv");
-		if (dataStream.fail()) { std::cout << "Error importing data file" << std::endl; return; }
+		if (dataStream.fail()) {
+			std::cout << "Error importing data file" << std::endl; return; }
 
+		if(dataStream.good())
+			csv_read_row(dataStream, ',');
 
+		while(dataStream.good()){
+	    	std::vector<std::string> dataItems = csv_read_row(dataStream, ',');
+	    	sink(dataItems);
+		}
+		dataStream.close();
+	}
+	*/
+
+	void GetDataItem(std::vector<std::string>& dataRow){
+		if(dataStream.is_open()){
+			if(dataStream.good()){
+				dataRow =  csv_read_row(dataStream, ',');
+			}else
+				dataRow.clear();
+		}else{
+			dataStream.open("msft.csv");
+
+			if (dataStream.fail()) {
+				std::cout << "Error importing data file" << std::endl; return; }
+
+			dataRow = csv_read_row(dataStream, ',');
+		}
 	}
 private:
+	std::ifstream dataStream;
+
 	std::vector<std::string> csv_read_row(std::istream &in, char delimiter)
 	{
 	    std::stringstream ss;

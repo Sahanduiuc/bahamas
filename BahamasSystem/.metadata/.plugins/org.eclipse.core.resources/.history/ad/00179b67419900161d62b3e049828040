@@ -1,0 +1,22 @@
+/*
+ * OHLCVDataParser.cpp
+ *
+ *  Created on: 23 Oct 2016
+ *      Author: shamitha
+ */
+
+#include "DataImporter.h"
+#include "OHLCVDataParser.h"
+
+OHLCVDataParser::OHLCVDataParser() {
+
+	CSVImporter csvImporter;
+	boost::coroutines::coroutine<std::vector<std::string> >::pull_type source{csvImporter};
+_
+
+}
+
+OHLCVDataParser::~OHLCVDataParser() {
+
+}
+

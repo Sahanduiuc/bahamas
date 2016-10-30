@@ -1,0 +1,23 @@
+/*
+ * OHLCVDataParser.cpp
+ *
+ *  Created on: 23 Oct 2016
+ *      Author: shamitha
+ */
+
+
+#include "OHLCVDataParser.h"
+
+OHLCVDataParser::OHLCVDataParser() {
+
+    boost::coroutines::coroutine<std::vector<std::string> >::pull_type coro
+    {
+        boost::bind(&MyClass::foo, this, _1);
+    };
+
+}
+
+OHLCVDataParser::~OHLCVDataParser() {
+
+}
+

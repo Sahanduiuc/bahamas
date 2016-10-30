@@ -1,0 +1,20 @@
+/*
+ * OHLCVDataParser.cpp
+ *
+ *  Created on: 23 Oct 2016
+ *      Author: shamitha
+ */
+
+#include "DataImporter.h"
+#include "OHLCVDataParser.h"
+
+OHLCVDataParser::OHLCVDataParser() {
+
+
+
+}
+
+OHLCVDataParser::~OHLCVDataParser() {
+
+}
+
