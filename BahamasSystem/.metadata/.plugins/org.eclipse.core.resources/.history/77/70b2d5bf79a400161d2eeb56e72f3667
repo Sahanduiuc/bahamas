@@ -1,0 +1,21 @@
+/*
+ * Portfolio.h
+ *
+ *  Created on: 6 Nov 2016
+ *      Author: shamitha
+ */
+
+#ifndef PORTFOLIO_H_
+#define PORTFOLIO_H_
+
+class Portfolio {
+public:
+	Portfolio(double initBalance):
+		currentBalance(initBalance),realisedPnL(0) {}
+	virtual ~Portfolio();
+private:
+	double currentBalance;
+	double realisedPnL;
+};
+
+#endif /* PORTFOLIO_H_ */

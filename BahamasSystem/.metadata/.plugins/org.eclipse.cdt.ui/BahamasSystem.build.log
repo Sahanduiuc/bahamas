@@ -1,47 +1,15 @@
-22:58:46 **** Incremental Build of configuration Debug for project BahamasSystem ****
+23:43:56 **** Incremental Build of configuration Debug for project BahamasSystem ****
 make all 
-Building file: ../src/OHLCVDataParser.cpp
+Building file: ../src/Portfolio.cpp
 Invoking: Cross G++ Compiler
-g++ -I/usr/local/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"src/OHLCVDataParser.d" -MT"src/OHLCVDataParser.o" -o "src/OHLCVDataParser.o" "../src/OHLCVDataParser.cpp"
-In file included from /usr/local/include/boost/coroutine/standard_stack_allocator.hpp:21:0,
-                 from /usr/local/include/boost/coroutine/stack_allocator.hpp:16,
-                 from /usr/local/include/boost/coroutine/attributes.hpp:15,
-                 from /usr/local/include/boost/coroutine/all.hpp:10,
-                 from ../src/DataImporter.h:7,
-                 from ../src/OHLCVDataParser.h:14,
-                 from ../src/OHLCVDataParser.cpp:8:
-/usr/local/include/boost/coroutine/detail/config.hpp:17:4: warning: #warning "Boost.Coroutine is now deprecated. Please switch to Boost.Coroutine2. To disable this warning message, define BOOST_COROUTINE_NO_DEPRECATION_WARNING." [-Wcpp]
- #  warning                  "Boost.Coroutine is now deprecated. Please switch to Boost.Coroutine2. To disable this warning message, define BOOST_COROUTINE_NO_DEPRECATION_WARNING."
-    ^
-In file included from /usr/local/include/boost/coroutine/coroutine.hpp:10:0,
-                 from /usr/local/include/boost/coroutine/all.hpp:11,
-                 from ../src/DataImporter.h:7,
-                 from ../src/OHLCVDataParser.h:14,
-                 from ../src/OHLCVDataParser.cpp:8:
-/usr/local/include/boost/coroutine/asymmetric_coroutine.hpp:14:4: warning: #warning "Boost.Coroutine is now deprecated. Please switch to Boost.Coroutine2. To disable this warning message, define BOOST_COROUTINES_NO_DEPRECATION_WARNING." [-Wcpp]
- #  warning "Boost.Coroutine is now deprecated. Please switch to Boost.Coroutine2. To disable this warning message, define BOOST_COROUTINES_NO_DEPRECATION_WARNING."
-    ^
-In file included from /usr/local/include/boost/coroutine/coroutine.hpp:11:0,
-                 from /usr/local/include/boost/coroutine/all.hpp:11,
-                 from ../src/DataImporter.h:7,
-                 from ../src/OHLCVDataParser.h:14,
-                 from ../src/OHLCVDataParser.cpp:8:
-/usr/local/include/boost/coroutine/symmetric_coroutine.hpp:14:4: warning: #warning "Boost.Coroutine is now deprecated. Please switch to Boost.Coroutine2. To disable this warning message, define BOOST_COROUTINES_NO_DEPRECATION_WARNING." [-Wcpp]
- #  warning "Boost.Coroutine is now deprecated. Please switch to Boost.Coroutine2. To disable this warning message, define BOOST_COROUTINES_NO_DEPRECATION_WARNING."
-    ^
-In file included from ../src/OHLCVDataParser.h:14:0,
-                 from ../src/OHLCVDataParser.cpp:8:
-../src/DataImporter.h: In member function ‘std::vector<std::__cxx11::basic_string<char> > CSVImporter::csv_read_row(std::istream&, char)’:
-../src/DataImporter.h:85:2: warning: control reaches end of non-void function [-Wreturn-type]
-  }
-  ^
-Finished building: ../src/OHLCVDataParser.cpp
+g++ -I/usr/local/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"src/Portfolio.d" -MT"src/Portfolio.o" -o "src/Portfolio.o" "../src/Portfolio.cpp"
+Finished building: ../src/Portfolio.cpp
  
 Building target: BahamasSystem
 Invoking: Cross G++ Linker
-g++ -L/usr/local/lib -o "BahamasSystem"  ./src/BahamasSystem.o ./src/OHLCVDataParser.o   -lboost_system -lboost_date_time -lboost_coroutine
+g++ -L/usr/local/lib -o "BahamasSystem"  ./src/BahamasSystem.o ./src/OHLCVDataParser.o ./src/Portfolio.o ./src/PortfolioHandler.o   -lboost_system -lboost_date_time -lboost_coroutine
 Finished building target: BahamasSystem
  
 
-22:58:48 Build Finished (took 1s.870ms)
+23:43:56 Build Finished (took 165ms)
 

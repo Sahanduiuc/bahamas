@@ -25,7 +25,7 @@ public:
 	OHLCVDataParser();
 	~OHLCVDataParser();
 
-	void ImportInstrumentData(std::string ticker);
+	void ImportInstrumentData(std::string);
 };
 
 #endif /* DATAHANDLERS_OHLCVDATAPARSER_H_ */

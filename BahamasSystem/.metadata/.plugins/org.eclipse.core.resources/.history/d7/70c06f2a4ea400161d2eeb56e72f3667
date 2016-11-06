@@ -1,0 +1,32 @@
+/*
+ * Event.h
+ *
+ *  Created on: 2 Nov 2016
+ *      Author: shamitha
+ */
+
+#ifndef EVENT_H_
+#define EVENT_H_
+
+#include "OHLCVDataParser.h"
+
+enum EventType {  };
+
+class Event{
+public:
+	std::string Ticker;
+};
+
+class BarEvent: public Event{
+
+};
+
+class SignalEvent: public Event{
+
+};
+
+class OrderEvent: public Event{
+
+};
+
+#endif /* EVENT_H_ */

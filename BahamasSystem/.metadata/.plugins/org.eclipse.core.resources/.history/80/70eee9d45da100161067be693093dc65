@@ -1,0 +1,28 @@
+/*
+ * Event.h
+ *
+ *  Created on: 2 Nov 2016
+ *      Author: shamitha
+ */
+
+#ifndef EVENT_H_
+#define EVENT_H_
+
+enum EventType {  };
+
+class Event{
+};
+
+class BarEvent: Event{
+
+};
+
+class SignalEvent: Event{
+
+};
+
+class OrderEvent: Event{
+
+};
+
+#endif /* EVENT_H_ */
