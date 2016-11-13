@@ -7,18 +7,28 @@
 //============================================================================
 
 #include <iostream>
+#include <queue>
 
-#include "OHLCVDataParser.h"
-
+#include "Backtest.h"
+#include "OHLCVPriceManager.h"
 
 using namespace std;
 
 int main() {
 
-	OHLCVDataParser ohclvParser;
-	ohclvParser.ImportInstrumentData("msft");
+	double initEquity = 1000.0;
 
-	std::cout << "fdf";
+	std::queue<TradingEvent> eventsQueue;
+	OHLCVPriceManager priceManager(eventsQueue, "msft");
+	PortfolioHandler portfolioHandler(initEquity);
+
+	Backtest testBackTest(
+			priceManager,
+			portfolioHandler,
+			initEquity,
+			eventsQueue);
+
+	testBackTest.ExecuteBackTest();
 
 	return 0;
 }

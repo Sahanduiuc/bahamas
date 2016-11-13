@@ -8,6 +8,8 @@
 #ifndef PORTFOLIO_H_
 #define PORTFOLIO_H_
 
+#include <string>
+
 class Portfolio {
 public:
 	Portfolio(double initBalance):
@@ -15,8 +17,8 @@ public:
 	virtual ~Portfolio();
 
 	void UpdatePortfolio();
-	void AddPosition();
-	void UpdatePosition();
+	void AddPosition(int, std::string, int, double, double);
+	void UpdatePosition(int, std::string, int, double, double);
 
 private:
 	double currentBalance;

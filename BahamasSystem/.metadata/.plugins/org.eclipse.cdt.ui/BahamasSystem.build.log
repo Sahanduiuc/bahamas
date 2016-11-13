@@ -1,15 +1,6 @@
-23:43:56 **** Incremental Build of configuration Debug for project BahamasSystem ****
+15:04:50 **** Incremental Build of configuration Debug for project BahamasSystem ****
 make all 
-Building file: ../src/Portfolio.cpp
-Invoking: Cross G++ Compiler
-g++ -I/usr/local/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"src/Portfolio.d" -MT"src/Portfolio.o" -o "src/Portfolio.o" "../src/Portfolio.cpp"
-Finished building: ../src/Portfolio.cpp
- 
-Building target: BahamasSystem
-Invoking: Cross G++ Linker
-g++ -L/usr/local/lib -o "BahamasSystem"  ./src/BahamasSystem.o ./src/OHLCVDataParser.o ./src/Portfolio.o ./src/PortfolioHandler.o   -lboost_system -lboost_date_time -lboost_coroutine
-Finished building target: BahamasSystem
- 
+make: Nothing to be done for 'all'.
 
-23:43:56 Build Finished (took 165ms)
+15:04:50 Build Finished (took 75ms)
 

@@ -1,0 +1,31 @@
+/*
+ * OHLCVDataParser.h
+ *
+ *  Created on: 23 Oct 2016
+ *      Author: shamitha
+ */
+
+#ifndef OHLCVPRICEHANDLER_H_
+#define OHLCVPRICEHANDLER_H_
+
+#include <boost/bind.hpp>
+#include "boost/date_time/gregorian/gregorian.hpp"
+
+#include "DataImporter.h"
+
+struct OHCLVDataFrame{
+	boost::gregorian::date EventDateTime;
+	double AdjPrice;
+};
+
+class OHLCVPriceHandler {
+public:
+	std::map<std::string,std::vector<OHCLVDataFrame> > InstrumentData;
+
+	OHLCVPriceHandler();
+	~OHLCVPriceHandler();
+
+	void ImportInstrumentData(std::string);
+};
+
+#endif /* DATAHANDLERS_OHLCVPRICEHANDLER_H_ */

@@ -1,0 +1,28 @@
+/*
+ * Portfolio.h
+ *
+ *  Created on: 6 Nov 2016
+ *      Author: shamitha
+ */
+
+#ifndef PORTFOLIO_H_
+#define PORTFOLIO_H_
+
+class Portfolio {
+public:
+	Portfolio(double initBalance):
+		currentBalance(initBalance) {}
+	virtual ~Portfolio();
+
+	void UpdatePortfolio();
+	void AddPosition(int, std::string, int, double, double);
+	void UpdatePosition(int action, std::string ticker, int units,
+			double price, double commission);
+
+private:
+	double currentBalance;
+	double realisedPnL;
+	//std::vector<> positions;
+};
+
+#endif /* PORTFOLIO_H_ */
