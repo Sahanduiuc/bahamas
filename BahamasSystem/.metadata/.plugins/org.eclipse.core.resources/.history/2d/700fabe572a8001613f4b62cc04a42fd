@@ -1,0 +1,49 @@
+/*
+ * Event.h
+ *
+ *  Created on: 2 Nov 2016
+ *      Author: shamitha
+ */
+
+#ifndef TRADINGEVENT_H_
+#define TRADINGEVENT_H_
+
+#include "OHLCVPriceManager.h"
+
+enum EventType {Event,BarEvent,SignalEvent,OrderEvent};
+
+class TradingEvent{
+	TradingEvent(std::string ticker, EventType type):
+		ticker(ticker), type(type) {}
+private:
+	std::string ticker;
+	EventType type;
+};
+
+class BarEvent{
+public:
+	BarEvent(std::string ticker,OHCLVDataFrame dataFrame) {}
+	OHCLVDataFrame EventData() const{ return eventData; }
+private:
+	OHCLVDataFrame eventData;
+};
+
+/*
+class SignalEvent: public TradingEvent{
+public:
+	SignalEvent(std::string ticker,int units):
+		Ticker(ticker), setOrderUnits(units), Type(SignalEvent) {}
+	int GetTargetOrderUnits(){ return setOrderUnits; }
+private:
+	int setOrderUnits;
+};
+
+class OrderEvent: public TradingEvent{
+public:
+	OrderEvent(std::string ticker,int units):
+		Ticker(ticker), orderUnits(units) {}
+private:
+	int orderUnits;
+};
+*/
+#endif /* TRADINGEVENT_H_ */

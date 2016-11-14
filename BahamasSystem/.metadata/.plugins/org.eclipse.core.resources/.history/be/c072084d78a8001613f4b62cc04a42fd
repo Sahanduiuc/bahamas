@@ -1,0 +1,33 @@
+/*
+ * Backtest.cpp
+ *
+ *  Created on: 11 Nov 2016
+ *      Author: shamitha
+ */
+
+#include "Backtest.h"
+
+//Backtest::Backtest() {
+	// TODO Auto-generated constructor stub
+
+//}
+
+void Backtest::ExecuteBackTest(){
+
+	while(!eventsQueue.empty()){
+		TradingEvent event = eventsQueue.front();
+
+		switch(event.GetEventType()){
+			case EventType::BarEvent : break;
+			case EventType::OrderEvent : break;
+			case EventType::SignalEvent : break;
+		}
+
+		eventsQueue.pop();
+	}
+}
+
+Backtest::~Backtest() {
+	// TODO Auto-generated destructor stub
+}
+

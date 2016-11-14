@@ -1,0 +1,25 @@
+22:50:47 **** Incremental Build of configuration Debug for project BahamasSystem ****
+make all 
+Building file: ../src/Backtest.cpp
+Invoking: Cross G++ Compiler
+g++ -I/usr/local/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"src/Backtest.d" -MT"src/Backtest.o" -o "src/Backtest.o" "../src/Backtest.cpp"
+../src/Backtest.cpp: In member function ‘void Backtest::ExecuteBackTest()’:
+../src/Backtest.cpp:22:14: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+  while(!temp <= 0){
+              ^
+../src/Backtest.cpp:34:13: warning: unused variable ‘test’ [-Wunused-variable]
+      double test = tempEvent.AdjClose;
+             ^
+../src/Backtest.cpp:50:14: warning: unused variable ‘test’ [-Wunused-variable]
+    EventType test = event->GetEventType();
+              ^
+Finished building: ../src/Backtest.cpp
+ 
+Building target: BahamasSystem
+Invoking: Cross G++ Linker
+g++ -L/usr/local/lib -o "BahamasSystem"  ./src/Backtest.o ./src/BahamasSystem.o ./src/OHLCVPriceManager.o ./src/Portfolio.o ./src/PortfolioHandler.o ./src/Position.o   -lboost_system -lboost_date_time -lboost_coroutine
+Finished building target: BahamasSystem
+ 
+
+22:50:48 Build Finished (took 387ms)
+

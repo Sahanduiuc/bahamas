@@ -1,0 +1,26 @@
+//============================================================================
+// Name        : BahamasSystem.cpp
+// Author      : Shamitha
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+
+#include "Backtest.h"
+
+using namespace std;
+
+int main() {
+
+	PriceManager priceManager;
+	PortfolioHandler portfolioHandler(0.0);
+
+	//TODO Init
+	Backtest testBackTest();
+
+	//testBackTest
+
+	return 0;
+}
