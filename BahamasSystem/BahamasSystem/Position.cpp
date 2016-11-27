@@ -16,3 +16,9 @@ Position::~Position() {
 	// TODO Auto-generated destructor stub
 }
 
+void Position::UpdateMarketValue(double bid, double ask) {
+	//TODO: Replace simple Market Value calc
+	double midPointVal = (bid + ask) / 2;
+
+}
+

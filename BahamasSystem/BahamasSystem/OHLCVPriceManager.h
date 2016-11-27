@@ -30,6 +30,7 @@ public:
 	~OHLCVPriceManager();
 
 	void StreamNextEvent();
+	double GetCurrentPrice(std::string);
 private:
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;

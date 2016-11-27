@@ -15,11 +15,12 @@
 #include "PortfolioHandler.h"
 #include "TradingEvent.h"
 #include "Strategy.h"
+#include "ExecutionManager.h"
 
 class Backtest {
 public:
 	//TODO complete constructor
-	Backtest(PriceManager&, PortfolioManager&, Strategy&,  
+	Backtest(PriceManager&, PortfolioManager&, Strategy&, ExecutionManager&,  
 		double, std::queue<TradingEvent*>&);
 	virtual ~Backtest();
 
@@ -29,6 +30,7 @@ private:
 	PriceManager& priceManager;
 	Strategy& strategy;
 	PortfolioManager& portfolioHandler;
+	ExecutionManager& executionManager;
 };
 
 #endif /* BACKTEST_H_ */

@@ -17,11 +17,12 @@
 
 class PortfolioManager {
 public:
-	PortfolioManager(double, std::queue<TradingEvent*>&);
+	PortfolioManager(double, std::queue<TradingEvent*>&, PriceManager&);
 	virtual ~PortfolioManager();
 
 	void UpdatePortfolioValue();
 	void ProcessSignal(SignalEvent&);
+	void ProcessFill(FillEvent&);
 private:
 	double currentBalance;
 	Portfolio portfolio;

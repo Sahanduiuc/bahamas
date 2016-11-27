@@ -9,20 +9,30 @@
 #define PORTFOLIO_H_
 
 #include <string>
+#include <map>
+#include <algorithm>
+
+#include "Position.h"
+#include "PriceManager.h"
 
 class Portfolio {
 public:
-	Portfolio(double);
+	Portfolio(double, PriceManager&);
 	virtual ~Portfolio();
 
 	void UpdatePortfolio();
+	void ProcessPosition(std::string,int,double,int,double);
+private:
+	double cashBalance;
+	double initialBalace;
+	double realisedPnL;
+	double unrealisedPnL;
+	double equity;
+	PriceManager& priceManager;
+	std::map<std::string,Position> investedPositions;
+
 	void AddPosition(int, std::string, int, double, double);
 	void UpdatePosition(int, std::string, int, double, double);
-
-private:
-	double currentBalance;
-	double realisedPnL;
-	//std::vector<> positions;
 };
 
 #endif /* PORTFOLIO_H_ */

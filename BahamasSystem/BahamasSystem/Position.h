@@ -14,9 +14,10 @@
 /// ACTION [ SELL(-1), HOLD(0), BUY(+1) ]
 class Position {
 public:
+	Position() {}
 	Position(int, std::string, int, double, double, double, double);
 	//void CalculatePositionValue();
-	//void UpdateMarketValue(double, double);
+	void UpdateMarketValue(double, double);
 	virtual ~Position();
 };
 

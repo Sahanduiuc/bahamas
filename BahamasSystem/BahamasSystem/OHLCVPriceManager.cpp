@@ -30,6 +30,18 @@ void OHLCVPriceManager::StreamNextEvent(){
 	currentPeriod += boost::gregorian::days(1);
 }
 
+double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
+	boost::gregorian::date targetDate = currentPeriod - boost::gregorian::days(1);
+	
+	for (OHCLVDataFrame frame : InstrumentData[targetDate]) {
+		if (ticker == frame.Ticker)
+			return frame.AdjPrice;
+	}
+
+	//TODO: Throw exception, ticker not found in price data
+	return -1;
+}
+
 void OHLCVPriceManager::ImportInstrumentData(std::string ticker){
 
 	CSVImporter csvImporter;

@@ -8,11 +8,14 @@
 #ifndef PRICEMANAGER_H_
 #define PRICEMANAGER_H_
 
+#include <string>
+
 class PriceManager{
 public:
 	bool Terminate;
 
 	virtual void StreamNextEvent() {};
+	virtual double GetCurrentPrice(std::string) {};
 };
 
 #endif /* PRICEMANAGER_H_ */

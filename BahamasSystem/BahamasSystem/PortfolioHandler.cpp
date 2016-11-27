@@ -7,8 +7,8 @@
 
 #include "PortfolioHandler.h"
 
-PortfolioManager::PortfolioManager(double initialBalance, std::queue<TradingEvent*>& eventsQueue) :
-	currentBalance(initialBalance), eventsQueue(eventsQueue), portfolio(Portfolio(initialBalance)) {
+PortfolioManager::PortfolioManager(double initialBalance, std::queue<TradingEvent*>& eventsQueue, PriceManager& priceManager) :
+	currentBalance(initialBalance), eventsQueue(eventsQueue), portfolio(Portfolio(initialBalance,priceManager)) {
 	
 }
 
@@ -34,4 +34,13 @@ void PortfolioManager::ProcessSignal(SignalEvent& event) {
 
 		eventsQueue.push(event);
 	}
+}
+
+void PortfolioManager::ProcessFill(FillEvent& event) {
+	portfolio.ProcessPosition(
+		event.GetEventTicker(),
+		event.Action,
+		event.FillPrice,
+		event.Units,
+		event.Commission);
 }

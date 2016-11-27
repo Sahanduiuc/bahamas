@@ -12,6 +12,7 @@
 #include "Backtest.h"
 #include "OHLCVPriceManager.h"
 #include "Strategy.h"
+#include "ExecutionManager.h"
 
 using namespace std;
 
@@ -22,13 +23,15 @@ int main() {
 	const std::vector<std::string> tickers = { "nvda" };
 
 	OHLCVPriceManager priceManager(eventsQueue, "nvda");
-	PortfolioManager portfolioHandler(initEquity, eventsQueue);
+	SimulatedExecutionManager executionManager(eventsQueue,priceManager);
+	PortfolioManager portfolioHandler(initEquity, eventsQueue, priceManager);
 	TestStrategy testStrategy(eventsQueue, tickers);
-
+	
 	Backtest testBackTest(
 			priceManager,
 			portfolioHandler,
 			testStrategy,
+			executionManager,
 			initEquity,
 			eventsQueue);
 
