@@ -19,7 +19,7 @@
 class Backtest {
 public:
 	//TODO complete constructor
-	Backtest(PriceManager&, PortfolioHandler&, Strategy&,  
+	Backtest(PriceManager&, PortfolioManager&, Strategy&,  
 		double, std::queue<TradingEvent*>&);
 	virtual ~Backtest();
 
@@ -28,7 +28,7 @@ private:
 	std::queue<TradingEvent*>& eventsQueue;
 	PriceManager& priceManager;
 	Strategy& strategy;
-	PortfolioHandler& portfolioHandler;
+	PortfolioManager& portfolioHandler;
 };
 
 #endif /* BACKTEST_H_ */

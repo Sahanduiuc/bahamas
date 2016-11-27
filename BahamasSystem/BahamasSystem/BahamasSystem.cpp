@@ -22,7 +22,7 @@ int main() {
 	const std::vector<std::string> tickers = { "nvda" };
 
 	OHLCVPriceManager priceManager(eventsQueue, "nvda");
-	PortfolioHandler portfolioHandler(initEquity);
+	PortfolioManager portfolioHandler(initEquity, eventsQueue);
 	TestStrategy testStrategy(eventsQueue, tickers);
 
 	Backtest testBackTest(

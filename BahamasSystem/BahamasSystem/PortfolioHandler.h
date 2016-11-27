@@ -10,17 +10,24 @@
 
 #include "Portfolio.h"
 #include "TradingEvent.h"
+#include "OrderSizer.h"
+#include "RiskManager.h"
 
-class PortfolioHandler {
+#include <queue>
+
+class PortfolioManager {
 public:
-	PortfolioHandler(double);
-	virtual ~PortfolioHandler();
+	PortfolioManager(double, std::queue<TradingEvent*>&);
+	virtual ~PortfolioManager();
 
 	void UpdatePortfolioValue();
-	void ProcessSignal(TradingEvent&);
+	void ProcessSignal(SignalEvent&);
 private:
 	double currentBalance;
 	Portfolio portfolio;
+	OrderSizer orderSizer;
+	RiskManager riskManager;
+	std::queue<TradingEvent*>& eventsQueue;
 };
 
 #endif /* PORTFOLIOHANDLER_H_ */

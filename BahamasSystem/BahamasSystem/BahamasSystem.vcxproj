@@ -68,15 +68,20 @@
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="PortfolioHandler.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="OrderSizer.cpp" />
+    <ClCompile Include="RiskManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Backtest.h" />
     <ClInclude Include="DataImporter.h" />
+    <ClInclude Include="ExecutionManager.h" />
     <ClInclude Include="OHLCVPriceManager.h" />
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioHandler.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="OrderSizer.h" />
     <ClInclude Include="PriceManager.h" />
+    <ClInclude Include="RiskManager.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="TradingEvent.h" />
   </ItemGroup>

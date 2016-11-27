@@ -7,7 +7,7 @@
 
 #include "Backtest.h"
 
-Backtest::Backtest(PriceManager& priceManager, PortfolioHandler& portfolioHandler,
+Backtest::Backtest(PriceManager& priceManager, PortfolioManager& portfolioHandler,
 		Strategy& strategy,double initEquity, std::queue<TradingEvent*>& eventsQueue):
 		eventsQueue(eventsQueue), priceManager(priceManager), strategy(strategy), portfolioHandler(portfolioHandler) {
 	// TODO Auto-generated constructor stub
@@ -31,17 +31,21 @@ void Backtest::ExecuteBackTest(){
 					BarEvent& tempEvent = dynamic_cast<BarEvent&>(*event);
 					double price = tempEvent.AdjClose;
 					strategy.CalculateSignal(tempEvent);
-					///TODO: Implement Update Portfolio 
+					///TODO: Implement Update Portfolio value
 					portfolioHandler.UpdatePortfolioValue();
 					break;
 				}
 				case EventType::OrderEventType : {
-					//OrderEvent& tempEvent = dynamic_cast<OrderEvent&>(event);
+					OrderEvent& tempEvent = dynamic_cast<OrderEvent&>(*event);
+
 					break;
 				}
 				case EventType::SignalEventType : {
 					SignalEvent& tempEvent = dynamic_cast<SignalEvent&>(*event);
 					portfolioHandler.ProcessSignal(tempEvent);
+					break;
+				}
+				case EventType::FillEventType: {
 					break;
 				}
 				case EventType::BaseEventType :
