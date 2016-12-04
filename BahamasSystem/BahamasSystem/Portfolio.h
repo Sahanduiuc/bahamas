@@ -23,11 +23,11 @@ public:
 	void UpdatePortfolio();
 	void ProcessPosition(std::string,int,double,int,double);
 private:
-	double cashBalance;
-	double initialBalace;
-	double realisedPnL;
-	double unrealisedPnL;
-	double equity;
+	double cashBalance = 0.0;
+	double initialBalace = 0.0;
+	double realisedPnL = 0.0;
+	double unrealisedPnL = 0.0;
+	double equity = 0.0;
 	PriceManager& priceManager;
 	std::map<std::string,Position> investedPositions;
 

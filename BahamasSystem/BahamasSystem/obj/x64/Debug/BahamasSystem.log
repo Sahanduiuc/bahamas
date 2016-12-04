@@ -3,10 +3,11 @@
   Copying sources remotely
   Starting remote build
   Compiling sources:
-  Portfolio.cpp
+  OHLCVPriceManager.cpp
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h(53,26): warning : conversion to ‘char’ from ‘std::basic_istream<char>::int_type {aka int}’ may alter its value [-Wconversion]
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(18,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Portfolio.cpp(18,13): warning : unused variable ‘targetPosition’ [-Wunused-variable]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Portfolio.cpp(22,10): warning : unused variable ‘bid’ [-Wunused-variable]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Portfolio.cpp(23,10): warning : unused variable ‘ask’ [-Wunused-variable]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(19,22): warning : no return statement in function returning non-void [-Wreturn-type]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\OHLCVPriceManager.cpp(20,16): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h(85,2): warning : control reaches end of non-void function [-Wreturn-type]
   Linking objects
   BahamasSystem.vcxproj -> C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\bin\x64\Debug\BahamasSystem.out

@@ -16,26 +16,40 @@ OHLCVPriceManager::~OHLCVPriceManager() {
 
 }
 
+bool OHLCVPriceManager::EOD() {
+	if (readCount == InstrumentData.size())
+		return true;
+
+	return false;
+}
+
 void OHLCVPriceManager::StreamNextEvent(){
-	for(OHCLVDataFrame& dataFrame : InstrumentData[currentPeriod]){
-		TradingEvent* tempDataFrame = new BarEvent(dataFrame.Ticker,
-				0.0,
+	if (InstrumentData.find(currentPeriod) != InstrumentData.end()) {
+		for (OHCLVDataFrame& dataFrame : InstrumentData[currentPeriod]) {
+			TradingEvent* tempDataFrame = new BarEvent(dataFrame.Ticker,
+				dataFrame.Open,
 				0.0,
 				0.0,
 				0.0,
 				0.0,
 				dataFrame.AdjPrice);
-		eventsQueue.push(tempDataFrame);
+			eventsQueue.push(tempDataFrame);
+		}
+		readCount++;
 	}
+
 	currentPeriod += boost::gregorian::days(1);
 }
 
 double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
+
+	std::string dateTest = ConvData(currentPeriod - boost::gregorian::days(1));
+
 	boost::gregorian::date targetDate = currentPeriod - boost::gregorian::days(1);
 	
-	for (OHCLVDataFrame frame : InstrumentData[targetDate]) {
+	for (OHCLVDataFrame& frame : InstrumentData[targetDate]) {
 		if (ticker == frame.Ticker)
-			return frame.AdjPrice;
+			return frame.Open;
 	}
 
 	//TODO: Throw exception, ticker not found in price data
@@ -62,7 +76,8 @@ void OHLCVPriceManager::ImportInstrumentData(std::string ticker){
 		InstrumentData[eventDate].push_back(OHCLVDataFrame{
 			ticker,
 			eventDate,
-			atof(dataRow[6].c_str())
+			atof(dataRow[1].c_str()),
+			atof(dataRow[11].c_str())
 		});
 
 		csvImporter.GetDataItem(dataRow);

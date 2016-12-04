@@ -15,14 +15,13 @@ Backtest::Backtest(PriceManager& priceManager, PortfolioManager& portfolioHandle
 
 void Backtest::ExecuteBackTest(){
 
-	int temp = 1000;
-	//TODO change terminate condition
-	while(!temp <= 0){
+	int c = 0;
 
+	//TODO change terminate condition
+	while(!priceManager.EOD()){
 		//If the Events queue is empty then wait for more price data
 		if(eventsQueue.empty()){
 			priceManager.StreamNextEvent();
-			temp--;
 		}else{
 			TradingEvent* event = eventsQueue.front();
 
@@ -31,7 +30,6 @@ void Backtest::ExecuteBackTest(){
 					BarEvent& tempEvent = dynamic_cast<BarEvent&>(*event);
 					double price = tempEvent.AdjClose;
 					strategy.CalculateSignal(tempEvent);
-					///TODO: Implement Update Portfolio value
 					portfolioHandler.UpdatePortfolioValue();
 					break;
 				}
@@ -59,7 +57,7 @@ void Backtest::ExecuteBackTest(){
 			eventsQueue.pop();
 		}
 	}
-	std::cout << "Backtest Finished";
+	std::cout << "Backtest Complete.";
 }
 
 Backtest::~Backtest() {

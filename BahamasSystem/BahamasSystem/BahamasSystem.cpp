@@ -20,12 +20,12 @@ int main() {
 
 	double initEquity = 1000.0;
 	std::queue<TradingEvent*> eventsQueue;
-	const std::vector<std::string> tickers = { "nvda" };
+	const std::vector<std::string> tickers = { "dis" };
 
-	OHLCVPriceManager priceManager(eventsQueue, "nvda");
+	OHLCVPriceManager priceManager(eventsQueue, "dis");
 	SimulatedExecutionManager executionManager(eventsQueue,priceManager);
 	PortfolioManager portfolioHandler(initEquity, eventsQueue, priceManager);
-	TestStrategy testStrategy(eventsQueue, tickers);
+	SimpleMomentum testStrategy(eventsQueue, tickers);
 	
 	Backtest testBackTest(
 			priceManager,

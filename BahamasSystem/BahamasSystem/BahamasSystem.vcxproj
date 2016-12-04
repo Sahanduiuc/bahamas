@@ -86,6 +86,7 @@
     <ClInclude Include="TradingEvent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\x64\Debug\dis.csv" />
     <None Include="bin\x64\Debug\msft.csv" />
     <None Include="bin\x64\Debug\nvda.csv" />
   </ItemGroup>

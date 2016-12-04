@@ -32,7 +32,7 @@ public:
 			}else
 				dataRow.clear();
 		}else{
-			dataStream.open("nvda.csv");
+			dataStream.open("dis.csv");
 
 			if (dataStream.fail()) {
 				std::cout << "Error importing data file" << std::endl; return; }

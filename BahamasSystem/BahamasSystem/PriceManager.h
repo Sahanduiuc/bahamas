@@ -16,6 +16,8 @@ public:
 
 	virtual void StreamNextEvent() {};
 	virtual double GetCurrentPrice(std::string) {};
+	virtual bool EOD() {};
+
 };
 
 #endif /* PRICEMANAGER_H_ */
