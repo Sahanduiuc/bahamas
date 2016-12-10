@@ -13,16 +13,22 @@
 #include "OHLCVPriceManager.h"
 #include "Strategy.h"
 #include "ExecutionManager.h"
+#include "GoogleAPIPriceManager.h"
 
 using namespace std;
 
 int main() {
 
+
 	double initEquity = 1000.0;
 	std::queue<TradingEvent*> eventsQueue;
-	const std::vector<std::string> tickers = { "dis" };
+	const std::vector<std::string> tickers = { "DIS" };
 
-	OHLCVPriceManager priceManager(eventsQueue, "dis");
+	GoogleAPIPriceHandler priceManager(eventsQueue,"DIS");
+	//googApiPriceManager.StreamNextEvent();
+	//Test
+
+	//OHLCVPriceManager priceManager(eventsQueue, "dis");
 	SimulatedExecutionManager executionManager(eventsQueue,priceManager);
 	PortfolioManager portfolioHandler(initEquity, eventsQueue, priceManager);
 	SimpleMomentum testStrategy(eventsQueue, tickers);

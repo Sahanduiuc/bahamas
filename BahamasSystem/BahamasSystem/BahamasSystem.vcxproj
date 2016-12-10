@@ -75,6 +75,7 @@
     <ClInclude Include="Backtest.h" />
     <ClInclude Include="DataImporter.h" />
     <ClInclude Include="ExecutionManager.h" />
+    <ClInclude Include="GoogleAPIPriceManager.h" />
     <ClInclude Include="OHLCVPriceManager.h" />
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioHandler.h" />

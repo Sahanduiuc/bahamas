@@ -1,6 +1,6 @@
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Backtest.cpp|636163887112307591|~/projects/BahamasSystem|
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\BahamasSystem.cpp|636164780587841713|~/projects/BahamasSystem|
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\OHLCVPriceManager.cpp|636164785207888901|~/projects/BahamasSystem|
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Backtest.cpp|636169998090758064|~/projects/BahamasSystem|
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\BahamasSystem.cpp|636169995940483204|~/projects/BahamasSystem|
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\OHLCVPriceManager.cpp|636164785506456329|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Portfolio.cpp|636163841596591163|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PortfolioHandler.cpp|636158779344251093|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Position.cpp|636163839312581150|~/projects/BahamasSystem|
@@ -9,14 +9,15 @@ C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\RiskManager.cpp|63615
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Backtest.h|636158604014465863|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h|636164780309348574|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\ExecutionManager.h|636158607505344526|~/projects/BahamasSystem|
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\OHLCVPriceManager.h|636164747796543328|~/projects/BahamasSystem|
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h|636169997684984365|~/projects/BahamasSystem|
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\OHLCVPriceManager.h|636165673110779804|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Portfolio.h|636163718187597215|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PortfolioHandler.h|636158779447389472|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Position.h|636163825522299757|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\OrderSizer.h|636157822770702337|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h|636163885923146535|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\RiskManager.h|636157836556600042|~/projects/BahamasSystem|
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h|636164736023538953|~/projects/BahamasSystem|
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h|636165752784655674|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\TradingEvent.h|636158064551665953|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\bin\x64\Debug\dis.csv|636164779850326914|~/projects/BahamasSystem|
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\bin\x64\Debug\msft.csv|636151671283841586|~/projects/BahamasSystem|

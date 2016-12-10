@@ -44,4 +44,15 @@ private:
 	}
 };
 
+class InvestopediaExecutionManager : public ExecutionManager {
+public:
+	InvestopediaExecutionManager(std::queue<TradingEvent*>& eventsQueue, PriceManager& priceManager) :
+		ExecutionManager(eventsQueue, priceManager) {}
+
+	void ExecuteOrder(OrderEvent& event) {
+
+	}
+private:
+};
+
 #endif

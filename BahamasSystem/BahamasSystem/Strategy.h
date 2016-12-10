@@ -113,13 +113,13 @@ public:
 		if (bars >= windowSize) {
 			double mean = CalculateMean(longWindowBars);
 			
-			if (event.Open > (mean * 1.1) && !isInvested) {
+			if (event.Open > (mean * 1.01) && !isInvested) {
 				//Open Long position
 				TradingEvent* tempEvent = new SignalEvent(tickers[0], 1, 10);
 				eventsQueue.push(tempEvent);
 				isInvested = true;
 			}
-			else if (event.Open < (mean * 0.9) && isInvested) {
+			else if (event.Open < (mean) && isInvested) {
 				//Close Position
 				TradingEvent* tempEvent = new SignalEvent(tickers[0], -1, 10);
 				eventsQueue.push(tempEvent);
@@ -129,7 +129,7 @@ public:
 	}
 private:
 	int bars = 0;
-	int windowSize = 150;
+	int windowSize = 5;
 	bool isInvested = false;
 
 	std::deque<BarEvent> longWindowBars;

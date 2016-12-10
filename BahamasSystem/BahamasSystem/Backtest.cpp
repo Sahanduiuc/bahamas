@@ -28,7 +28,6 @@ void Backtest::ExecuteBackTest(){
 			switch(event->GetEventType()){
 				case EventType::BarEventType : {
 					BarEvent& tempEvent = dynamic_cast<BarEvent&>(*event);
-					double price = tempEvent.AdjClose;
 					strategy.CalculateSignal(tempEvent);
 					portfolioHandler.UpdatePortfolioValue();
 					break;
