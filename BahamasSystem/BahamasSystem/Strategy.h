@@ -96,7 +96,7 @@ public:
 		Strategy(eventsQueue, tickers) {}
 	void CalculateSignal(BarEvent& event) {
 		bars++;
-
+		i++;
 		//Add the bar to the long Window
 		if (longWindowBars.size() == windowSize) {
 			//Long window full
@@ -113,23 +113,26 @@ public:
 		if (bars >= windowSize) {
 			double mean = CalculateMean(longWindowBars);
 			
-			if (event.Open > (mean * 1.01) && !isInvested) {
+			if (event.AdjClose > (mean * 1.01) && !isInvested) {
 				//Open Long position
-				TradingEvent* tempEvent = new SignalEvent(tickers[0], 1, 10);
+				TradingEvent* tempEvent = new SignalEvent(tickers[0], 1, 1);
 				eventsQueue.push(tempEvent);
 				isInvested = true;
+				std::cout << i << " BUY signal for " << tickers[0] << " @ " << event.AdjClose << std::endl;
 			}
-			else if (event.Open < (mean) && isInvested) {
+			else if (event.AdjClose < (mean) && isInvested) {
 				//Close Position
-				TradingEvent* tempEvent = new SignalEvent(tickers[0], -1, 10);
+				TradingEvent* tempEvent = new SignalEvent(tickers[0], -1, 1);
 				eventsQueue.push(tempEvent);
 				isInvested = false;
+				std::cout << i << " SELL signal for " << tickers[0] << " @ " << event.AdjClose << std::endl;
 			}
 		}
 	}
 private:
+	int i = 0;
 	int bars = 0;
-	int windowSize = 5;
+	int windowSize = 250;
 	bool isInvested = false;
 
 	std::deque<BarEvent> longWindowBars;
@@ -138,7 +141,7 @@ private:
 		double sum = 0;
 
 		for (BarEvent& event : barQueue) {
-			sum += event.Open;
+			sum += event.AdjClose;
 		}
 
 		return sum / (barQueue.size()*1.0);
@@ -152,7 +155,7 @@ public:
 	void CalculateSignal(BarEvent& event) {
 		if (!isInvested) {
 			//Open Long position
-			TradingEvent* tempEvent = new SignalEvent(tickers[0], 1, 10);
+			TradingEvent* tempEvent = new SignalEvent(tickers[0], 1, 1);
 			eventsQueue.push(tempEvent);
 			isInvested = true;
 		}

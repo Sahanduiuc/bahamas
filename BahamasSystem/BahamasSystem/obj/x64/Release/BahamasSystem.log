@@ -1,0 +1,22 @@
+﻿  Validating architecture
+  Validating sources
+  Copying sources remotely
+  Starting remote build
+  Compiling sources:
+  BahamasSystem.cpp
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(18,47): warning : no return statement in function returning non-void [-Wreturn-type]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(19,22): warning : no return statement in function returning non-void [-Wreturn-type]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(17,29): warning : ‘Strategy::eventsQueue’ will be initialized after [-Wreorder]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(11,33): warning : ‘const std::vector<std::__cxx11::basic_string<char> > Strategy::tickers’ [-Wreorder]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(13,2): warning : when initialized here [-Wreorder]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(27,29): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(40,30): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(89,33): warning : conversion to ‘double’ from ‘std::deque<BarEvent>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(101,29): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(144,33): warning : conversion to ‘double’ from ‘std::deque<BarEvent>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h(53,26): warning : conversion to ‘char’ from ‘std::basic_istream<char>::int_type {aka int}’ may alter its value [-Wconversion]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(118,21): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(141,15): warning : variable ‘ptm’ set but not used [-Wunused-but-set-variable]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(117,15): warning : ‘stopIndex’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+  Linking objects
+  BahamasSystem.vcxproj -> C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\bin\x64\Release\BahamasSystem.out

@@ -49,7 +49,7 @@ double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
 	
 	for (OHCLVDataFrame& frame : InstrumentData[targetDate]) {
 		if (ticker == frame.Ticker)
-			return frame.Open;
+			return frame.AdjPrice;
 	}
 
 	//TODO: Throw exception, ticker not found in price data
