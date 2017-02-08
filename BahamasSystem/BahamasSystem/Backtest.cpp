@@ -7,15 +7,13 @@
 
 #include "Backtest.h"
 
-Backtest::Backtest(PriceManager& priceManager, PortfolioManager& portfolioHandler,
-		Strategy& strategy,ExecutionManager& executionManager,double initEquity, std::queue<TradingEvent*>& eventsQueue):
+Backtest::Backtest(PriceManager& priceManager, PortfolioHandler& portfolioHandler,
+		Strategy& strategy,ExecutionManager& executionManager, double initEquity, std::queue<TradingEvent*>& eventsQueue):
 		eventsQueue(eventsQueue), priceManager(priceManager), strategy(strategy), portfolioHandler(portfolioHandler), executionManager(executionManager) {
 	// TODO Auto-generated constructor stub
 }
 
 void Backtest::ExecuteBackTest(){
-
-	int c = 0;
 
 	//TODO change terminate condition
 	while(!priceManager.EOD()){
@@ -30,6 +28,8 @@ void Backtest::ExecuteBackTest(){
 					BarEvent& tempEvent = dynamic_cast<BarEvent&>(*event);
 					strategy.CalculateSignal(tempEvent);
 					portfolioHandler.UpdatePortfolioValue();
+					StatisticsManager::getInstance().UpdateEquityCurve(portfolioHandler,
+						priceManager);
 					break;
 				}
 				case EventType::OrderEventType : {
@@ -45,6 +45,7 @@ void Backtest::ExecuteBackTest(){
 				case EventType::FillEventType: {
 					FillEvent& tempEvent = dynamic_cast<FillEvent&>(*event);
 					portfolioHandler.ProcessFill(tempEvent);
+					StatisticsManager::getInstance().UpdateTradeHistory(tempEvent);
 					break;
 				}
 				case EventType::BaseEventType :
@@ -56,6 +57,12 @@ void Backtest::ExecuteBackTest(){
 			eventsQueue.pop();
 		}
 	}
+
+	auto v1 = StatisticsManager::getInstance().GetTradeCount();
+	auto v2 = StatisticsManager::getInstance().GetStrategyAccuracy();
+
+	StatisticsManager::getInstance().GenerateTearSheetData();
+
 	std::cout << "Backtest Complete.";
 }
 

@@ -7,6 +7,7 @@
 
 #include "Position.h"
 
+
 Position::Position(int action, std::string ticker, int units,
 		double price, double commission, double bid, double ask):
 		action(action), ticker(ticker), totalUnits(units), price(price), totalCommission(commission) {

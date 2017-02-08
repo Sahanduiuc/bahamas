@@ -29,16 +29,13 @@ class BarEvent: public TradingEvent{
 public:
 	const double Open;
 	const double High;
-	const double Close;
 	const double Low;
-	const double Volume;
-	const double AdjClose;
+	const double Settle;
 
 	BarEvent(std::string ticker, double open, double high,
-			double close, double low, double volume, double adjClose):
+			double low, double settle):
 		TradingEvent(ticker, EventType::BarEventType),
-		Open(open), High(high), Close(close), Low(low),
-		Volume(volume), AdjClose(adjClose) {}
+		Open(open), High(high), Low(low), Settle(settle) {}
 
 	~BarEvent() {}
 };

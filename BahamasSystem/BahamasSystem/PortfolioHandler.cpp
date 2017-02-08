@@ -7,20 +7,20 @@
 
 #include "PortfolioHandler.h"
 
-PortfolioManager::PortfolioManager(double initialBalance, std::queue<TradingEvent*>& eventsQueue, PriceManager& priceManager) :
+PortfolioHandler::PortfolioHandler(double initialBalance, std::queue<TradingEvent*>& eventsQueue, PriceManager& priceManager) :
 	currentBalance(initialBalance), eventsQueue(eventsQueue), portfolio(Portfolio(initialBalance,priceManager)) {
 	
 }
 
-PortfolioManager::~PortfolioManager() {
+PortfolioHandler::~PortfolioHandler() {
 	// TODO Auto-generated destructor stub
 }
 
-void PortfolioManager::UpdatePortfolioValue() {
+void PortfolioHandler::UpdatePortfolioValue() {
 	portfolio.UpdatePortfolio();
 }
 
-void PortfolioManager::ProcessSignal(SignalEvent& event) {
+void PortfolioHandler::ProcessSignal(SignalEvent& event) {
 	MarketOrder order = { event.GetEventTicker(),event.action,
 		event.setOrderUnits };
 	orderSizer.SizeOrder(order);
@@ -36,11 +36,15 @@ void PortfolioManager::ProcessSignal(SignalEvent& event) {
 	}
 }
 
-void PortfolioManager::ProcessFill(FillEvent& event) {
+void PortfolioHandler::ProcessFill(FillEvent& event) {
 	portfolio.ProcessPosition(
 		event.GetEventTicker(),
 		event.Action,
 		event.FillPrice,
 		event.Units,
 		event.Commission);
+}
+
+Portfolio PortfolioHandler::GetPortfolio() const {
+	return portfolio;
 }

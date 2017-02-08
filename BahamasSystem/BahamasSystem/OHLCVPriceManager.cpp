@@ -7,9 +7,15 @@
 
 #include "OHLCVPriceManager.h"
 
-OHLCVPriceManager::OHLCVPriceManager(std::queue<TradingEvent*>& eventsQueue, std::string ticker):
+OHLCVPriceManager::OHLCVPriceManager(std::queue<TradingEvent*>& eventsQueue, std::vector<std::string> tickers,
+	boost::gregorian::date& startDate, boost::gregorian::date& endDate):
 									eventsQueue(eventsQueue) {
-	ImportInstrumentData(ticker);
+
+	this->currentPeriod = startDate;
+	this->endPeriod = endDate;
+
+	for (auto ticker : tickers)
+		ImportInstrumentData(ticker);
 }
 
 OHLCVPriceManager::~OHLCVPriceManager() {
@@ -17,7 +23,7 @@ OHLCVPriceManager::~OHLCVPriceManager() {
 }
 
 bool OHLCVPriceManager::EOD() {
-	if (readCount == InstrumentData.size())
+	if (currentPeriod >= endPeriod)
 		return true;
 
 	return false;
@@ -28,11 +34,9 @@ void OHLCVPriceManager::StreamNextEvent(){
 		for (OHCLVDataFrame& dataFrame : InstrumentData[currentPeriod]) {
 			TradingEvent* tempDataFrame = new BarEvent(dataFrame.Ticker,
 				dataFrame.Open,
-				0.0,
-				0.0,
-				0.0,
-				0.0,
-				dataFrame.AdjPrice);
+				dataFrame.High,
+				dataFrame.Low,
+				dataFrame.Settle);
 			eventsQueue.push(tempDataFrame);
 		}
 		readCount++;
@@ -43,13 +47,13 @@ void OHLCVPriceManager::StreamNextEvent(){
 
 double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
 
-	std::string dateTest = ConvData(currentPeriod - boost::gregorian::days(1));
+	//std::string dateTest = ConvData(currentPeriod - boost::gregorian::days(1));
 
 	boost::gregorian::date targetDate = currentPeriod - boost::gregorian::days(1);
 	
 	for (OHCLVDataFrame& frame : InstrumentData[targetDate]) {
 		if (ticker == frame.Ticker)
-			return frame.AdjPrice;
+			return frame.Settle;
 	}
 
 	//TODO: Throw exception, ticker not found in price data
@@ -59,6 +63,8 @@ double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
 void OHLCVPriceManager::ImportInstrumentData(std::string ticker){
 
 	CSVImporter csvImporter;
+	csvImporter.SetLoadTicker(ticker);
+
 	std::vector<std::string> dataRow;
 
 	//Skip header row
@@ -69,18 +75,19 @@ void OHLCVPriceManager::ImportInstrumentData(std::string ticker){
 		boost::gregorian::date eventDate =
 				boost::gregorian::from_string(dataRow[0]);
 
-		if(InstrumentData.empty()){
-			currentPeriod = eventDate;
-		}
-
 		InstrumentData[eventDate].push_back(OHCLVDataFrame{
 			ticker,
 			eventDate,
 			atof(dataRow[1].c_str()),
-			atof(dataRow[11].c_str())
+			atof(dataRow[2].c_str()),
+			atof(dataRow[3].c_str()),
+			atof(dataRow[4].c_str())
 		});
 
 		csvImporter.GetDataItem(dataRow);
 	}
 }
 
+std::string OHLCVPriceManager::GetDataFrameTimeStamp() {
+	return ConvData(currentPeriod - boost::gregorian::days(1));
+}

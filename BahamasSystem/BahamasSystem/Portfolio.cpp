@@ -6,6 +6,7 @@
  */
 
 #include "Portfolio.h"
+#include "StatisticsManager.h"
 
 Portfolio::Portfolio(double initBalance, PriceManager& priceManager) :
 	cashBalance(initBalance),initialBalace(initBalance),equity(initBalance), priceManager(priceManager) {}
@@ -78,6 +79,7 @@ void Portfolio::UpdatePosition(int action, std::string ticker, int units,
 	//Close Position
 	if (investedPositions[ticker].Units() == 0) {
 		realisedPnL += investedPositions[ticker].RealisedPnL();
+		StatisticsManager::getInstance().UpdatePositionHistory(investedPositions[ticker]);
 		investedPositions.erase(ticker);
 	}
 
@@ -88,3 +90,6 @@ Portfolio::~Portfolio() {
 	// TODO Auto-generated destructor stub
 }
 
+std::map<std::string, Position> Portfolio::GetInvestedPositions() const {
+	return investedPositions;
+}

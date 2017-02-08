@@ -42,8 +42,6 @@ public:
 							openPrice,
 							0.0,
 							0.0,
-							0.0,
-							0.0,
 							0.0);
 						eventsQueue.push(tempDataFrame);
 					}

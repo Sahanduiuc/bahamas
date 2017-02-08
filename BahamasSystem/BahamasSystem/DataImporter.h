@@ -32,7 +32,7 @@ public:
 			}else
 				dataRow.clear();
 		}else{
-			dataStream.open("dis.csv");
+			dataStream.open(currentFile);
 
 			if (dataStream.fail()) {
 				std::cout << "Error importing data file" << std::endl; return; }
@@ -40,7 +40,13 @@ public:
 			dataRow = csv_read_row(dataStream, ',');
 		}
 	}
+
+	void SetLoadTicker(std::string ticker) {
+		this->currentFile = ticker + ".csv";
+		dataStream.close();
+	}
 private:
+	std::string currentFile;
 	std::ifstream dataStream;
 
 	std::vector<std::string> csv_read_row(std::istream &in, char delimiter)

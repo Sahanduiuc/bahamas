@@ -20,22 +20,27 @@ struct OHCLVDataFrame{
 	std::string Ticker;
 	boost::gregorian::date EventDateTime;
 	double Open;
-	double AdjPrice;
+	double High;
+	double Low;
+	double Settle;
 };
 
 class OHLCVPriceManager: public PriceManager{
 public:
 
-	OHLCVPriceManager(std::queue<TradingEvent*>&, std::string);
+	OHLCVPriceManager(std::queue<TradingEvent*>&, std::vector<std::string>,
+		boost::gregorian::date&, boost::gregorian::date&);
 	~OHLCVPriceManager();
 
 	void StreamNextEvent();
 	double GetCurrentPrice(std::string);
 	bool EOD();
+	std::string GetDataFrameTimeStamp();
 private:
 	std::map<boost::gregorian::date, std::vector<OHCLVDataFrame> > InstrumentData;
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
+	boost::gregorian::date endPeriod;
 	int readCount = 0;
 
 	void ImportInstrumentData(std::string);

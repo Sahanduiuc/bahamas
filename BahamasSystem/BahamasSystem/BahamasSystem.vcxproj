@@ -76,6 +76,7 @@
     <ClInclude Include="DataImporter.h" />
     <ClInclude Include="ExecutionManager.h" />
     <ClInclude Include="GoogleAPIPriceManager.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="OHLCVPriceManager.h" />
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioHandler.h" />
@@ -83,13 +84,16 @@
     <ClInclude Include="OrderSizer.h" />
     <ClInclude Include="PriceManager.h" />
     <ClInclude Include="RiskManager.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="TradingEvent.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\x64\Debug\dis.csv" />
-    <None Include="bin\x64\Debug\msft.csv" />
-    <None Include="bin\x64\Debug\nvda.csv" />
+    <Text Include="z_todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\x64\Debug\QUANDL_CME_S2.csv" />
+    <None Include="bin\x64\Debug\QUANDL_RF2.csv" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

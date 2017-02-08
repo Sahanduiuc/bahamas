@@ -22,6 +22,10 @@ public:
 
 	void UpdatePortfolio();
 	void ProcessPosition(std::string,int,double,int,double);
+	std::map<std::string, Position> GetInvestedPositions() const;
+	double GetEquityValue() const {
+		return equity;
+	}
 private:
 	double cashBalance = 0.0;
 	double initialBalace = 0.0;

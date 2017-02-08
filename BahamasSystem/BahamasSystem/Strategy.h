@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <numeric>
+#include <map>
 
 #include "TradingEvent.h"
 
@@ -31,10 +32,8 @@ public:
 		longWindowBars.push_back(BarEvent(event.GetEventTicker(),
 			event.Open,
 			event.High,
-			event.Close,
 			event.Low,
-			event.Volume,
-			event.AdjClose));
+			event.Settle));
 		
 		//Add the bar to the short Window
 		if (shortWindowBars.size() == shortWindow) {
@@ -42,12 +41,10 @@ public:
 		}
 		if (bars > (longWindow - shortWindow)) {
 			shortWindowBars.push_back(BarEvent(event.GetEventTicker(),
-				event.Open,
+				event.Open,		
 				event.High,
-				event.Close,
 				event.Low,
-				event.Volume,
-				event.AdjClose));
+				event.Settle));
 		}
 
 		//Enough bars acquired for calculating signals
@@ -83,7 +80,7 @@ private:
 		double sum = 0;
 
 		for (BarEvent& event : barQueue) {
-			sum += event.AdjClose;
+			sum += event.Settle;
 		}
 
 		return sum / (barQueue.size()*1.0);
@@ -93,55 +90,59 @@ private:
 class SimpleMomentum : public Strategy {
 public:
 	SimpleMomentum(std::queue<TradingEvent*>& eventsQueue, std::vector<std::string> tickers) :
-		Strategy(eventsQueue, tickers) {}
-	void CalculateSignal(BarEvent& event) {
-		bars++;
-		i++;
-		//Add the bar to the long Window
-		if (longWindowBars.size() == windowSize) {
-			//Long window full
-			longWindowBars.pop_front();
+		Strategy(eventsQueue, tickers) {
+		for (auto ticker : tickers) {
+			investedStatus[ticker] = false;
+			bars[ticker] = 0;
+			longWindowBars[ticker].clear();
 		}
-		longWindowBars.push_back(BarEvent(event.GetEventTicker(),
+	}
+	void CalculateSignal(BarEvent& event) {
+
+		std::string selectedTicker = event.GetEventTicker();
+
+		bars[selectedTicker]++;
+		//Add the bar to the long Window
+		if (longWindowBars[selectedTicker].size() == windowSize) {
+			//Long window full
+			longWindowBars[selectedTicker].pop_front();
+		}
+		longWindowBars[selectedTicker].push_back(BarEvent(selectedTicker,
 			event.Open,
 			event.High,
-			event.Close,
 			event.Low,
-			event.Volume,
-			event.AdjClose));
+			event.Settle));
 
-		if (bars >= windowSize) {
-			double mean = CalculateMean(longWindowBars);
+		if (bars[selectedTicker] >= windowSize) {
+			double mean = CalculateMean(longWindowBars[selectedTicker]);
 			
-			if (event.AdjClose > (mean * 1.01) && !isInvested) {
+			if (event.Settle > (mean * 1.1) && !investedStatus[selectedTicker]) {
 				//Open Long position
-				TradingEvent* tempEvent = new SignalEvent(tickers[0], 1, 1);
+				TradingEvent* tempEvent = new SignalEvent(selectedTicker, 1, 1);
 				eventsQueue.push(tempEvent);
-				isInvested = true;
-				std::cout << i << " BUY signal for " << tickers[0] << " @ " << event.AdjClose << std::endl;
+				investedStatus[selectedTicker] = true;
+				std::cout << bars[selectedTicker] << " BUY signal for " << selectedTicker << " @ " << event.Settle << std::endl;
 			}
-			else if (event.AdjClose < (mean) && isInvested) {
+			else if (event.Settle < (mean) && investedStatus[selectedTicker]) {
 				//Close Position
-				TradingEvent* tempEvent = new SignalEvent(tickers[0], -1, 1);
+				TradingEvent* tempEvent = new SignalEvent(selectedTicker, -1, 1);
 				eventsQueue.push(tempEvent);
-				isInvested = false;
-				std::cout << i << " SELL signal for " << tickers[0] << " @ " << event.AdjClose << std::endl;
+				investedStatus[selectedTicker] = false;
+				std::cout << bars[selectedTicker] << " SELL signal for " << selectedTicker << " @ " << event.Settle << std::endl;
 			}
 		}
 	}
 private:
-	int i = 0;
-	int bars = 0;
-	int windowSize = 250;
-	bool isInvested = false;
-
-	std::deque<BarEvent> longWindowBars;
+	std::map<std::string, int> bars;
+	int windowSize = 50;
+	std::map<std::string, bool> investedStatus;
+	std::map<std::string, std::deque<BarEvent> > longWindowBars;
 
 	double CalculateMean(std::deque<BarEvent>& barQueue) {
 		double sum = 0;
 
 		for (BarEvent& event : barQueue) {
-			sum += event.AdjClose;
+			sum += event.Settle;
 		}
 
 		return sum / (barQueue.size()*1.0);
@@ -151,18 +152,22 @@ private:
 class SimpleBuyHold : public Strategy {
 public:
 	SimpleBuyHold(std::queue<TradingEvent*>& eventsQueue, std::vector<std::string> tickers) :
-		Strategy(eventsQueue, tickers) {}
+		Strategy(eventsQueue, tickers) {
+		for (auto ticker : tickers) {
+			investedStatus[ticker] = false;
+		}
+	}
 	void CalculateSignal(BarEvent& event) {
-		if (!isInvested) {
+		if (!investedStatus[event.GetEventTicker()]) {
 			//Open Long position
-			TradingEvent* tempEvent = new SignalEvent(tickers[0], 1, 1);
+			TradingEvent* tempEvent = new SignalEvent(event.GetEventTicker(), 1, 1);
 			eventsQueue.push(tempEvent);
-			isInvested = true;
+			investedStatus[event.GetEventTicker()] = true;
 		}
 	}
 
 private:
-	bool isInvested = false;
+	std::map<std::string, bool> investedStatus;
 };
 
 #endif

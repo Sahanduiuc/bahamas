@@ -15,14 +15,19 @@
 
 #include <queue>
 
-class PortfolioManager {
+class PortfolioHandler {
 public:
-	PortfolioManager(double, std::queue<TradingEvent*>&, PriceManager&);
-	virtual ~PortfolioManager();
+	PortfolioHandler(double, std::queue<TradingEvent*>&, PriceManager&);
+	virtual ~PortfolioHandler();
 
 	void UpdatePortfolioValue();
 	void ProcessSignal(SignalEvent&);
 	void ProcessFill(FillEvent&);
+
+	Portfolio GetPortfolio() const;
+	double GetPortfolioValue() const {
+		return portfolio.GetEquityValue();
+	}
 private:
 	double currentBalance;
 	Portfolio portfolio;
