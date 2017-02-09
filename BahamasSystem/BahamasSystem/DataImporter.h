@@ -1,3 +1,6 @@
+#ifndef DATAIMPORTER_H_
+#define DATAIMPORTER_H_
+
 #include <vector>
 #include <sstream>
 #include <istream>
@@ -41,7 +44,7 @@ public:
 		}
 	}
 
-	void SetLoadTicker(std::string ticker) {
+	void SetLoadFile(std::string ticker) {
 		this->currentFile = ticker + ".csv";
 		dataStream.close();
 	}
@@ -95,3 +98,5 @@ private:
 	    return csv_read_row(ss, delimiter);
 	}
 };
+
+#endif

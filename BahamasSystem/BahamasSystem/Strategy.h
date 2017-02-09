@@ -6,6 +6,8 @@
 #include <map>
 
 #include "TradingEvent.h"
+#include "DataImporter.h"
+#include "boost/date_time/gregorian/gregorian.hpp"
 
 class Strategy {
 public:
@@ -168,6 +170,34 @@ public:
 
 private:
 	std::map<std::string, bool> investedStatus;
+};
+
+class FundOfFunds : public Strategy {
+public:
+	FundOfFunds(std::queue<TradingEvent*>& eventsQueue, std::vector<std::string> tickers, std::string fundHoldingsFile) :
+		Strategy(eventsQueue, tickers) {
+		CSVImporter csvImporter;
+		csvImporter.SetLoadFile(fundHoldingsFile);
+		
+		std::vector<std::string> dataRow;
+
+		csvImporter.GetDataItem(dataRow);
+		while (!dataRow.empty()) {
+			boost::gregorian::date eventDate =
+				boost::gregorian::from_string(dataRow[0]);
+
+			holdingsHistory[eventDate].push_back(dataRow[1]);
+
+			csvImporter.GetDataItem(dataRow);
+		}
+	}
+
+	void CalculateSignal(BarEvent& event) {
+		
+	}
+
+private:
+	std::map<boost::gregorian::date, std::vector<std::string> > holdingsHistory;
 };
 
 #endif

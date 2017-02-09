@@ -42,5 +42,8 @@
     <None Include="bin\x64\Debug\QUANDL_CME_S2.csv">
       <Filter>csv_imports</Filter>
     </None>
+    <None Include="bin\x64\Debug\HOLDINGS_13F_TCI.csv">
+      <Filter>csv_imports</Filter>
+    </None>
   </ItemGroup>
 </Project>

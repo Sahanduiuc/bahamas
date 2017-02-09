@@ -92,6 +92,7 @@
     <Text Include="z_todo.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\x64\Debug\HOLDINGS_13F_TCI.csv" />
     <None Include="bin\x64\Debug\QUANDL_CME_S2.csv" />
     <None Include="bin\x64\Debug\QUANDL_RF2.csv" />
   </ItemGroup>

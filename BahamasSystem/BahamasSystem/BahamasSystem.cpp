@@ -32,7 +32,7 @@ int main() {
 	OHLCVPriceManager priceManager(eventsQueue, tickers, startDate, endDate);
 	SimulatedExecutionManager executionManager(eventsQueue,priceManager);
 	PortfolioHandler portfolioHandler(initEquity, eventsQueue, priceManager);
-	SimpleMomentum testStrategy(eventsQueue, tickers);
+	FundOfFunds testStrategy(eventsQueue, tickers, "HOLDINGS_13F_TCI");
 	
 	Backtest testBackTest(
 			priceManager,
