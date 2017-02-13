@@ -17,7 +17,7 @@ public:
 	virtual void StreamNextEvent() {};
 	virtual double GetCurrentPrice(std::string) {};
 	virtual bool EOD() {};
-	virtual std::string GetDataFrameTimeStamp() {};
+	virtual std::string GetCurrentTimeStampString() {};
 };
 
 #endif /* PRICEMANAGER_H_ */

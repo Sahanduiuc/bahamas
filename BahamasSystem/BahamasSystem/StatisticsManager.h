@@ -18,7 +18,7 @@ public:
 
 	void UpdateEquityCurve(PortfolioHandler& portfolioHandler,
 		PriceManager& priceManager) {
-		std::string metric(priceManager.GetDataFrameTimeStamp());
+		std::string metric(priceManager.GetCurrentTimeStampString());
 		metric.append(",").append(std::to_string(portfolioHandler.GetPortfolioValue()));
 		equityMetrics.push_back(metric);
 	}

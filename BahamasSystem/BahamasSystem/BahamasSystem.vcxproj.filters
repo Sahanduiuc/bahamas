@@ -36,13 +36,91 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\x64\Debug\QUANDL_RF2.csv">
-      <Filter>csv_imports</Filter>
-    </None>
-    <None Include="bin\x64\Debug\QUANDL_CME_S2.csv">
-      <Filter>csv_imports</Filter>
-    </None>
     <None Include="bin\x64\Debug\HOLDINGS_13F_TCI.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\RF2.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\CME_S2.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\CHTR.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\CMCSA.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\AMBC.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\MCO.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\YHOO.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\FOX.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\BIDU.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\CME.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\TWX.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\TWC.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\AXP.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\MA.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\DIS.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\MSFT.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\VRX.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\MSI.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\ADBE.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\CBG.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\COL.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\ALSN.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\MSCI.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\AWI.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\BHI.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\HAL.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\MS.csv">
+      <Filter>csv_imports</Filter>
+    </None>
+    <None Include="bin\x64\Debug\HOLDINGS_13F_VALACT.csv">
       <Filter>csv_imports</Filter>
     </None>
   </ItemGroup>

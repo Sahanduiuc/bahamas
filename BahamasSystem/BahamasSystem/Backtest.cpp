@@ -58,9 +58,8 @@ void Backtest::ExecuteBackTest(){
 		}
 	}
 
-	auto v1 = StatisticsManager::getInstance().GetTradeCount();
-	auto v2 = StatisticsManager::getInstance().GetStrategyAccuracy();
-
+	//auto v1 = StatisticsManager::getInstance().GetTradeCount();
+	//auto v2 = StatisticsManager::getInstance().GetStrategyAccuracy();
 	StatisticsManager::getInstance().GenerateTearSheetData();
 
 	std::cout << "Backtest Complete.";

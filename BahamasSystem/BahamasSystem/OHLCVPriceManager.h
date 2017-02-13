@@ -35,7 +35,8 @@ public:
 	void StreamNextEvent();
 	double GetCurrentPrice(std::string);
 	bool EOD();
-	std::string GetDataFrameTimeStamp();
+	std::string GetCurrentTimeStampString();
+	boost::gregorian::date GetCurrentTimeStamp() const;
 private:
 	std::map<boost::gregorian::date, std::vector<OHCLVDataFrame> > InstrumentData;
 	std::queue<TradingEvent*>& eventsQueue;

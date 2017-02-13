@@ -47,7 +47,7 @@ void OHLCVPriceManager::StreamNextEvent(){
 
 double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
 
-	//std::string dateTest = ConvData(currentPeriod - boost::gregorian::days(1));
+	std::string dateTest = ConvData(currentPeriod - boost::gregorian::days(1));
 
 	boost::gregorian::date targetDate = currentPeriod - boost::gregorian::days(1);
 	
@@ -57,7 +57,18 @@ double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
 	}
 
 	//TODO: Throw exception, ticker not found in price data
-	return -1;
+	targetDate = targetDate - boost::gregorian::days(1);
+	bool found = false;
+	while (!found) {
+		for (OHCLVDataFrame& frame : InstrumentData[targetDate]) {
+			if (ticker == frame.Ticker)
+				return frame.Settle;
+		}
+
+		targetDate = targetDate - boost::gregorian::days(1);
+	}
+
+	return 1;
 }
 
 void OHLCVPriceManager::ImportInstrumentData(std::string ticker){
@@ -81,13 +92,17 @@ void OHLCVPriceManager::ImportInstrumentData(std::string ticker){
 			atof(dataRow[1].c_str()),
 			atof(dataRow[2].c_str()),
 			atof(dataRow[3].c_str()),
-			atof(dataRow[4].c_str())
+			atof(dataRow[11].c_str())
 		});
 
 		csvImporter.GetDataItem(dataRow);
 	}
 }
 
-std::string OHLCVPriceManager::GetDataFrameTimeStamp() {
+std::string OHLCVPriceManager::GetCurrentTimeStampString() {
 	return ConvData(currentPeriod - boost::gregorian::days(1));
+}
+
+boost::gregorian::date OHLCVPriceManager::GetCurrentTimeStamp() const{
+	return currentPeriod - boost::gregorian::days(1);
 }

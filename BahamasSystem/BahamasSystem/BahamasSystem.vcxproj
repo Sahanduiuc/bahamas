@@ -92,9 +92,35 @@
     <Text Include="z_todo.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\x64\Debug\ADBE.csv" />
+    <None Include="bin\x64\Debug\ALSN.csv" />
+    <None Include="bin\x64\Debug\AMBC.csv" />
+    <None Include="bin\x64\Debug\AWI.csv" />
+    <None Include="bin\x64\Debug\AXP.csv" />
+    <None Include="bin\x64\Debug\BHI.csv" />
+    <None Include="bin\x64\Debug\BIDU.csv" />
+    <None Include="bin\x64\Debug\CBG.csv" />
+    <None Include="bin\x64\Debug\CHTR.csv" />
+    <None Include="bin\x64\Debug\CMCSA.csv" />
+    <None Include="bin\x64\Debug\CME.csv" />
+    <None Include="bin\x64\Debug\COL.csv" />
+    <None Include="bin\x64\Debug\DIS.csv" />
+    <None Include="bin\x64\Debug\FOX.csv" />
+    <None Include="bin\x64\Debug\HAL.csv" />
     <None Include="bin\x64\Debug\HOLDINGS_13F_TCI.csv" />
-    <None Include="bin\x64\Debug\QUANDL_CME_S2.csv" />
-    <None Include="bin\x64\Debug\QUANDL_RF2.csv" />
+    <None Include="bin\x64\Debug\CME_S2.csv" />
+    <None Include="bin\x64\Debug\HOLDINGS_13F_VALACT.csv" />
+    <None Include="bin\x64\Debug\MA.csv" />
+    <None Include="bin\x64\Debug\MCO.csv" />
+    <None Include="bin\x64\Debug\MS.csv" />
+    <None Include="bin\x64\Debug\MSCI.csv" />
+    <None Include="bin\x64\Debug\MSFT.csv" />
+    <None Include="bin\x64\Debug\MSI.csv" />
+    <None Include="bin\x64\Debug\RF2.csv" />
+    <None Include="bin\x64\Debug\TWC.csv" />
+    <None Include="bin\x64\Debug\TWX.csv" />
+    <None Include="bin\x64\Debug\VRX.csv" />
+    <None Include="bin\x64\Debug\YHOO.csv" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

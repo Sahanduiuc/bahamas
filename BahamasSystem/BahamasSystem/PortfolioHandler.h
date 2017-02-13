@@ -33,6 +33,7 @@ private:
 	Portfolio portfolio;
 	OrderSizer orderSizer;
 	RiskManager riskManager;
+	PriceManager& priceManager;
 	std::queue<TradingEvent*>& eventsQueue;
 };
 

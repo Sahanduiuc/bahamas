@@ -8,7 +8,7 @@
 #include "PortfolioHandler.h"
 
 PortfolioHandler::PortfolioHandler(double initialBalance, std::queue<TradingEvent*>& eventsQueue, PriceManager& priceManager) :
-	currentBalance(initialBalance), eventsQueue(eventsQueue), portfolio(Portfolio(initialBalance,priceManager)) {
+	currentBalance(initialBalance), eventsQueue(eventsQueue), portfolio(Portfolio(initialBalance,priceManager)), priceManager(priceManager) {
 	
 }
 
@@ -22,8 +22,8 @@ void PortfolioHandler::UpdatePortfolioValue() {
 
 void PortfolioHandler::ProcessSignal(SignalEvent& event) {
 	MarketOrder order = { event.GetEventTicker(),event.action,
-		event.setOrderUnits };
-	orderSizer.SizeOrder(order);
+		event.setOrderUnits, priceManager.GetCurrentPrice(event.GetEventTicker()) };
+	orderSizer.SizeOrder(order,portfolio);
 	std::vector<MarketOrder> profiledOrders = riskManager.ProfileOrder(order);
 
 	//Place Order on Events queue for execution

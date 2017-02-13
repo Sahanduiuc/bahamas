@@ -81,6 +81,9 @@ void Portfolio::UpdatePosition(int action, std::string ticker, int units,
 		realisedPnL += investedPositions[ticker].RealisedPnL();
 		StatisticsManager::getInstance().UpdatePositionHistory(investedPositions[ticker]);
 		investedPositions.erase(ticker);
+
+		std::cout << priceManager.GetCurrentTimeStampString()
+			<< " CLOSE position " << ticker << " @ " << price << std::endl;
 	}
 
 	UpdatePortfolio();

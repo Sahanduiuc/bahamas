@@ -3,71 +3,11 @@
   Copying sources remotely to '127.0.1.1'
   Starting remote build
   Compiling sources:
-  Backtest.cpp
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(18,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(19,22): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(20,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h(62,26): warning : conversion to ‘char’ from ‘std::basic_istream<char>::int_type {aka int}’ may alter its value [-Wconversion]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(20,29): warning : ‘Strategy::eventsQueue’ will be initialized after [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(14,33): warning : ‘const std::vector<std::__cxx11::basic_string<char> > Strategy::tickers’ [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(16,2): warning : when initialized here [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(30,29): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(41,30): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(88,33): warning : conversion to ‘double’ from ‘std::deque<BarEvent>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(108,45): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(150,33): warning : conversion to ‘double’ from ‘std::deque<BarEvent>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\StatisticsManager.h(64,2): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\StatisticsManager.h(67,2): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Backtest.cpp(61,7): warning : unused variable ‘v1’ [-Wunused-variable]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Backtest.cpp(62,7): warning : unused variable ‘v2’ [-Wunused-variable]
-  BahamasSystem.cpp
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(18,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(19,22): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(20,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h(62,26): warning : conversion to ‘char’ from ‘std::basic_istream<char>::int_type {aka int}’ may alter its value [-Wconversion]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(20,29): warning : ‘Strategy::eventsQueue’ will be initialized after [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(14,33): warning : ‘const std::vector<std::__cxx11::basic_string<char> > Strategy::tickers’ [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(16,2): warning : when initialized here [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(30,29): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(41,30): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(88,33): warning : conversion to ‘double’ from ‘std::deque<BarEvent>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(108,45): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\Strategy.h(150,33): warning : conversion to ‘double’ from ‘std::deque<BarEvent>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\StatisticsManager.h(64,2): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\StatisticsManager.h(67,2): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(93,29): warning : ‘GoogleAPIPriceHandler::eventsQueue’ will be initialized after [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(91,28): warning : ‘std::vector<std::__cxx11::basic_string<char> >& GoogleAPIPriceHandler::tickers’ [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(25,2): warning : when initialized here [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(115,31): warning : conversion to ‘uint16_t {aka short unsigned int}’ from ‘int’ may alter its value [-Wconversion]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(153,21): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(160,17): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(207,7): warning : unused variable ‘year’ [-Wunused-variable]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(207,39): warning : unused variable ‘month’ [-Wunused-variable]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(207,94): warning : unused variable ‘hour’ [-Wunused-variable]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(207,105): warning : unused variable ‘min’ [-Wunused-variable]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\GoogleAPIPriceManager.h(207,115): warning : unused variable ‘sec’ [-Wunused-variable]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h(94,2): warning : control reaches end of non-void function [-Wreturn-type]
   OHLCVPriceManager.cpp
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h(62,26): warning : conversion to ‘char’ from ‘std::basic_istream<char>::int_type {aka int}’ may alter its value [-Wconversion]
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(18,47): warning : no return statement in function returning non-void [-Wreturn-type]
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(19,22): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(20,47): warning : no return statement in function returning non-void [-Wreturn-type]
+C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(20,51): warning : no return statement in function returning non-void [-Wreturn-type]
 C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\DataImporter.h(94,2): warning : control reaches end of non-void function [-Wreturn-type]
-  Portfolio.cpp
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(18,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(19,22): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(20,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\StatisticsManager.h(64,2): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\StatisticsManager.h(67,2): warning : no return statement in function returning non-void [-Wreturn-type]
-  PortfolioHandler.cpp
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(18,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(19,22): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PriceManager.h(20,47): warning : no return statement in function returning non-void [-Wreturn-type]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PortfolioHandler.h(36,29): warning : ‘PortfolioHandler::eventsQueue’ will be initialized after [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PortfolioHandler.h(33,12): warning : ‘Portfolio PortfolioHandler::portfolio’ [-Wreorder]
-C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\PortfolioHandler.cpp(10,1): warning : when initialized here [-Wreorder]
-  Position.cpp
-  OrderSizer.cpp
-  RiskManager.cpp
   Linking objects
   BahamasSystem.vcxproj -> C:\Users\shami\Desktop\bahamas\BahamasSystem\BahamasSystem\bin\x64\Debug\BahamasSystem.out
