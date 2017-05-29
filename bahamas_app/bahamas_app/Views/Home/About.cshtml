@@ -25,6 +25,13 @@
             font-size: 12px;
         }
 
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+        }
+
+
         text.symbol {
             fill: #BBBBBB;
         }
@@ -92,6 +99,11 @@
             .crosshair .axisannotation path {
                 fill: #DDDDDD;
             }
+
+        .tick line {
+            opacity: 0.2;
+        }
+
     </style>
 </head>
 
@@ -105,6 +117,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <button onclick="AddData()">Add Data</button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TheTradingGym</a>
             </div>
 </nav>
@@ -112,7 +125,7 @@
     <script>
 
         function chart(name, symbol, fullWidth, fullHeight) {
-            var margin = { top: 20, right: 30, bottom: 30, left: 30 },
+            var margin = { top: 20, right: 50, bottom: 30, left: 30 },
                 width = fullWidth - margin.left - margin.right,
                 height = fullHeight - margin.top - margin.bottom,
                 volumeHeight = fullHeight * .25;
@@ -159,6 +172,7 @@
             var xAxis = d3.axisBottom(x)
                 .ticks(4);
 
+
             var yAxis = d3.axisRight(y)
                 .ticks(4);
 
@@ -201,6 +215,14 @@
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+            var scale = d3.scaleLinear()
+                .domain([0, 100])
+                .range([0, width]);
+            var gridLinesX = d3.axisTop()
+                .tickFormat("")
+                .tickSize(-height)
+                .scale(scale);
+
             svg.append("clipPath")
                 .attr("id", "clip")
                 .append("rect")
@@ -242,6 +264,7 @@
             svg.append('g')
                 .attr("class", "crosshair")
 
+            var feed, dataSet, curZoom;
             d3.csv("@Url.Action("GetCSV")", function (error, data) {
                 var accessor = candlestick.accessor(),
                     indicatorPreRoll = 33;  // Don't show where indicators don't have data
@@ -258,25 +281,58 @@
                 }).sort(function (a, b) {
                     return d3.ascending(accessor.d(a), accessor.d(b));
                 });
-
-                x.domain(techan.scale.plot.time(data, accessor).domain());
-                y.domain(techan.scale.plot.ohlc(data.slice(indicatorPreRoll), accessor).domain());
-                yPercent.domain(techan.scale.plot.percent(y, accessor(data[indicatorPreRoll])).domain());
-                yVolume.domain(techan.scale.plot.volume(data, accessor.v).domain());
-
-                svg.select("g.candlestick").datum(data).call(candlestick);
-                svg.select("g.volume").datum(data).call(volume);
-                svg.select("g.sma.ma-0").datum(techan.indicator.sma().period(10)(data)).call(sma0);
-                svg.select("g.sma.ma-1").datum(techan.indicator.sma().period(20)(data)).call(sma1);
-                svg.select("g.ema.ma-2").datum(techan.indicator.ema().period(50)(data)).call(ema2);
-                svg.select("g.crosshair").call(crosshair).call(zoom);
-
-                zoomableInit = x.zoomable().clamp(false).domain([0, data.length]).copy(); // Zoom in a little to hide indicator preroll
-                yInit = y.copy();
                 //yPercentInit = yPercent.copy();
 
+                var accessor = candlestick.accessor(),
+                    indicatorPreRoll = 33;  // Don't show where indicators don't have data
+
+                dataSet = data;
+                feed = data.slice(0, 210);
+
+                x.domain(techan.scale.plot.time(feed, accessor).domain());
+                y.domain(techan.scale.plot.ohlc(feed.slice(indicatorPreRoll), accessor).domain());
+                yPercent.domain(techan.scale.plot.percent(y, accessor(feed[indicatorPreRoll])).domain());
+                yVolume.domain(techan.scale.plot.volume(feed, accessor.v).domain());
+
+                svg.select("g.candlestick").datum(feed).call(candlestick);
+                svg.select("g.volume").datum(feed).call(volume);
+                svg.select("g.sma.ma-0").datum(techan.indicator.sma().period(10)(feed)).call(sma0);
+                svg.select("g.sma.ma-1").datum(techan.indicator.sma().period(20)(feed)).call(sma1);
+                svg.select("g.ema.ma-2").datum(techan.indicator.ema().period(50)(feed)).call(ema2);
+                svg.select("g.crosshair").call(crosshair).call(zoom);
+
+                zoomableInit = x.zoomable().clamp(false).domain([0, feed.length]).copy(); // Zoom in a little to hide indicator preroll
+                yInit = y.copy();
+
+                curZoom = [0, 210]
+
+                //splicedData = feed.splice(0, 163);
                 draw();
+
+                AddData();
             });
+
+
+            function AddData() {
+                feed = dataSet.slice(0, feed.length + 1);
+                var accessor = candlestick.accessor(),
+                    indicatorPreRoll = 33;  // Don't show where indicators don't have data
+
+                x.domain(techan.scale.plot.time(feed, accessor).domain());
+
+                x.zoomable().domain(curZoom);
+
+                y.domain(techan.scale.plot.ohlc(feed.slice(indicatorPreRoll), accessor).domain());
+                yPercent.domain(techan.scale.plot.percent(y, accessor(feed[indicatorPreRoll])).domain());
+                yVolume.domain(techan.scale.plot.volume(feed, accessor.v).domain());
+
+                svg.select("g.candlestick").datum(feed).call(candlestick);
+                svg.select("g.volume").datum(feed).call(volume);
+
+                setTimeout(function () {
+                    AddData();
+                }, (Math.random() * 500) + 400);
+            }
 
             function reset() {
                 zoom.scale(1);
@@ -285,9 +341,13 @@
             }
 
             function zoomed() {
+                curZoom = d3.event.transform.rescaleX(zoomableInit).domain();
+
                 x.zoomable().domain(d3.event.transform.rescaleX(zoomableInit).domain());
                 //y.domain(d3.event.transform.rescaleY(yInit).domain());
                 //yPercent.domain(d3.event.transform.rescaleY(yPercentInit).domain());
+
+                console.log(d3.event.transform.rescaleX(zoomableInit).domain());
 
                 draw();
             }
@@ -308,7 +368,8 @@
             }
         }
 
-        chart("Facebook, Inc.", "data", 1200, 800);
+        chart("Facebook, Inc.", "data", 1100, 700);
+
     </script>
 
 </body >
