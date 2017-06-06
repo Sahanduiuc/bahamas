@@ -2,6 +2,7 @@
     Layout = null;
 }
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,12 +46,12 @@
             }
 
             path.candle.up {
-                fill: #D75442;
+                fill: #6BA583;
                 stroke: #000000;
             }
 
             path.candle.down {
-                fill: #6BA583;
+                fill: #D75442;
                 stroke: #000000;
             }
 
@@ -81,12 +82,6 @@
             stroke: #ff7f0e;
         }
 
-        button {
-            position: absolute;
-            right: 110px;
-            top: 25px;
-        }
-
         .crosshair {
             cursor: crosshair;
         }
@@ -104,6 +99,19 @@
             opacity: 0.2;
         }
 
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -117,14 +125,28 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <button onclick="AddData()">Add Data</button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TheTradingGym</a>
             </div>
 </nav>
 
+    <button class="button" onclick="PlayData()">Play</button>
+    <button class="button" onclick="PauseData()">Pause</button>
+    SMA0: <input type="text" id="sma0Val" value="200">
+    <button class="button" onclick="SetSMA0Val()">Update</button>
+    <button class="button" onclick="CreateLongOrder()">LONG</button>
+    <button class="button" onclick="CreateShortOrder()">SHORT</button>
+    <button class="button" onclick="ClosePosition()">Close</button>
+    <h3 id="returnsValue">P&L: $0</h3>
+    <h3 id="cash">Cash: $1000</h3>
+
     <script>
 
-        function chart(name, symbol, fullWidth, fullHeight) {
+        var name = "Facebook";
+        var symbol = "data";
+        var fullWidth = 1100;
+        var fullHeight = 700;
+
+
             var margin = { top: 20, right: 50, bottom: 30, left: 30 },
                 width = fullWidth - margin.left - margin.right,
                 height = fullHeight - margin.top - margin.bottom,
@@ -157,10 +179,6 @@
                 .yScale(y);
 
             var sma1 = techan.plot.sma()
-                .xScale(x)
-                .yScale(y);
-
-            var ema2 = techan.plot.ema()
                 .xScale(x)
                 .yScale(y);
 
@@ -264,6 +282,14 @@
             svg.append('g')
                 .attr("class", "crosshair")
 
+            svg.append("g")
+                .attr("class", "indicator sma ma-0")
+                .attr("clip-path", "url(#clip)");
+
+            svg.append("g")
+                .attr("class", "indicator sma ma-1")
+                .attr("clip-path", "url(#clip)");
+
             var feed, dataSet, curZoom;
             d3.csv("@Url.Action("GetCSV")", function (error, data) {
                 var accessor = candlestick.accessor(),
@@ -296,9 +322,8 @@
 
                 svg.select("g.candlestick").datum(feed).call(candlestick);
                 svg.select("g.volume").datum(feed).call(volume);
-                svg.select("g.sma.ma-0").datum(techan.indicator.sma().period(10)(feed)).call(sma0);
-                svg.select("g.sma.ma-1").datum(techan.indicator.sma().period(20)(feed)).call(sma1);
-                svg.select("g.ema.ma-2").datum(techan.indicator.ema().period(50)(feed)).call(ema2);
+                svg.select("g.sma.ma-0").datum(techan.indicator.sma().period(200)(feed)).call(sma0);
+                svg.select("g.sma.ma-1").datum(techan.indicator.sma().period(50)(feed)).call(sma1);
                 svg.select("g.crosshair").call(crosshair).call(zoom);
 
                 zoomableInit = x.zoomable().clamp(false).domain([0, feed.length]).copy(); // Zoom in a little to hide indicator preroll
@@ -310,11 +335,19 @@
                 draw();
 
                 AddData();
+                Engine();
             });
 
+            var streamData = false;
+            var sma0Val = 200;
+            var positions = [];
+            var cash = 1000;
 
             function AddData() {
-                feed = dataSet.slice(0, feed.length + 1);
+                if (streamData == true) {
+                    feed = dataSet.slice(0, feed.length + 1);
+                }
+
                 var accessor = candlestick.accessor(),
                     indicatorPreRoll = 33;  // Don't show where indicators don't have data
 
@@ -326,12 +359,30 @@
                 yPercent.domain(techan.scale.plot.percent(y, accessor(feed[indicatorPreRoll])).domain());
                 yVolume.domain(techan.scale.plot.volume(feed, accessor.v).domain());
 
+                svg.select("g.sma.ma-0").datum(techan.indicator.sma().period(sma0Val)(feed)).call(sma0);
+                svg.select("g.sma.ma-1").datum(techan.indicator.sma().period(50)(feed)).call(sma1);
                 svg.select("g.candlestick").datum(feed).call(candlestick);
                 svg.select("g.volume").datum(feed).call(volume);
 
+                //Update Equity Values
+                if (positions.length > 0) {
+
+                    var returns = feed[feed.length - 1].close - positions[0].purchaceValue;
+
+                    returns = returns * positions[0].type;
+
+                    document.getElementById("returnsValue").innerHTML = "P&L: $" + returns;
+                } 
+                
                 setTimeout(function () {
                     AddData();
-                }, (Math.random() * 500) + 400);
+                }, (Math.random() * 0) + 100);
+            }
+
+            function Engine() {
+                setTimeout(function () {
+                    AddData();
+                }, (Math.random() * 0) + 1);
             }
 
             function reset() {
@@ -342,13 +393,9 @@
 
             function zoomed() {
                 curZoom = d3.event.transform.rescaleX(zoomableInit).domain();
-
                 x.zoomable().domain(d3.event.transform.rescaleX(zoomableInit).domain());
                 //y.domain(d3.event.transform.rescaleY(yInit).domain());
                 //yPercent.domain(d3.event.transform.rescaleY(yPercentInit).domain());
-
-                console.log(d3.event.transform.rescaleX(zoomableInit).domain());
-
                 draw();
             }
 
@@ -363,12 +410,72 @@
                 svg.select("g.volume").call(volume.refresh);
                 svg.select("g.sma.ma-0").call(sma0.refresh);
                 svg.select("g.sma.ma-1").call(sma1.refresh);
-                svg.select("g.ema.ma-2").call(ema2.refresh);
                 svg.select("g.crosshair").call(crosshair.refresh);
             }
-        }
 
-        chart("Facebook, Inc.", "data", 1100, 700);
+            function PlayData()
+            {
+                streamData = true;
+            }
+            function PauseData() {
+                streamData = false;
+            }
+
+            function SetSMA0Val() {
+                sma0Val=  document.getElementById("sma0Val").value;
+            }
+
+            function CreateLongOrder() {
+
+                var curPrice = feed[feed.length - 1].close;
+
+                var position = {
+                    ticker: "FB",
+                    type: 1,
+                    units: 1,
+                    purchaceValue: curPrice,
+                    curValue: curPrice
+                };
+
+                positions.push(position);
+                PurchaseInstrument(curPrice);
+
+                console.log("LONG Position opened at " + curPrice);
+            }
+
+            function CreateShortOrder() {
+
+                var curPrice = feed[feed.length - 1].close;
+
+                var position = {
+                    ticker: "FB",
+                    type: -1,
+                    units: 1,
+                    purchaceValue: curPrice,
+                    curValue: curPrice
+                };
+
+                positions.push(position);
+                PurchaseInstrument(curPrice);
+
+                console.log("SHORT Position opened at " + curPrice);
+            }
+
+            function PurchaseInstrument(value) {
+                cash = cash - (value);
+                document.getElementById("cash").innerHTML = "Cash: $" + cash;
+            }
+
+            function ClosePosition() {
+                cash = cash + ((feed[feed.length - 1].close - positions[0].purchaceValue) * positions[0].type) + positions[0].purchaceValue;
+                document.getElementById("cash").innerHTML = "Cash: $" + cash;
+
+                document.getElementById("returnsValue").innerHTML = "P&L: $0";
+
+                console.log("Position close with value " + ((feed[feed.length - 1].close - positions[0].purchaceValue) * positions[0].type));
+                positions.splice(0, 1);
+
+            }
 
     </script>
 
