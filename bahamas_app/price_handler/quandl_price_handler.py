@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 
 from .base import AbstractOHLCVPriceHandler
+from ..system_events import OHLCVEvent
 
 class QuandlPriceHandler(AbstractOHLCVPriceHandler):
     """
@@ -32,6 +33,7 @@ class QuandlPriceHandler(AbstractOHLCVPriceHandler):
                 self.SubscribeTicker(ticker)                        
         self.startDate = startDate
         self.endDate = endDate
+        self.dataStream = self._MergeTickerData()
         self.calcAdjReturns = calcAdjReturns
         if self.calcAdjReturns:
             self.adjcloseReturns = []                
@@ -54,7 +56,23 @@ class QuandlPriceHandler(AbstractOHLCVPriceHandler):
         self.tickersData[ticker]["Ticker"] = ticker           
 
     def _MergeTickerData(self):
-        pass
+        """
+        Concatenates all of the separate equities DataFrames
+        into a single DataFrame that is time ordered, allowing tick
+        data events to be added to the queue in a chronological fashion.
+        Note that this is an idealised situation, utilised solely for
+        backtesting. In live trading ticks may arrive "out of order".
+        """
+        df = pd.concat(self.tickersData.values()).sort_index()
+        return df.iterrows()
+       
+    def _ConvertToEvent(self, row):
+        openV = row["Open"]
+        highV = row["High"]
+        lowV = row["Low"]
+        closeV  = row["Close"] 
+        adjCloseV = row["Adj Close"]
+        vv = row["Volume"] 
 
     def SubscribeTicker(self, ticker):
         if ticker not in self.tickers:

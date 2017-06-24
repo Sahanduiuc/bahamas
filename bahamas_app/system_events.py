@@ -1,5 +1,5 @@
-from enum import Enum
 from __future__ import print_function
+from enum import Enum
 
 EventType = Enum("EventType", "TICK BAR SIGNAL ORDER FILL SENTIMENT")
 
@@ -20,12 +20,13 @@ class OHLCVEvent(Event):
     via common data providers such as Qaundl.
     """            
     def __init__(self,ticker,time,period,
-                openP,high, low, close, volume, adjClose = None):
+                openV,highV, lowV, closeV, volumeV, adjCloseV = None):
         self.type = EventType.BAR
         self.ticker = ticker
-        self.high= high
-        self.low = low
-        self.open = openP
-        self.close = close
-        self.volume = volume
+        self.highV= highV
+        self.lowV = lowV
+        self.openV = openV
+        self.closeV = closeV
+        self.volumeV = volumeV
+
 
