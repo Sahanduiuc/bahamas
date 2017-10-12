@@ -1,0 +1,27 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Bahamas Capital</title>
+
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <script src="~/js/ChartRendering.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/css/shared.css">
+
+</head>
+<body>
+    <h1>BC - Notebooks</h1>
+
+    <div id="chart"></div>
+    <script>
+        var ChartSettings = {
+            DataSource: '@Url.Action("GetOptionData")',
+            ChartHeight: 800,
+            ChartWidth: 500
+        }
+
+        DrawChart();
+    </script>
+
+</body>
+</html>
