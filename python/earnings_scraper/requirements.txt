@@ -1,6 +1,0 @@
-beautifulsoup4==4.4.1
-click==6.6
-pytz==2016.4
-requests==2.10.0
-simplejson==3.8.2
-yahoo-finance==1.2.1

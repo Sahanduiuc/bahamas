@@ -1,8 +1,0 @@
-{
-  "SIGNAL"  :       [ [ "FUNC", "FUNC", "COMP" ] ],
-  "COMP"    :       [ ["GTRE"] , ["LSTE"]  ],
-  "FUNC"    :       [ [ "RNG" , "INSTRUMENT" ,  "SMA" ], [ "RNG" , "INSTRUMENT" , "WMA" ] ],
-  "LGCL"    :       [ [ "OR" ], [ "AND" ] ],
-  "INSTRUMENT":     [ ["msft"], ["spdr"] ],
-  "RNG"     :       [ [5] , [10] , [20] , [50] , [80] , [160] ]
-}
