@@ -16,10 +16,41 @@
             height = ChartSettings.ChartWidth - margin.top - margin.bottom;
 
             var data = new Array();
+            var priceData = new Array();
+
+            var prevVal = -1;
+            var currentVal = 0;
+            var maxGain = -1;
+            var maxGainPeriod = new Date();
 
             $.each(d, function (index, item) {
+
+                currentVal = parseFloat(item.value);
+
                 data.push(item);
+                priceData.push(currentVal);
+
+                if ((currentVal - prevVal) > 0 && prevVal != -1) {
+                    if ((currentVal - prevVal) > maxGain) {
+                        maxGain = ((currentVal - prevVal) / prevVal) * 100;
+                        maxGainPeriod = new Date(item.date);
+                    }
+                }
+
+                prevVal = currentVal;
             });
+
+            var maxVal = math.max(priceData);
+            var minVal = math.min(priceData);
+
+            $("#seriesMin").append(minVal + " @ " +
+                new Date(data[priceData.indexOf(minVal)].date).toISOString());
+            $("#seriesMax").append(maxVal + " @ " +
+                new Date(data[priceData.indexOf(maxVal)].date).toISOString());
+
+            $("#seriesMean").append(math.mean(priceData));
+
+            $("#maxGain").append(maxGain + " @ " + maxGainPeriod.toISOString());
 
             var x = d3.time.scale()
                 .domain(d3.extent(data, function (d) {
@@ -27,8 +58,8 @@
                 }))
                 .rangeRound([0, width]);
 
-            var y = d3.scale.linear()
-                .domain([0, 5])
+            var y = d3.scale.log()
+                .domain([0.1, 130000])
                 .range([height, 0]);
 
             var line = d3.svg.line()
@@ -52,6 +83,17 @@
                 .append("svg:g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+            var points = [{ date: 1507593600000, value: "37.43" }];
+
+            var circle = svg.selectAll("circle")
+                .data(points)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) { return x(d.date); })
+                .attr("cy", function (d) { return y(d.value); })
+                .attr("r", 5);
+
+
             var make_x_axis = function () {
                 return d3.svg.axis()
                     .scale(x)
@@ -63,7 +105,7 @@
                 return d3.svg.axis()
                     .scale(y)
                     .orient("left")
-                    .ticks(5);
+                    .ticks(0);
             };
 
             var xAxis = d3.svg.axis()
@@ -78,7 +120,7 @@
             var yAxis = d3.svg.axis()
                 .scale(y)
                 .orient("left")
-                .ticks(5);
+                .ticks(1000,".1s");
 
             svg.append("g")
                 .attr("class", "y axis")

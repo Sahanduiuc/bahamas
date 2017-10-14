@@ -1,21 +1,35 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@model BC.Application.Implementations.NotebookViewModel
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Bahamas Capital</title>
 
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
     <script src="~/js/ChartRendering.js"></script>
+    <script src="~/js/math.js"></script>
 
     <link rel="stylesheet" type="text/css" href="~/css/shared.css">
 
 </head>
 <body>
-    <h1>BC - Notebooks</h1>
+    <h1>@Model.Title</h1>
 
     <div id="chart"></div>
+
+    @foreach (var timeSeries in Model.TimeSeries)
+    {
+        <h2>Series: @timeSeries.SeriesTitle</h2>
+    }
+
+    <h2 id="seriesMin">Min: </h2>
+    <h2 id="seriesMax">Max: </h2>
+    <h2 id="seriesMean">Mean: </h2>
+    <h2 id="maxGain">Maximum Gain (%):   </h2>
+
     <script>
         var ChartSettings = {
-            DataSource: '@Url.Action("GetOptionData")',
+            DataSource: '@Url.Action("GetVixData")',
             ChartHeight: 800,
             ChartWidth: 500
         }

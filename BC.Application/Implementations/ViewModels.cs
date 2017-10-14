@@ -5,6 +5,17 @@ using System.Threading.Tasks;
 
 namespace BC.Application.Implementations
 {
+    public class NotebookViewModel
+    {
+        public string Title { get; set; }
+        public List<TimeSeriesModel> TimeSeries { get; set; }
+
+        public NotebookViewModel()
+        {
+            TimeSeries = new List<TimeSeriesModel>();
+        }
+    }
+
     public class VixViewModel
     {
         private List<SimplePriceCoordinate> data;

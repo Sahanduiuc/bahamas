@@ -10,7 +10,8 @@ namespace BC.Application.Implementations
     {
         public void ImportDataSet(ref List<SimplePriceCoordinate> dataSet)
         {
-            var importedData = CommomFunctions.LoadCSVData(@".\wwwroot\vxdata.csv");
+            var importedData = CommomFunctions.
+                LoadCSVData(@".\wwwroot\vxxdata.csv");
             dataSet = new List<SimplePriceCoordinate>();
 
             foreach (var data in importedData)
@@ -29,7 +30,8 @@ namespace BC.Application.Implementations
         {
             optionData = new Dictionary<OptionModel, List<SimplePriceCoordinate>>();
 
-            string[] fileEntries = Directory.GetFiles(@".\wwwroot\UnderlyingOptionsEODQuotes");
+            string[] fileEntries = Directory.
+                GetFiles(@".\wwwroot\UnderlyingOptionsEODQuotes");
 
             foreach (var file in fileEntries)
             {

@@ -2,9 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MathNet.Numerics.Statistics;
 
 namespace BC.Application.Implementations
 {
+    public class TimeSeriesModel
+    {
+        public string SeriesTitle { get; set; }
+
+        public TimeSeriesModel(string title)
+        {
+            this.SeriesTitle = title;
+        }
+    }
+
     public struct SimplePriceCoordinate
     {
         public long date;

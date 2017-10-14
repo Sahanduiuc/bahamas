@@ -9,10 +9,15 @@ namespace BC.Application.Controllers
 {
     public class NoteBookController : Controller
     {
-
         public IActionResult Index()
         {
-            return View();
+            var model = new NotebookViewModel();
+            model.Title = "VXX Analysis";
+
+            TimeSeriesModel tmm = new TimeSeriesModel("VXX Price (Historic)");
+            model.TimeSeries.Add(tmm);
+
+            return View(model);
         }
 
         public JsonResult GetVixData()
