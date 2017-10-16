@@ -1,5 +1,4 @@
-﻿using BC.Application.Implementations;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +13,5 @@ namespace BC.Application.Controllers
             return View();
         }
 
-        public JsonResult GetVixData()
-        {
-            var model = new VixViewModel();
-            return Json(model.Data);
-        }
     }
 }
