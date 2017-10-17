@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EADBABC2-086F-442F-AC0D-07340EC291A8}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>BC.PortfolioManager</RootNamespace>
-    <AssemblyName>BC.PortfolioManager</AssemblyName>
+    <ProjectGuid>{0B2B3196-AC41-4183-95A4-098338FE0E3B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TestBed</RootNamespace>
+    <AssemblyName>TestBed</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,63 +32,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
-    </Reference>
-    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
-      <HintPath>..\packages\RabbitMQ.Client.5.1.0-pre1\lib\net451\RabbitMQ.Client.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBConnector\EWrapperImpl.cs" />
-    <Compile Include="Components\PMEvent.cs" />
-    <Compile Include="TraderEngine.cs" />
-    <Compile Include="PMService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PMService.Designer.cs">
-      <DependentUpon>PMService.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="ProjectInstaller.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ProjectInstaller.Designer.cs">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ProjectInstaller.resx">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\TWS API\source\CSharpClient\client\CSharpAPI.csproj">
-      <Project>{8ede0744-96c2-40b0-a8dc-37df79370203}</Project>
+      <Project>{8EDE0744-96C2-40B0-A8DC-37DF79370203}</Project>
       <Name>CSharpAPI</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataHandler\" />
-    <Folder Include="ExecutionHandler\" />
-    <Folder Include="PositionSizer\" />
-    <Folder Include="RiskManager\" />
+    <ProjectReference Include="..\BC.PortfolioManager\BC.PortfolioManager.csproj">
+      <Project>{eadbabc2-086f-442f-ac0d-07340ec291a8}</Project>
+      <Name>BC.PortfolioManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

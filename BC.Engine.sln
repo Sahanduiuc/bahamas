@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC.PortfolioManager", "BC.PortfolioManager\BC.PortfolioManager.csproj", "{EADBABC2-086F-442F-AC0D-07340EC291A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC.Application", "BC.Application\BC.Application.csproj", "{05C76073-F381-447D-AF1D-6E31A7875202}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC.Application", "BC.Application\BC.Application.csproj", "{05C76073-F381-447D-AF1D-6E31A7875202}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpAPI", "..\..\..\..\TWS API\source\CSharpClient\client\CSharpAPI.csproj", "{8EDE0744-96C2-40B0-A8DC-37DF79370203}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBed", "TestBed\TestBed.csproj", "{0B2B3196-AC41-4183-95A4-098338FE0E3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{05C76073-F381-447D-AF1D-6E31A7875202}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05C76073-F381-447D-AF1D-6E31A7875202}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05C76073-F381-447D-AF1D-6E31A7875202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B2B3196-AC41-4183-95A4-098338FE0E3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B2B3196-AC41-4183-95A4-098338FE0E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B2B3196-AC41-4183-95A4-098338FE0E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B2B3196-AC41-4183-95A4-098338FE0E3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
