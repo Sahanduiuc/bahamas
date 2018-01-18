@@ -1,0 +1,11 @@
+﻿:host ::ng-deep .posToAdd {
+    background-color: greenyellow;
+}
+
+:host ::ng-deep .positionActive {
+    background-color: hotpink;
+}
+
+th:hover {
+    background-color: cornsilk;
+}

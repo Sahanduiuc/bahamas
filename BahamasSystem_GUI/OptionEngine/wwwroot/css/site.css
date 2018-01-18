@@ -1,0 +1,175 @@
+
+/*
+html, body {
+    height: 100%;
+    font: 16px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
+    margin: 0;
+}
+
+
+.group:before,
+.group:after {
+    content: '';
+    display: table;
+}
+
+.group:after {
+    clear: both;
+}
+
+.pos-metrics {
+    display: inline-block;
+}
+
+.group {
+    zoom: 1;
+}
+
+.positions, .column-labels, .position {
+    @extend .group;
+}
+
+label {
+    color: $color-label;
+}
+
+.pos-expDate {
+    float: left;
+    width: 30%
+} 
+
+.pos-details {
+    float: left;
+    width: 20%;
+}
+
+.pos-mktprice {
+    float: left;
+    width: 20%;
+}
+
+.pos-size {
+    float: left;
+    width: 20%;
+}
+
+.pos-removal {
+    float: left;
+    width: 10%;
+}
+
+.column-labels {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid $color-border;
+}
+
+.position {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $color-border;
+}
+
+.remove-position {
+    border: 0;
+    padding: 4px 8px;
+    background-color: #c66;
+    color: #fff;
+    font-family: $font-bold;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+
+.container {
+    margin: 0 auto;
+    padding: 0 10px;
+    display: block;
+}
+
+header {
+    background-color: #080808;
+}
+
+td {
+    border: 1px #DDD solid;
+    cursor: pointer;
+}
+
+.selected {
+    background-color:hotpink;
+    color:black;
+}
+*/
+
+
+/*
+path.line {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 1;
+}
+
+nav a {
+    color: #9d9d9d;
+    text-decoration: none;
+}
+
+
+#tradedetails {
+    float: left;
+    width: 30%;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0.7em 0;
+    margin: 0;
+}
+
+nav li {
+    display: inline-block;
+    margin: 0 1em;
+}
+
+    nav li:first-child {
+        font-size: 1.3em;
+        margin-left: 0;
+    }
+
+main {
+    padding: 2rem 0;
+    display: block;
+}
+
+
+.wrapper {
+    min-height: 100%;
+    
+    margin-bottom: -50px;
+}
+
+    .wrapper:after {
+        content: "";
+        display: block;
+    }
+
+    footer, .wrapper:after {
+        height: 50px;
+    }
+
+        footer .container {
+            border-top: 1px solid #e1e1e1;
+            padding-top: 10px;
+        }
+
+@media only screen and (max-width: 640px) {
+    header ul {
+        text-align: center;
+    }
+
+    header li:first-child {
+        display: block;
+    }
+}
+    */

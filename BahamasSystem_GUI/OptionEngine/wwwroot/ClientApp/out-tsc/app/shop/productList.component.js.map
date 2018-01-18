@@ -1,0 +1,1 @@
+{"version":3,"file":"productList.component.js","sourceRoot":"","sources":["../../../../../ClientApp/app/shop/productList.component.ts"],"names":[],"mappings":";;;;;;AAAA,OAAO,EAAE,SAAS,EAAU,MAAM,eAAe,CAAC;AASlD,IAAa,WAAW,GAAxB;CAWC,CAAA;AAXY,WAAW;IALvB,SAAS,CAAC;QACP,QAAQ,EAAE,cAAc;QACxB,WAAW,EAAE,8BAA8B;QAC3C,MAAM,EAAE,EAAE;KACb,CAAC;GACW,WAAW,CAWvB;SAXY,WAAW"}
