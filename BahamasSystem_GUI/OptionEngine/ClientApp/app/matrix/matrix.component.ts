@@ -33,7 +33,7 @@ export class Matrix implements OnInit {
 
     ngOnInit(): void {
         //Get available backtest dates
-        this.http.get('getbacktestdates').subscribe(data => {
+        this.http.get('home/getbacktestdates').subscribe(data => {
             this.dataService.backtestDateStream = data;
             this.updateMatrix();
         });
@@ -42,7 +42,7 @@ export class Matrix implements OnInit {
 
     updateMatrix() {
         let backtestDate: string = this.dataService.getCurrentBacktestDate();
-        this.http.get('getnewdata?id=' + backtestDate).subscribe(data => {
+        this.http.get('home/getnewdata?id=' + backtestDate).subscribe(data => {
             this.parseData(data);
             this.updatePortfolioMetrics();
         });

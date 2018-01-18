@@ -18,9 +18,9 @@ export class CodeEditor implements OnInit {
     }
 
     ngOnInit(): void {
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode("ace/mode/csharp");
-        editor.setValue(this.codeSample);
+        //var editor = ace.edit("editor");
+        //editor.setTheme("ace/theme/monokai");
+        //editor.getSession().setMode("ace/mode/csharp");
+        //editor.setValue(this.codeSample);
     }
 }

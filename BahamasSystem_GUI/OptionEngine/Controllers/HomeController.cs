@@ -21,7 +21,7 @@ namespace OptionEngine
         {
             modelCollection = new Dictionary<DateTime, MatrixViewModel>();
 
-            DirectoryInfo dirInfo = new DirectoryInfo(@"C:\Users\shami\Desktop\OptionEngine\Data\RUT\");
+            DirectoryInfo dirInfo = new DirectoryInfo(@"C:\Users\shami\Desktop\bahamas\data\RUT\");
             foreach (var file in dirInfo.GetFiles("*.csv"))
             {
                 ImportMatrixData(file.FullName);

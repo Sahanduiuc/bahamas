@@ -20,7 +20,7 @@ webpackEmptyAsyncContext.id = "../../../../../ClientApp/$$_lazy_route_resource l
 /***/ "../../../../../ClientApp/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" style=\"height:710px\">\r\n    <div class=\"col-lg-1\">\r\n        <ul class=\"nav nav-pills nav-stacked\" role=\"tablist\">\r\n            <li class=\"active\"><a href=\"#\">Matrix</a></li>\r\n            <li><a href=\"#\">Profile</a></li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"col-lg-9\">\r\n        <code_editor></code_editor>\r\n    </div>\r\n</div>\r\n<div class=\"row\">\r\n    <div class=\"col-lg-9\">\r\n        <matrix></matrix>\r\n    </div>\r\n    <div class=\"col-md-offset-10 well\">\r\n        <metrics_sidebar></metrics_sidebar>\r\n    </div>\r\n</div>\r\n<!--<profile></profile>-->\r\n\r\n"
+module.exports = "<div class=\"row\" style=\"height:710px\">\r\n    <div class=\"col-lg-1\">\r\n        <ul class=\"nav nav-pills nav-stacked\" role=\"tablist\">\r\n            <li class=\"active\"><a href=\"#\">Matrix</a></li>\r\n            <li><a href=\"#\">Profile</a></li>\r\n        </ul>\r\n    </div>\r\n    <!--<div class=\"col-lg-9\">\r\n        <code_editor></code_editor>\r\n    </div>-->\r\n    <div class=\"col-lg-9\">\r\n        <matrix></matrix>\r\n    </div>\r\n    <div class=\"col-md-offset-10 well\">\r\n        <metrics_sidebar></metrics_sidebar>\r\n    </div>\r\n</div>\r\n<profile></profile>\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -120,7 +120,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#editor {\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0px;\n    height: 700px;\n    font-size: 14px;\n}\n", ""]);
+exports.push([module.i, "#editor {\r\n    position: absolute;\r\n    top: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    left: 0px;\r\n    height: 700px;\r\n    font-size: 14px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -162,10 +162,10 @@ let CodeEditor = class CodeEditor {
 `;
     }
     ngOnInit() {
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode("ace/mode/csharp");
-        editor.setValue(this.codeSample);
+        //var editor = ace.edit("editor");
+        //editor.setTheme("ace/theme/monokai");
+        //editor.getSession().setMode("ace/mode/csharp");
+        //editor.setValue(this.codeSample);
     }
 };
 CodeEditor = __decorate([
@@ -251,14 +251,14 @@ let Matrix = class Matrix {
     //private positionsToCommit = new Map();
     ngOnInit() {
         //Get available backtest dates
-        this.http.get('getbacktestdates').subscribe(data => {
+        this.http.get('home/getbacktestdates').subscribe(data => {
             this.dataService.backtestDateStream = data;
             this.updateMatrix();
         });
     }
     updateMatrix() {
         let backtestDate = this.dataService.getCurrentBacktestDate();
-        this.http.get('getnewdata?id=' + backtestDate).subscribe(data => {
+        this.http.get('home/getnewdata?id=' + backtestDate).subscribe(data => {
             this.parseData(data);
             this.updatePortfolioMetrics();
         });
