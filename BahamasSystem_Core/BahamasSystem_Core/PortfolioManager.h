@@ -1,9 +1,3 @@
-/*
- * PortfolioHandler.h
- *
- *  Created on: 6 Nov 2016
- *      Author: shamitha
- */
 
 #ifndef PORTFOLIOHANDLER_H_
 #define PORTFOLIOHANDLER_H_
@@ -37,4 +31,4 @@ private:
 	std::queue<TradingEvent*>& eventsQueue;
 };
 
-#endif /* PORTFOLIOHANDLER_H_ */
+#endif

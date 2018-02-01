@@ -1,15 +1,9 @@
-/*
- * PortfolioHandler.cpp
- *
- *  Created on: 6 Nov 2016
- *      Author: shamitha
- */
-
-#include "PortfolioHandler.h"
+#include "stdafx.h"
+#include "PortfolioManager.h"
 
 PortfolioManager::PortfolioManager(double initialBalance, std::queue<TradingEvent*>& eventsQueue, PriceManager& priceManager) :
-	currentBalance(initialBalance), eventsQueue(eventsQueue), portfolio(Portfolio(initialBalance,priceManager)), priceManager(priceManager) {
-	
+	currentBalance(initialBalance), eventsQueue(eventsQueue), portfolio(Portfolio(initialBalance, priceManager)), priceManager(priceManager) {
+
 }
 
 PortfolioManager::~PortfolioManager() {
@@ -23,7 +17,7 @@ void PortfolioManager::UpdatePortfolioValue() {
 void PortfolioManager::ProcessSignal(SignalEvent& event) {
 	MarketOrder order = { event.GetEventTicker(),event.action,
 		event.setOrderUnits, priceManager.GetCurrentPrice(event.GetEventTicker()) };
-	orderSizer.SizeOrder(order,portfolio);
+	orderSizer.SizeOrder(order, portfolio);
 	std::vector<MarketOrder> profiledOrders = riskManager.ProfileOrder(order);
 
 	//Place Order on Events queue for execution

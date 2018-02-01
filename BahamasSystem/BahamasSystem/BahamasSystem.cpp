@@ -34,7 +34,7 @@ int main() {
 
 	OHLCVPriceManager priceManager(eventsQueue, tickers, startDate, endDate);
 	SimulatedExecutionManager executionManager(eventsQueue,priceManager);
-	PortfolioHandler portfolioHandler(initEquity, eventsQueue, priceManager);
+	PortfolioManager portfolioHandler(initEquity, eventsQueue, priceManager);
 	FundOfFunds testStrategy(eventsQueue, tickers, "HOLDINGS_13F_VALACT", priceManager);
 	
 	Backtest testBackTest(

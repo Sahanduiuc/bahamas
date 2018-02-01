@@ -16,7 +16,7 @@ public:
 		return instance;
 	}
 
-	void UpdateEquityCurve(PortfolioHandler& portfolioHandler,
+	void UpdateEquityCurve(PortfolioManager& portfolioHandler,
 		PriceManager& priceManager) {
 		std::string metric(priceManager.GetCurrentTimeStampString());
 		metric.append(",").append(std::to_string(portfolioHandler.GetPortfolioValue()));

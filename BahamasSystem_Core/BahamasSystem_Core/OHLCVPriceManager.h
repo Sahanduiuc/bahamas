@@ -1,10 +1,3 @@
-/*
- * OHLCVDataParser.h
- *
- *  Created on: 23 Oct 2016
- *      Author: shamitha
- */
-
 #ifndef OHLCVPRICEMANAGER_H_
 #define OHLCVPRICEMANAGER_H_
 
@@ -12,11 +5,11 @@
 #include <boost/bind.hpp>
 #include "boost/date_time/gregorian/gregorian.hpp"
 
-#include "DataImporter.h"
-#include "PriceManager.h"
 #include "TradingEvent.h"
+#include "PriceManager.h"
+#include "DataImporter.h"
 
-struct OHCLVDataFrame{
+struct OHCLVDataFrame {
 	std::string Ticker;
 	boost::gregorian::date EventDateTime;
 	double Open;
@@ -25,12 +18,12 @@ struct OHCLVDataFrame{
 	double Settle;
 };
 
-class OHLCVPriceManager: public PriceManager{
+class OHLCVPriceManager : public PriceManager {
 public:
-
-	OHLCVPriceManager(std::queue<TradingEvent*>&, 
+	OHLCVPriceManager(std::queue<TradingEvent*>&,
 		std::vector<std::string>,
-		boost::gregorian::date&, boost::gregorian::date&);
+		boost::gregorian::date&,
+		boost::gregorian::date&);
 	~OHLCVPriceManager();
 
 	void StreamNextEvent();
@@ -39,7 +32,7 @@ public:
 	std::string GetCurrentTimeStampString();
 	boost::gregorian::date GetCurrentTimeStamp() const;
 private:
-	std::map<boost::gregorian::date, std::vector<OHCLVDataFrame> > InstrumentData;
+	std::map<boost::gregorian::date,std::vector<OHCLVDataFrame> > InstrumentData;
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;
@@ -59,4 +52,4 @@ private:
 	}
 };
 
-#endif /* DATAHANDLERS_OHLCVPRICEMANAGER_H_ */
+#endif
