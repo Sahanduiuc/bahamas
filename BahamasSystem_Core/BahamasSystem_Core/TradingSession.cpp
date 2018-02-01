@@ -30,8 +30,8 @@ void TradingSession::Execute() {
 					BarEvent& tempEvent = static_cast<BarEvent&>(*t_event);
 					strategy.CalculateSignal(tempEvent);
 					portfolioManager.UpdatePortfolioValue();
-					//StatisticsManager::getInstance().UpdateEquityCurve(portfolioHandler,
-						//priceManager);
+					StatisticsManager::getInstance().UpdateEquityCurve(
+						portfolioManager,priceManager);
 					break;
 				}
 				case EventType::OrderEventType: {
@@ -47,7 +47,7 @@ void TradingSession::Execute() {
 				case EventType::FillEventType: {
 					FillEvent& tempEvent = static_cast<FillEvent&>(*t_event);
 					portfolioManager.ProcessFill(tempEvent);
-					//StatisticsManager::getInstance().UpdateTradeHistory(tempEvent);
+					StatisticsManager::getInstance().UpdateTradeHistory(tempEvent);
 					break;
 				}
 				case EventType::BaseEventType:
@@ -59,4 +59,5 @@ void TradingSession::Execute() {
 			eventsQueue.pop();
 		}
 	}
+	StatisticsManager::getInstance().GenerateTearSheetData();
 }

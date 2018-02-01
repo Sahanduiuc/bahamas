@@ -6,8 +6,8 @@ TradingSession CreateSession() {
 	std::queue<TradingEvent*> eventsQueue;
 	std::vector<std::string> tickers = { "NVDA" };
 
-	boost::gregorian::date startDate = { 2014, 11, 01 };
-	boost::gregorian::date endDate = { 2017, 02, 01 };
+	boost::gregorian::date startDate = { 2000, 11, 01 };
+	boost::gregorian::date endDate = { 2017, 12, 01 };
 
 	OHLCVPriceManager priceManager(eventsQueue, tickers,
 		startDate,endDate);

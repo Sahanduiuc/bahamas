@@ -148,6 +148,7 @@
     <ClInclude Include="BahamasSystemCore.h" />
     <ClInclude Include="DataImporter.h" />
     <ClInclude Include="ExecutionManager.h" />
+    <ClInclude Include="GoogleAPIPriceHandler.h" />
     <ClInclude Include="OHLCVPriceManager.h" />
     <ClInclude Include="OrderSizer.h" />
     <ClInclude Include="Portfolio.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="PriceManager.h" />
     <ClInclude Include="QuandlAPIPriceHandler.h" />
     <ClInclude Include="RiskManager.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="targetver.h" />

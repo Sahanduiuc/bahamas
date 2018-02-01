@@ -11,6 +11,7 @@
 #include "ExecutionManager.h"
 #include "PortfolioManager.h"
 #include "Strategy.h"
+#include "StatisticsManager.h"
 
 class TradingSession {
 public:
