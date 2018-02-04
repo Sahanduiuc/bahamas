@@ -11,8 +11,11 @@ OHLCVPriceManager::OHLCVPriceManager(std::queue<TradingEvent*>& eventsQueue,
 	this->currentPeriod = startDate;
 	this->endPeriod = endDate;
 
-	for (auto ticker : tickers)
+	for (auto ticker : tickers) {
+		std::cout << "Loading data for ticker " + ticker << std::endl;
 		ImportInstrumentData(ticker);
+	}
+	std::cout << "All instrument data successfully loaded." << std::endl;
 }
 
 OHLCVPriceManager::~OHLCVPriceManager() {

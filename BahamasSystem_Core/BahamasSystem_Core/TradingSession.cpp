@@ -60,4 +60,5 @@ void TradingSession::Execute() {
 		}
 	}
 	StatisticsManager::getInstance().GenerateTearSheetData();
+	std::cout << "Session Ended." << std::endl;
 }
