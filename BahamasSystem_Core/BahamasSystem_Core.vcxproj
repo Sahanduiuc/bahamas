@@ -163,7 +163,9 @@
     <ClInclude Include="RiskManager.h" />
     <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Strategies\BullPutCreditSpread.h" />
     <ClInclude Include="Strategies\FundOfFunds.h" />
+    <ClInclude Include="OptionPriceManager.h" />
     <ClInclude Include="Strategies\SimpleMomentum.h" />
     <ClInclude Include="Strategies\MACross.h" />
     <ClInclude Include="Strategies\SimpleBuyAndHold.h" />
@@ -176,6 +178,7 @@
     <ClCompile Include="BahamasSystemCore.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="OHLCVPriceManager.cpp" />
+    <ClCompile Include="OptionPriceManager.cpp" />
     <ClCompile Include="OrderSizer.cpp" />
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="PortfolioManager.cpp" />

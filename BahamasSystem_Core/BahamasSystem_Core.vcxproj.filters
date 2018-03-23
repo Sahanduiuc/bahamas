@@ -81,6 +81,12 @@
     <ClInclude Include="Strategies\FundOfFunds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Strategies\BullPutCreditSpread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionPriceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -111,6 +117,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OHLCVPriceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionPriceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
