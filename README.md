@@ -1,5 +1,2 @@
-# Bahamas Trading Systems 
+# Backtesting Framework
 
-Backtesting/Trading Engine : C++
-
-GUI : ASP.NET Core 2.0 ; Angular 4
