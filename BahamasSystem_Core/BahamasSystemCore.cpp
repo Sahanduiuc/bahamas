@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BahamasSystemCore.h"
+#include "Strategies\SimpleBuyAndHold.h"
 
 TradingSession CreateSession() {
 	double initEquity = 100000.0;
