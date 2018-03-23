@@ -72,6 +72,15 @@
     <ClInclude Include="Strategies\SimpleBuyAndHold.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Strategies\MACross.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategies\SimpleMomentum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategies\FundOfFunds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
