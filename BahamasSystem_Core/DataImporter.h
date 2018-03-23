@@ -37,7 +37,7 @@ public:
 private:
 	std::string currentFile;
 	std::ifstream dataStream;
-	std::string dataPath = "C:\\Users\\shamitha\\Documents\\Github\\bahamas\\data\\prices\\";
+	std::string dataPath = "..\\data\\prices\\";
 
 	std::vector<std::string> csv_read_row(std::istream &in, char delimiter)
 	{
