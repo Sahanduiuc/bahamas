@@ -4,7 +4,7 @@
 
 #include <string>
 
-enum EventType { BaseEventType, BarEventType, SignalEventType, OrderEventType, FillEventType };
+enum EventType { BaseEventType, OrderBookUpdateEventType , BarEventType, SignalEventType, OrderEventType, FillEventType };
 
 class TradingEvent {
 public:
@@ -33,6 +33,22 @@ public:
 
 	~BarEvent() {}
 };
+
+class OrderBookUpdateEvent : public TradingEvent {
+public:
+	const double Bid;
+	const double BidSize;
+	const double Ask;
+	const double AskSize;
+
+	OrderBookUpdateEvent(std::string ticker, double bid, double bidsize,
+		double ask, double asksize) :
+		TradingEvent(ticker, EventType::BarEventType),
+		Bid(bid), BidSize(bidsize), Ask(ask), AskSize(asksize) {}
+
+	~OrderBookUpdateEvent() {}
+};
+
 
 class SignalEvent : public TradingEvent {
 public:

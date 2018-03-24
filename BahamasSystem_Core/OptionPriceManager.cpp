@@ -10,7 +10,7 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 	this->currentPeriod = startDate;
 	this->endPeriod = endDate;
 
-	std::cout << "All Option chains for symbol " << ticker << " successfully loaded." << std::endl;
+	std::cout << "All Option contracts for symbol " << ticker << " successfully loaded." << std::endl;
 }
 
 void OptionPriceManager::ImportInstrumentData(std::string ticker) {

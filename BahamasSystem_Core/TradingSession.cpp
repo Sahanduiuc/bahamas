@@ -34,6 +34,11 @@ void TradingSession::Execute() {
 						portfolioManager,priceManager);
 					break;
 				}
+				case EventType::OrderBookUpdateEventType: {
+					OrderBookUpdateEvent& tempEvent = static_cast<OrderBookUpdateEvent&>(*t_event);
+
+					break;
+				}
 				case EventType::OrderEventType: {
 					OrderEvent& tempEvent = static_cast<OrderEvent&>(*t_event);
 					executionManager.ExecuteOrder(tempEvent);

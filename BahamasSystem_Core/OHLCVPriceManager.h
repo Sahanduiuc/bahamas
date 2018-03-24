@@ -5,18 +5,10 @@
 #include <boost/bind.hpp>
 #include "boost/date_time/gregorian/gregorian.hpp"
 
+#include "DataFrames.h"
 #include "TradingEvent.h"
 #include "PriceManager.h"
 #include "DataImporter.h"
-
-struct OHCLVDataFrame {
-	std::string Ticker;
-	boost::gregorian::date EventDateTime;
-	double Open;
-	double High;
-	double Low;
-	double Settle;
-};
 
 class OHLCVPriceManager : public PriceManager {
 public:

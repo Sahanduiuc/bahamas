@@ -5,6 +5,7 @@
 #include <boost/bind.hpp>
 #include "boost/date_time/gregorian/gregorian.hpp"
 
+#include "OptionContract.h"
 #include "TradingEvent.h"
 #include "PriceManager.h"
 
@@ -22,6 +23,7 @@ public:
 	//std::string GetCurrentTimeStampString() {}
 	//boost::gregorian::date GetCurrentTimeStamp() const {}
 private:
+	//std::map<std::string, std::map<boost::gregorian::date, OptionContract> > InstrumentData;
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;

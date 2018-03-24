@@ -87,6 +87,12 @@
     <ClInclude Include="OptionPriceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OptionContract.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrames.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

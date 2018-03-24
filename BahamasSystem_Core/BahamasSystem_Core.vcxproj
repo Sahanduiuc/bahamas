@@ -150,10 +150,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BahamasSystemCore.h" />
+    <ClInclude Include="DataFrames.h" />
     <ClInclude Include="DataImporter.h" />
     <ClInclude Include="ExecutionManager.h" />
     <ClInclude Include="GoogleAPIPriceHandler.h" />
     <ClInclude Include="OHLCVPriceManager.h" />
+    <ClInclude Include="OptionContract.h" />
     <ClInclude Include="OrderSizer.h" />
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioManager.h" />
