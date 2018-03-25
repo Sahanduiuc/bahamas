@@ -6,6 +6,7 @@
 
 #include "TradingSession.h"
 #include "OHLCVPriceManager.h"
+#include "OptionPriceManager.h"
 #include "ExecutionManager.h"
 #include "PortfolioManager.h"
 #include "Strategy.h"

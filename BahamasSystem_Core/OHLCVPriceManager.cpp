@@ -74,8 +74,9 @@ double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
 
 void OHLCVPriceManager::ImportInstrumentData(std::string ticker) {
 
-	CSVImporter csvImporter;
-	csvImporter.SetLoadFile(ticker);
+	CsvImporter csvImporter;
+	csvImporter.SetDataPath("..\\data\\prices\\");
+	csvImporter.SetLoadFile(ticker + ".csv");
 
 	std::vector<std::string> dataRow;
 

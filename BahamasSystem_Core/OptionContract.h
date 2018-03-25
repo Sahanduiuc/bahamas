@@ -1,5 +1,5 @@
-#ifndef POSITION_H_
-#define POSITION_H_
+#ifndef OPTIONCONTRACT_H_
+#define OPTIONCONTRACT_H_
 
 #include <string>
 

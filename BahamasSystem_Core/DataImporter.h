@@ -9,7 +9,7 @@
 #include <iostream>
 #include <boost/coroutine/all.hpp>
 
-class CSVImporter {
+class CsvImporter {
 public:
 	void GetDataItem(std::vector<std::string>& dataRow) {
 		if (dataStream.is_open()) {
@@ -30,14 +30,17 @@ public:
 		}
 	}
 
-	void SetLoadFile(std::string ticker) {
-		this->currentFile = dataPath + ticker + ".csv";
+	void SetLoadFile(std::string fileName) {
+		this->currentFile = dataPath + fileName;
 		dataStream.close();
+	}
+	void SetDataPath(std::string path) {
+		this->dataPath = path;
 	}
 private:
 	std::string currentFile;
 	std::ifstream dataStream;
-	std::string dataPath = "..\\data\\prices\\";
+	std::string dataPath = "";
 
 	std::vector<std::string> csv_read_row(std::istream &in, char delimiter)
 	{

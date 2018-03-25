@@ -7,7 +7,7 @@ public:
 	FundOfFunds(std::queue<TradingEvent*>& eventsQueue, std::vector<std::string> tickers,
 		std::string fundHoldingsFile, OHLCVPriceManager& priceManager) :
 		Strategy(eventsQueue, tickers), priceManager(priceManager) {
-		CSVImporter csvImporter;
+		CsvImporter csvImporter;
 		csvImporter.SetLoadFile(fundHoldingsFile);
 
 		std::vector<std::string> dataRow;

@@ -10,8 +10,9 @@ TradingSession CreateSession() {
 	boost::gregorian::date startDate = { 2016, 11, 01 };
 	boost::gregorian::date endDate = { 2017, 12, 01 };
 
-	OHLCVPriceManager priceManager(eventsQueue, tickers,
-		startDate,endDate);
+	//OHLCVPriceManager priceManager(eventsQueue, tickers,startDate,endDate);
+	OptionPriceManager priceManager(eventsQueue, "RUT", startDate, endDate);
+	
 	SimulatedExecutionManager executionManager(eventsQueue, priceManager);
 	PortfolioManager portfolioManager(initEquity,
 		eventsQueue, priceManager);
