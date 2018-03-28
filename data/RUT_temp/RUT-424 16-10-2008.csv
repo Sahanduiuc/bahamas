@@ -1,4 +1,4 @@
-Date,Exp.Date,Strike Price,Call/Put,Market Price,Delta,Gamma,Vega,Theta
+Date,ExpDate,Strike Price,Call/Put,Market Price,Delta,Gamma,Vega,Theta
 16/10/2008,17/10/2008,300,Put,0.07,0,0,0,0
 16/10/2008,17/10/2008,310,Put,1.45,0,0,0,0
 16/10/2008,17/10/2008,320,Call,179.35,100,0,0,0.058

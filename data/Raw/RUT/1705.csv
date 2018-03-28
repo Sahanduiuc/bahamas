@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,1113.6,-2.5,1115.6,1110.1,,, ,1,0,I,1113.6,1115.4,0,,1116.1,,,,,,160517,,0.095,,15:30:00,,,,,,,,,RUT Index,0,,
 RUT 16Q910,-1,,,,0.05,,P,-0.006,0,O,0.03,,0,0.009,,441,,,160520,,160517,-0.001,0.095,-0.086,15:30:00,,0.026,,0,0.584,910,0.03,0,May 910 Puts,,,
 RUT 16R910,-1,,,,0.6,0.326,P,-1.253,0.032,O,0.53,,0,0.024,,538,0.178,0.32,160617,,160517,-1.22,0.095,-5.835,15:30:00,,10.585,0.313,0,0.313,910,0.53,0.45,Jun 910 Puts,,,0.45

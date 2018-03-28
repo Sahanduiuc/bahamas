@@ -17,27 +17,48 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 
 void OptionPriceManager::ImportInstrumentData(std::string ticker) {
 	CsvImporter dataImporter;
-	dataImporter.SetDataPath("..\\data\\RUT\\");
+	std::string fPath = "..\\data\\RUT\\";
+	dataImporter.SetDataPath(fPath);
 
 	//Import all available option chains TODO use given dates
-	boost::filesystem::path p("..\\data\\RUT\\");
+	boost::filesystem::path p(fPath);
 	for (auto i = boost::filesystem::directory_iterator(p); 
 		i != boost::filesystem::directory_iterator(); i++)
 	{
-		if (!is_directory(i->path())) //we eliminate directories
+		if (!is_directory(i->path())) 
 		{
 			std::string fName = i->path().filename().string();
-			dataImporter.SetLoadFile(fName);
+			std::cout << "Importing file " << fName << std::endl;
 
-			std::vector<std::string> dataRow;
-			//Skip header row
-			dataImporter.GetDataItem(dataRow);
+			io::CSVReader<9> in(fPath + fName);
+			in.read_header(io::ignore_missing_column, "Date", "ExpDate", "Strike", "Type", "Mid", "Delta", "Gamma", "Vega", "Theta");
+			std::string date, expDate, type, strike, mid, delta, gamma, vega, theta;
 
-			dataImporter.GetDataItem(dataRow);
-			while (!dataRow.empty()) {
-				boost::gregorian::date eventDate =
-					boost::gregorian::from_string(dataRow[0]);
+			while (in.read_row(date, expDate, strike, type, 
+				mid, delta, gamma, vega, theta)) {
+				std::string contractId = ticker + "_" + strike + "_" + type + "_" + expDate;
+				OptionContract tempContract{
+					contractId,
+					ticker,
+					expDate
+				};
 
+				BidAskDataFrame dataFrame{
+					ticker,
+					date,
+					stod(mid),
+					0,
+					stod(mid),
+					0
+				};
+
+				if (InstrumentData.find(tempContract) == InstrumentData.end()) {			
+					std::map<std::string, BidAskDataFrame> timeSeries{ {date, dataFrame} };
+					InstrumentData[tempContract] = timeSeries;
+				}
+				else {
+					InstrumentData[tempContract][date] = dataFrame;
+				}
 			}
 		}
 		else

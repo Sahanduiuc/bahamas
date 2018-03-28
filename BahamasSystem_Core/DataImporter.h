@@ -8,6 +8,7 @@
 #include <functional>
 #include <iostream>
 #include <boost/coroutine/all.hpp>
+#include "csv.h"
 
 class CsvImporter {
 public:

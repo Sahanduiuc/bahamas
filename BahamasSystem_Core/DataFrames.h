@@ -16,7 +16,7 @@ struct OHCLVDataFrame {
 
 struct BidAskDataFrame {
 	std::string Ticker;
-	boost::gregorian::date EventDateTime;
+	std::string EventDateTime;
 	double Bid;
 	double BidSize;
 	double Ask;

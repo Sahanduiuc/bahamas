@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,542.92,-3.65,558.11,542.67,,, ,1,0,I,542.92,550.69,0,,546.57,,,,,,081009,,0.411,,15:30:00,,,,,,,,,RUT Index,0,,
 RURJJ,,,,,,,C,96.772,0.052,O,0,,0,0.352,,,,,081017,,,7.24,0.411,-58.682,,,5.811,,1,1.723,350,,194.65,Oct 350 Calls,,,
 RURKJ,,,,,,,C,94.258,0.069,O,0,,0,0.358,,,,,081121,,,36.981,0.411,-22.441,,,21.416,,0.999,0.896,350,,196.54,Nov 350 Calls,,,

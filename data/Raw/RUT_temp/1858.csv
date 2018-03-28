@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,737.5,-5.9,745.3,736,,, ,1,0,I,737.5,743.4,0,,743.4,,,,,,080516,,0.133,,15:30:00,,,,,,,,,RUT Index,0,,
 RUWQR,0.05,,,,0.05,,P,0,0,O,0.03,,0,,,9100,,,080516,,080516,0,0.133,0,15:30:00,,0,,,0.214,590,0.03,0,May 590 Puts,,9,
 RUWRR,-1,,,,,,P,-1.497,0.049,O,0.25,,0,0.029,,8303,-0.419,0.316,080620,,080516,-1.095,0.133,-2.618,15:30:00,,8.672,0.316,0,0.34,590,0.25,0.43,Jun 590 Puts,,,0.25

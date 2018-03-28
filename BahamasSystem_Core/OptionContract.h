@@ -10,7 +10,12 @@ class OptionContract {
 public:
 	std::string ID;
 	std::string UnderlyingTicker;
-	boost::gregorian::date ExpirationDate;
+	std::string expirationDate;
+
+	bool operator <(const OptionContract& rhs) const
+	{
+		return ID < rhs.ID;
+	}
 };
 
 #endif

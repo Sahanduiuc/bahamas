@@ -1,4 +1,4 @@
-Date,Exp.Date,Strike Price,Call/Put,Market Price,Delta,Gamma,Vega,Theta
+Date,ExpDate,Strike,Type,Mid,Delta,Gamma,Vega,Theta
 26/10/2017,17/11/2017,1260,Put,0.73,-1.425,0.03,13.399,-10.785
 26/10/2017,17/11/2017,1270,Put,0.8,-1.573,0.034,14.588,-11.516
 26/10/2017,17/11/2017,1280,Call,218,98.415,0.036,14.689,-13.94

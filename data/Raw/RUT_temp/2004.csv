@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,449.49,-1.72,452.25,440.94,,, ,1,0,I,449.49,448.7,0,,451.21,,,,,,081212,,0.548,,15:30:00,,,,,,,,,RUT Index,0,,
 RURXE,0.05,,,,0.1,,P,-0.059,0.003,O,0.07,,0,0.033,,2222,,,081219,,081212,-0.005,0.548,-0.772,15:30:00,,0.13,,0,1.164,270,0.07,0.01,Dec 270 Puts,,,0.05
 RURME,1.2,0.2,1.2,1.2,1.4,0.913,P,-2.286,0.044,O,1.27,1.2,0,0.082,1,1256,0.104,0.897,090116,,081212,-1.092,0.548,-10.059,15:30:00,,7.543,0.881,0.001,0.881,270,1.27,1.15,Jan09 270 Puts,,10,1.15

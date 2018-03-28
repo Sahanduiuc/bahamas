@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,1367.7,5,1367.7,1362.6,,, ,1,0,I,1367.7,1362.6,0,,1362.7,,,,,,161223,,0.106,,15:30:00,,,,,,,,,RUT Index,0,,
 RUT 17M1130,-1,,,,0.7,0.326,P,-0.722,0.018,O,0.45,,0,0.02,,546,0.731,0.307,170120,,161223,-0.776,0.106,-5.807,15:30:00,,7.662,0.277,0,0.286,1130,0.45,0.26,Jan17 1130 Puts,,,0.2
 RUT 17N1130,-1,,,,2.45,0.284,P,-3.799,0.055,O,2.23,,0,0.035,,1981,-0.071,0.279,170217,,161223,-8.315,0.106,-10.412,15:30:00,,44.442,0.274,0,0.283,1130,2.23,2.4,Feb17 1130 Puts,,,2

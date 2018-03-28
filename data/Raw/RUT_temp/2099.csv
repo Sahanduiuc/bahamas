@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,485.28,-2.28,489.43,485.03,,, ,1,0,I,485.28,488.09,0,,487.56,,,,,,090501,,0.287,,15:30:00,,,,,,,,,RUT Index,0,,
 RURQF,,,,,,,P,-0.474,0.019,O,0,0.8,0,0.037,,,,,090515,,,-0.093,0.287,-3.306,,,1.314,,0,0.78,330,,0.12,May 330 Puts,,,
 RURRF,,,,,,,P,-3.381,0.07,O,0,,0,0.07,,,,,090619,,,-2.401,0.287,-8.178,,,13.338,,0,0.608,330,,1.56,Jun 330 Puts,,,

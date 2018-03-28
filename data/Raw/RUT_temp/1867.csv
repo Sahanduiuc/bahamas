@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,745.8,0.2,746.4,743,,, ,1,0,I,745.8,745.8,0,,745.6,,,,,,080530,,0.136,,15:30:00,,,,,,,,,RUT Index,0,,
 RUWRT,0.1,,,,0.15,,P,-0.532,0.024,O,0.1,,0,0.021,,10552,,,080620,,080530,-0.234,0.136,-2.183,15:30:00,,2.751,,0,0.361,600,0.1,0.11,Jun 600 Puts,,1198,0.05
 RUWST,-1,,,,1.1,0.327,P,-2.876,0.075,O,0.98,,0,0.035,,3570,-0.039,0.321,080718,,080530,-3.003,0.136,-5.564,15:30:00,,17.996,0.313,0,0.323,600,0.98,1.02,Jul 600 Puts,,,0.85

@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,571.16,0.27,584.7,567.88,,, ,1,0,I,571.16,578.78,0,,570.89,,,,,,081014,,0.548,,15:30:00,,,,,,,,,RUT Index,0,,
 RURVT,1,,,,0.25,,P,-0.006,0,O,0.25,,0,0.03,,47,,,081017,,081014,0,0.548,-0.129,15:30:00,,0.012,,0,1.88,300,0.25,0,Oct 300 Puts,,,
 RURWT,1.3,,,,0.95,0.971,P,-1.156,0.018,O,0.75,,0,0.084,,285,-0.013,0.937,081121,,081014,-0.764,0.548,-6.65,15:30:00,,5.573,0.886,0,0.939,300,0.75,0.76,Nov 300 Puts,,,0.5

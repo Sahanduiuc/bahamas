@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,716,-5.6,727.7,714.5,,, ,1,0,I,716,723.6,0,,721.6,,,,,,080107,,0.187,,15:30:00,,,,,,,,,RUT Index,0,,
 RUWML,0.05,,,,0.15,,P,-0.158,0.008,O,0.07,,0,0.018,,2046,,,080118,,080107,-0.035,0.187,-1.175,15:30:00,,0.64,,0,0.488,560,0.07,0.03,Jan 560 Puts,,15,
 RUWNL,-1,,,,0.75,0.387,P,-2.15,0.057,O,0.75,,0,0.036,,4340,0,,080215,,080107,-1.721,0.187,-5.739,15:30:00,,12.092,,0,0.388,560,0.75,0.75,Feb 560 Puts,,,

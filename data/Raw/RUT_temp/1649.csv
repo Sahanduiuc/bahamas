@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,851.9,6,853.4,848.8,,, ,1,0,I,851.9,848.8,0,,845.9,,,,,,070719,,0.11,,15:30:00,,,,,,,,,RUT Index,0,,
 RUTST,,,,,,,P,0,0,O,0,,0,0,,,,,070720,,,0,0.11,0,,,0,,0,0.193,700,,0,Jul 700 Puts,,,
 RUTTT,-1,,,,0.45,0.334,P,-1.334,0.044,O,0.45,,0,0.025,,2721,0.184,,070817,,070719,-0.93,0.11,-4.317,15:30:00,,8.266,,0,0.325,700,0.45,0.38,Aug 700 Puts,,,

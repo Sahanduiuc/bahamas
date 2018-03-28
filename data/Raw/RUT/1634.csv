@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,1022.1,11.8,1022.7,1008.6,,, ,1,0,I,1022.1,1008.7,0,,1010.3,,,,,,160204,,0.229,,15:30:00,,,,,,,,,RUT Index,0,,
 RUT 16N800,-1,,,,0.25,0.502,P,-0.218,0.008,O,0.25,,0,0.019,,1395,,,160219,,160204,-0.094,0.229,-1.804,15:30:00,,1.433,,0,0.429,800,0.25,0.06,Feb 800 Puts,,,
 RUT 16O800,-1,,,,1.5,0.383,P,-2.53,0.045,O,1.4,,0,0.038,,6224,0.069,0.378,160318,,160204,-3.188,0.229,-9.272,15:30:00,,20.751,0.374,0.001,0.374,800,1.4,1.31,Mar 800 Puts,,,1.3

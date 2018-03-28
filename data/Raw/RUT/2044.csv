@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,1442,1.6,1442,1440,,, ,1,0,I,1442,1440.5,0,,1440.4,,,,,,170920,,0.073,,15:30:00,,,,,,,,,RUT Index,0,,
 RUT 17V1220,-1,,,,1.05,0.297,P,-2.291,0.044,O,0.78,,0,0.025,,1279,-0.284,0.283,171020,,170920,-2.797,0.073,-8.302,15:30:00,,22.57,0.266,0,0.298,1220,0.78,1.09,Oct 1220 Puts,,,0.5
 RUT 17W1220,2.11,-0.05,2.11,1.98,2.4,0.247,P,-4.011,0.061,O,2.12,1.99,0,0.031,2.16,453,-0.109,0.241,171117,,170920,-9.529,0.073,-9.386,15:30:00,,49.831,0.235,0,0.247,1220,2.12,2.38,Nov 1220 Puts,,60,1.85

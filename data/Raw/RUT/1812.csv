@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,1215.4,5.3,1221.7,1211.3,,, ,1,0,I,1215.4,1216.3,0,,1210.1,,,,,,161018,,0.103,,15:30:00,,,,,,,,,RUT Index,0,,
 RUT 16V980,-1,,,,0.05,,P,-0.003,0,O,0.03,,0,0.009,,321,,,161021,,161018,0,0.103,-0.038,15:30:00,,0.012,,0,0.591,980,0.03,0,Oct 980 Puts,,,
 RUT 16W980,-1,,,,0.7,0.349,P,-1.388,0.029,O,0.65,,0,0.027,,218,0.066,0.345,161118,,161018,-1.48,0.103,-7.035,15:30:00,,12.612,0.341,0,0.342,980,0.65,0.61,Nov 980 Puts,,,0.6

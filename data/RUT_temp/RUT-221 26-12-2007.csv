@@ -1,4 +1,4 @@
-Date,Exp.Date,Strike Price,Call/Put,Market Price,Delta,Gamma,Vega,Theta
+Date,ExpDate,Strike Price,Call/Put,Market Price,Delta,Gamma,Vega,Theta
 26/12/2007,18/01/2008,630,Put,0.2,-0.832,0.03,4.526,-3.307
 26/12/2007,18/01/2008,640,Put,0.3,-1.086,0.039,5.714,-4.548
 26/12/2007,18/01/2008,650,Call,142.35,95.934,0.095,17.355,-21.913

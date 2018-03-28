@@ -1,4 +1,4 @@
-Date,Exp.Date,Strike Price,Call/Put,Market Price,Delta,Gamma,Vega,Theta
+Date,ExpDate,Strike Price,Call/Put,Market Price,Delta,Gamma,Vega,Theta
 16/01/2009,16/01/2009,290,Put,0.18,0,0,0,0
 16/01/2009,16/01/2009,300,Put,0.03,0,0,0,0
 16/01/2009,16/01/2009,310,Call,153.78,100,0,0,0

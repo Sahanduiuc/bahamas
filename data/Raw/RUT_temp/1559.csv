@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,785.8,0.7,786.7,783.4,,, ,1,0,I,785.8,784.6,0,,785.1,,,,,,070312,,0.125,,15:30:00,,,,,,,,,RUT Index,0,,
 RUYOH,,,,,,,P,-0.242,0.013,O,0,,0,0.017,,,,,070316,,,-0.021,0.125,-3.437,,,0.622,,0,0.706,640,,0.04,Mar 640 Puts,,,
 RUYPH,,,,,,,P,-2.164,0.062,O,0,,0,0.03,,,,,070420,,,-1.883,0.125,-5.186,,,13.342,,0,0.324,640,,0.69,Apr 640 Puts,,,

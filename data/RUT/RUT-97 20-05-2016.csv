@@ -1,4 +1,4 @@
-Date,Exp.Date,Strike Price,Call/Put,Market Price,Delta,Gamma,Vega,Theta
+Date,ExpDate,Strike,Type,Mid,Delta,Gamma,Vega,Theta
 20/05/2016,20/05/2016,890,Put,-1,0,0,0,0
 20/05/2016,20/05/2016,900,Put,-1,0,0,0,0
 20/05/2016,20/05/2016,910,Put,-1,0,0,0,0

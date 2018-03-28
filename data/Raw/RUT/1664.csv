@@ -1,4 +1,4 @@
-Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,Exp.Date,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
+Symbol,Last,Change,High,Low,Ask,Ask IV,Call/Put,Delta,Gamma,Item Type,Market Price,Open,Original Price,Pcnt To Double,Previous Close,Open Interest,Percent O/U,Mid IV,ExpDate,Existing Posn.,Date,Rho,SV,Theta,Time,Trade,Vega,Bid IV,Prob.Finish.ITM,Projected Volty,Strike Price,Time Premium,Th.Price,Description,At Price,Volume,Bid
 RUT,1099.3,8.1,1101.3,1092,,, ,1,0,I,1099.3,1092,0,,1091.2,,,,,,160318,,0.142,,15:30:00,,,,,,,,,RUT Index,0,,
 RUT 16O880,-1,,,,,,P,0,0,O,-1,,0,,,2485,,,160318,,160318,0,0.142,0,15:30:00,,0,,,0.174,880,,0,Mar 880 Puts,,,
 RUT 16P880,-1,,,,0.4,0.354,P,-0.909,0.023,O,0.33,,0,0.024,,1950,0,0.345,160415,,160318,-0.789,0.142,-4.404,15:30:00,,7.511,0.333,0,0.345,880,0.33,0.33,Apr 880 Puts,,,0.25
