@@ -241,3 +241,6 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 TestConsole/perf_metrics.txt
+Bahamas/__pycache__/datamanager.cpython-36.pyc
+Bahamas/__pycache__/spread.cpython-36.pyc
+Notebooks/.ipynb_checkpoints/OptionPriceHistory-checkpoint.ipynb

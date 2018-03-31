@@ -38,7 +38,7 @@ class OptionChainDataManager:
         tContract = contract.OptionContract(datetime.strptime(expirationDate,'%d/%m/%Y'), 
                                             strike, underlyingSymbol, type)
         if tContract.id in self.__instrumentData:
-            return tContract
+            return self.__instrumentData[tContract.id]
         print("Contract not found " + tContract.id)
         return None
 
