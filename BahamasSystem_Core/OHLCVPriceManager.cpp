@@ -45,7 +45,6 @@ void OHLCVPriceManager::StreamNextEvent() {
 	currentPeriod += boost::gregorian::days(1);
 }
 
-
 double OHLCVPriceManager::GetCurrentPrice(std::string ticker) {
 	
 	std::string dateTest = ConvData(currentPeriod - boost::gregorian::days(1));

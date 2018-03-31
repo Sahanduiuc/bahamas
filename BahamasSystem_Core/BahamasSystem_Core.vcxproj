@@ -196,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="TradingSession.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\28032018.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
