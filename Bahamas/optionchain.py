@@ -61,6 +61,9 @@ class OptionChainManager:
                 oChain = OptionChain(underlyingSymbol, expDate)
                 self.__instrumentData[chainId] = oChain
 
+            if not strike in self.__instrumentData[chainId].strikes:
+                self.__instrumentData[chainId].strikes.add(strike)
+
             if not contractId in self.__instrumentData[chainId].contracts:
                 tContract = contract.OptionContract(expDate,
                                                     strike,
@@ -80,3 +83,12 @@ class OptionChainManager:
                 return self.__instrumentData[chainId].contracts[contractId]
         print("Contract not found " + contractId)
         return None;
+
+    def getOptionChain(self, underlyingSymbol, expirationDate):
+        chainId = underlyingSymbol + "_" + expirationDate
+
+        if chainId in self.__instrumentData:
+            return self.__instrumentData[chainId]
+
+        print("Option chain not found " + chainId)
+        return None

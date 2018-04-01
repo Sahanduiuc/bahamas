@@ -20,31 +20,60 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from datetime import datetime
 import combo
-import datamanager
+import optionchain
 import optioncontract as contract
 
 class Spread(combo.OptionCombo):
+    contractA = None
+    contractB = None
+
     def __init__(self, contractA, contractB):
         self.contractA = contractA
-        self.contractB = contractB
+        self.contractB = contractB 
 
     @property
     def width(self):
         return abs(float(self.contractA.strike) - float(self.contractB.strike))
 
+class SpreadConstructor():
+    def __init__(self, optionChainManager):
+        self.optionChainManager = optionChainManager
 
-class SpreadContructor():
-    def __init__(self, dataManager):
-        self.dataManager = dataManager
+    def createStrikeSpread(self, underlyingSymbol, expirationDate, spreadtype, 
+                              optiontype, strike0, strike1):
+        contractA = self.optionChainManager.getContractData(underlyingSymbol, expirationDate, optiontype, strike0)
+        contractB = self.optionChainManager.getContractData(underlyingSymbol, expirationDate, optiontype, strike1)
 
-    def build_spread_for_credit(self, spreadtype,
-                                optiontype, targetwidth, targetCredit):
-        NotImplemented
+        return Spread(contractA, contractB)
 
-    def build_spread_on_strikes(self, spreadtype, 
-                                optiontype, strike0, strike1):
-        NotImplemented
+    #Creates a spread with width W and a min market value of V at time D
+    def createWidthValueSpread(self, underlyingSymbol, expirationDate, spreadtype,
+                               optiontype, width, spreadvalue, curtimestamp):
+        optionChain = self.optionChainManager.getOptionChain(underlyingSymbol, expirationDate)
+        strikes = list(map(int,list(optionChain.strikes)))
+        strikes.sort()
+        curtimestamp = datetime.strptime(curtimestamp, '%d/%m/%Y')
 
+        #TEMP Only consider strikes of multiples of 10
+        for strike in strikes:
+            if not (strike % 10) == 0:
+                continue
+            if strike + width > strikes[-1]:
+                continue
+            
+            spread = self.createStrikeSpread(underlyingSymbol, expirationDate, spreadtype, optiontype, str(strike+width), str(strike))            
+           
+            if not curtimestamp in spread.contractA.marketData:
+                continue
+            if not curtimestamp in spread.contractB.marketData:
+                continue
+
+            dfA = spread.contractA.marketData[curtimestamp]
+            dfB = spread.contractB.marketData[curtimestamp]
+
+            if dfA.ask - dfB.ask >= spreadvalue:
+                return spread        
 
     
