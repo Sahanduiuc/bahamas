@@ -32,6 +32,9 @@
     <Compile Include="combo.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="optionchain.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="optioncontract.py">
       <SubType>Code</SubType>
     </Compile>

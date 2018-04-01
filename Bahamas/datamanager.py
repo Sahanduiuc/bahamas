@@ -26,13 +26,11 @@ import glob
 import csv
 import optioncontract as contract
 
-class OptionChainDataManager:
+class OptionDataImporter:
     __instrumentData = {}
 
-    def __init__(self, path, underlyingSymbol):
-        self.path = path
-        self.underlyingSymbol = underlyingSymbol
-        self.__importOptionChains(path)
+    def __init__(self):
+        pass
 
     def getContractDetails(self, underlyingSymbol, expirationDate, type, strike):
         tContract = contract.OptionContract(datetime.strptime(expirationDate,'%d/%m/%Y'), 
@@ -42,37 +40,21 @@ class OptionChainDataManager:
         print("Contract not found " + tContract.id)
         return None
 
-    #def getContractDetails(self, underlyingSymbol, expirationDate, type):
-        #pass
-
-    def __importOptionChains(self, path):
+    def importOptionData(self, path, underlyingSymbol):
+        self.underlyingSymbol = underlyingSymbol
         chainFiles = glob.glob(path + "*.csv")
-        debugCount = 2000
+
         for file in chainFiles:
-            print("Loading file "+file)
-            self.__importChain(file)
-            debugCount -= 1
-            if debugCount == 0:
-                break
-        pass
+            print("Loading file "+file)           
+            with open(file) as csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                next(readCSV)
+                for row in readCSV:
+                    eventDate = datetime.strptime(row[0], '%d/%m/%Y')
+                    expDate = datetime.strptime(row[1], '%d/%m/%Y')
+                    strike = row[2]
+                    type= row[3]
+                    mid = float(row[4])
+                    
+                    yield eventDate, expDate, strike, type, mid
 
-    def __importChain(self, file):
-        with open(file) as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            next(readCSV)
-            for row in readCSV:
-                eventDate = datetime.strptime(row[0], '%d/%m/%Y')
-                expDate = datetime.strptime(row[1], '%d/%m/%Y')
-                strike = row[2]
-                type= row[3]
-                mid = float(row[4])
-                
-                tContract = contract.OptionContract(expDate,
-                                                    strike,
-                                                    self.underlyingSymbol,
-                                                    type)
-                bidaskDf = mdf.BidAskDataFrame(eventDate,mid, 0, mid, 0)
-                if not tContract.id in self.__instrumentData:
-                    self.__instrumentData[tContract.id] = tContract
-
-                self.__instrumentData[tContract.id].marketData[eventDate] = bidaskDf

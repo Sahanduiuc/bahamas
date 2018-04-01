@@ -1,9 +1,6 @@
-import optioncontract as contract
-import datamanager as dm
-import spread
+import optionchain
 
-dManager = dm.OptionChainDataManager("..\\data\\RUT\\","RUT")
-tryGetContract = dManager.getContractDetails("RUT","19/02/2016","Call","900")
+cManager  = optionchain.OptionChainManager()
+cManager.addNewInstrument("RUT")
 
-if not tryGetContract is None:
-    print(tryGetContract)
+print(cManager.getContractData("RUT","19/02/2016","Call","900"))
