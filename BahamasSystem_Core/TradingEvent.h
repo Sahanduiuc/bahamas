@@ -80,4 +80,8 @@ public:
 
 };
 
+class OptionChainUpdateEvent {
+
+};
+
 #endif /* TRADINGEVENT_H_ */

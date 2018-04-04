@@ -157,6 +157,7 @@
     <ClInclude Include="ExecutionManager.h" />
     <ClInclude Include="GoogleAPIPriceHandler.h" />
     <ClInclude Include="OHLCVPriceManager.h" />
+    <ClInclude Include="OptionChain.h" />
     <ClInclude Include="OptionContract.h" />
     <ClInclude Include="OrderSizer.h" />
     <ClInclude Include="Portfolio.h" />
@@ -195,9 +196,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TradingSession.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\28032018.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

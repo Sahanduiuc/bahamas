@@ -12,7 +12,7 @@
 #include "TradingEvent.h"
 #include "PriceManager.h"
 #include "DataImporter.h"
-
+#include "OptionChain.h"
 
 class OptionPriceManager : public PriceManager {
 public:
@@ -28,24 +28,14 @@ public:
 	std::string GetCurrentTimeStampString() { return ""; }
 	//boost::gregorian::date GetCurrentTimeStamp() const;
 private:
-	std::map<OptionContract, std::map<std::string, BidAskDataFrame> > InstrumentData;
+	std::map<OptionContract, std::map<std::string, BidAskDataFrame> > OptionPriceData;
+	std::vector<OptionChain> OptionChainData;
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;
-	OptionContract activeContract;
 
 	void ImportInstrumentData(std::string);
-
-	boost::gregorian::date ParseDate(const std::string& str)
-	{
-		std::locale fmt2(std::locale::classic(),
-			new boost::gregorian::date_input_facet("%m/%d/%Y"));
-		std::istringstream is(str);
-		is.imbue(fmt2);
-		boost::gregorian::date date;
-		is >> date;
-		return date;
-	}
+	void ImportOptionData(std::string, std::string);
 };
 
 #endif 
