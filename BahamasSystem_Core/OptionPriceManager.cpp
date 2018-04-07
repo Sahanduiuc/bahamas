@@ -30,23 +30,23 @@ void OptionPriceManager::ImportInstrumentData(std::string ticker) {
 
 	//Import all available option chains TODO use given dates
 	boost::filesystem::path p(fPath);
+
 	for (auto i = boost::filesystem::directory_iterator(p);
 		i != boost::filesystem::directory_iterator(); i++)
 	{
 		if (!is_directory(i->path()))
 		{
-			std::string fName = i->path().filename().string();
-			std::cout << "Importing file " << fName << std::endl;
-
-			ImportOptionData(fPath, fName);
+			std::string file = i->path().filename().string();
+			std::cout << "Importing file " << file << std::endl;
+			ImportOptionData(fPath + file);
 		}
 		else
 			continue;
 	}
 }
 
-void OptionPriceManager::ImportOptionData(std::string fPath, std::string fName) {
-	io::CSVReader<16> in(fPath + fName);
+void OptionPriceManager::ImportOptionData(std::string file) {
+	io::CSVReader<16> in(file);
 	in.read_header(io::ignore_missing_column, "date", "underlying", "root_symbol",
 		"exchange", "futures_symbol", "futures_expiration_date",
 		"futures_close", "options_expiration_date", "strike",
@@ -59,7 +59,8 @@ void OptionPriceManager::ImportOptionData(std::string fPath, std::string fName) 
 		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
 		strike, type, style, bid, ask, settlement, volume, openIntrest)) {
 
-		std::string contractId = underlying + "_" + rootSymbol + "_" + strike + "_" + type + "_" + optionExpDate;
+		std::string chainId = rootSymbol + "_" + optionExpDate;
+		std::string contractId = chainId + "_" + type + "_" + strike;
 		OptionContract tempContract{
 			contractId,
 			underlying,
@@ -75,14 +76,22 @@ void OptionPriceManager::ImportOptionData(std::string fPath, std::string fName) 
 			stod(ask),
 			0
 		};
-
-		if (OptionPriceData.find(tempContract) == OptionPriceData.end()) {
-			std::map<std::string, BidAskDataFrame> timeSeries{ { date, dataFrame } };
-			OptionPriceData[tempContract] = timeSeries;
+		bool chainExists = false;
+		for (auto& chain : OptionChainData) {
+			if (chain.ChainId == chainId) {
+				if (chain.OptionContracts.find(contractId) == chain.OptionContracts.end()) {
+					chain.OptionContracts[contractId] = tempContract;
+				}
+				chain.OptionContracts[contractId].PriceData[date] = dataFrame;
+				chainExists = true;
+				break;
+			}
 		}
-		else {
-			OptionPriceData[tempContract][date] = dataFrame;
+		if (!chainExists) {
+			OptionChain tempChain(chainId,underlying, rootSymbol, optionExpDate);
+			OptionChainData.push_back(tempChain);
 		}
 	}
+
 }
 

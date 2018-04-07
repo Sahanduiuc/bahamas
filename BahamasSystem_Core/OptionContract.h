@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "DataFrames.h"
 #include <boost/bind.hpp>
 #include "boost/date_time/gregorian/gregorian.hpp"
 
@@ -12,6 +13,7 @@ public:
 	std::string UnderlyingTicker;
 	std::string OptionTicker;
 	std::string expirationDate;
+	std::map<std::string, BidAskDataFrame> PriceData;
 
 	bool operator <(const OptionContract& rhs) const
 	{

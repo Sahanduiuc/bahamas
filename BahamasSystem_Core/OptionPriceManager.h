@@ -3,9 +3,13 @@
 
 #include <queue>
 #include <boost/bind.hpp>
+#include <algorithm> 
+#include <cstring>
+#include <boost/iostreams/stream.hpp>  
 #include <boost/filesystem.hpp>
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include <boost/date_time/gregorian/gregorian_io.hpp>
+#include <boost/iostreams/device/mapped_file.hpp> 
 
 #include "DataFrames.h"
 #include "OptionContract.h"
@@ -28,14 +32,13 @@ public:
 	std::string GetCurrentTimeStampString() { return ""; }
 	//boost::gregorian::date GetCurrentTimeStamp() const;
 private:
-	std::map<OptionContract, std::map<std::string, BidAskDataFrame> > OptionPriceData;
 	std::vector<OptionChain> OptionChainData;
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;
 
 	void ImportInstrumentData(std::string);
-	void ImportOptionData(std::string, std::string);
+	void ImportOptionData(std::string);
 };
 
 #endif 
