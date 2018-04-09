@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "BahamasSystemCore.h"
-#include "Strategies\SimpleBuyAndHold.h"
+#include "Strategies\BullPutCreditSpread.h"
 
 TradingSession CreateSession() {
 	double initEquity = 100000.0;
@@ -16,7 +16,7 @@ TradingSession CreateSession() {
 	SimulatedExecutionManager executionManager(eventsQueue, priceManager);
 	PortfolioManager portfolioManager(initEquity,
 		eventsQueue, priceManager);
-	SimpleBuyHold strategy(eventsQueue, tickers);
+	BullPutCreditSpread strategy(eventsQueue, tickers);
 
 	auto session = TradingSession(eventsQueue, 
 		priceManager,

@@ -16,7 +16,8 @@ public:
 
 	Strategy(std::queue<TradingEvent*>& eventsQueue, std::vector<std::string> tickers) :
 		eventsQueue(eventsQueue), tickers(tickers) {};
-	virtual void CalculateSignal(BarEvent& event) = 0;
+	virtual void CalculateSignal(BarEvent& event) {}
+	virtual void CalculateSignal(OptionChainUpdateEvent& event) {}
 protected:
 	std::queue<TradingEvent*>& eventsQueue;
 };

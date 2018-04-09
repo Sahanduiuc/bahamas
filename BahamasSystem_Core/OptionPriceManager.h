@@ -28,17 +28,21 @@ public:
 
 	void StreamNextEvent();
 	double GetCurrentPrice(std::string);
-	bool EOD() { return false; }
-	std::string GetCurrentTimeStampString() { return ""; }
+	bool EOD();
+	std::string GetCurrentTimeStampString();
 	//boost::gregorian::date GetCurrentTimeStamp() const;
 private:
-	std::vector<OptionChain> OptionChainData;
+	std::vector<OptionChain> optionChainData;
+	std::map<std::string, double> underlyingPrices;
+	std::map<std::string, OptionContract*> optionContracts;
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;
+	bool eod = false;
 
 	void ImportInstrumentData(std::string);
 	void ImportOptionData(std::string);
+	void GetNextTradingTimeStamp();
 };
 
 #endif 

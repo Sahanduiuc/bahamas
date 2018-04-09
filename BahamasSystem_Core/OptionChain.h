@@ -9,14 +9,14 @@ public:
 	std::string OptionTicker;
 	std::string ExpirationDate;
 	std::vector<double> Strikes;
-	std::map<std::string, OptionContract> OptionContracts;
+	std::map<std::string, OptionContract*> OptionContracts;
 	std::string ChainId;
 
 	OptionChain(std::string chainId, std::string underlyingTicker, std::string optionTicker,
 		std::string expDate) : ChainId(chainId), UnderlyingTicker(underlyingTicker), 
 		OptionTicker(optionTicker), ExpirationDate(expDate) {
-
 	}
+
 };
 
 #endif

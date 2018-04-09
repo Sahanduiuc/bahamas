@@ -183,6 +183,7 @@
     <ClCompile Include="BahamasSystemCore.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="OHLCVPriceManager.cpp" />
+    <ClCompile Include="OptionContract.cpp" />
     <ClCompile Include="OptionPriceManager.cpp" />
     <ClCompile Include="OrderSizer.cpp" />
     <ClCompile Include="Portfolio.cpp" />

@@ -16,6 +16,8 @@ TradingSession::TradingSession(std::queue<TradingEvent*>& eventsQueue,
 }
 
 void TradingSession::Execute() {
+
+	std::cout << "Starting Backtest session..." << std::endl;
 	//TODO change terminate condition
 	while (!priceManager.EOD()) {
 		//If the Events queue is empty then wait for a price event
@@ -26,17 +28,14 @@ void TradingSession::Execute() {
 			TradingEvent* t_event = eventsQueue.front();
 
 			switch (t_event->GetEventType()) {
-				case EventType::BarEventType: {
-					BarEvent& tempEvent = static_cast<BarEvent&>(*t_event);
+				case EventType::OptionChainUpdateEventType: {
+					OptionChainUpdateEvent& tempEvent = static_cast<OptionChainUpdateEvent&>(*t_event);
 					strategy.CalculateSignal(tempEvent);
 					portfolioManager.UpdatePortfolioValue();
-					StatisticsManager::getInstance().UpdateEquityCurve(
-						portfolioManager,priceManager);
 					break;
 				}
 				case EventType::OrderBookUpdateEventType: {
 					OrderBookUpdateEvent& tempEvent = static_cast<OrderBookUpdateEvent&>(*t_event);
-
 					break;
 				}
 				case EventType::OrderEventType: {

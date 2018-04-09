@@ -1,10 +1,11 @@
-
 #ifndef TRADINGEVENT_H_
 #define TRADINGEVENT_H_
 
 #include <string>
+#include "DataFrames.h"
+#include "OptionChain.h"
 
-enum EventType { BaseEventType, OrderBookUpdateEventType , BarEventType, SignalEventType, OrderEventType, FillEventType };
+enum EventType { BaseEventType, OrderBookUpdateEventType , BarEventType, SignalEventType, OrderEventType, FillEventType, OptionChainUpdateEventType };
 
 class TradingEvent {
 public:
@@ -80,9 +81,12 @@ public:
 
 };
 
-class OptionChainUpdateEvent {
+class OptionChainUpdateEvent : public TradingEvent {
 public:
+	std::vector<OptionChain*> OptionChains;
 
+	OptionChainUpdateEvent(std::string underlyingTicker):
+		TradingEvent(underlyingTicker, EventType::OptionChainUpdateEventType){}
 };
 
 #endif /* TRADINGEVENT_H_ */

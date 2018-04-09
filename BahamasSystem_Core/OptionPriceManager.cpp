@@ -16,11 +16,28 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 }
 
 void OptionPriceManager::StreamNextEvent() {
-
+	OptionChainUpdateEvent* updateEvent = new OptionChainUpdateEvent("ES");
+	for (auto& chain : optionChainData) {
+		auto chainExpDate = boost::gregorian::from_us_string(chain.ExpirationDate);
+		
+		if (chainExpDate > currentPeriod) {
+			updateEvent->OptionChains.push_back(&chain);
+		}
+	}
+	eventsQueue.push(updateEvent);
+	GetNextTradingTimeStamp();
 }
 
+bool OptionPriceManager::EOD() {
+	if (currentPeriod >= endPeriod || eod)
+		return true;
+
+	return false;
+}
+
+
 double OptionPriceManager::GetCurrentPrice(std::string contractID) {
-	return 0;
+	return optionContracts[contractID]->MarketData().Ask;
 }
 
 void OptionPriceManager::ImportInstrumentData(std::string ticker) {
@@ -61,12 +78,6 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 
 		std::string chainId = rootSymbol + "_" + optionExpDate;
 		std::string contractId = chainId + "_" + type + "_" + strike;
-		OptionContract tempContract{
-			contractId,
-			underlying,
-			rootSymbol,
-			optionExpDate
-		};
 
 		BidAskDataFrame dataFrame{
 			rootSymbol,
@@ -76,22 +87,37 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 			stod(ask),
 			0
 		};
+
+		auto optionContract = new OptionContract(contractId, underlying, 
+			rootSymbol, optionExpDate, *this);
+
 		bool chainExists = false;
-		for (auto& chain : OptionChainData) {
+		for (auto& chain : optionChainData) {
 			if (chain.ChainId == chainId) {
 				if (chain.OptionContracts.find(contractId) == chain.OptionContracts.end()) {
-					chain.OptionContracts[contractId] = tempContract;
+					chain.OptionContracts[contractId] = optionContract;
 				}
-				chain.OptionContracts[contractId].PriceData[date] = dataFrame;
+				chain.OptionContracts[contractId]->AddMarketData(date, dataFrame);
 				chainExists = true;
+
+				optionContracts[contractId] = chain.OptionContracts[contractId];
 				break;
 			}
 		}
 		if (!chainExists) {
 			OptionChain tempChain(chainId,underlying, rootSymbol, optionExpDate);
-			OptionChainData.push_back(tempChain);
+			optionChainData.push_back(tempChain);
 		}
+
+		underlyingPrices[date] = stod(futuresClose);
 	}
 
 }
 
+void OptionPriceManager::GetNextTradingTimeStamp() {
+	//eod = true;
+}
+
+std::string OptionPriceManager::GetCurrentTimeStampString() {
+	return "";
+}
