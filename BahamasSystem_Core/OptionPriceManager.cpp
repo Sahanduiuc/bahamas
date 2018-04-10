@@ -7,7 +7,7 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 	boost::gregorian::date& endDate) :
 	eventsQueue(eventsQueue) {
 
-	this->currentPeriod = startDate;
+	this->currentPeriod = startDate - boost::gregorian::days(1);
 	this->endPeriod = endDate;
 
 	ImportInstrumentData(ticker);
@@ -16,6 +16,7 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 }
 
 void OptionPriceManager::StreamNextEvent() {
+	GetNextTradingTimeStamp();
 	OptionChainUpdateEvent* updateEvent = new OptionChainUpdateEvent("ES");
 	for (auto& chain : optionChainData) {
 		auto chainExpDate = boost::gregorian::from_us_string(chain.ExpirationDate);
@@ -25,11 +26,10 @@ void OptionPriceManager::StreamNextEvent() {
 		}
 	}
 	eventsQueue.push(updateEvent);
-	GetNextTradingTimeStamp();
 }
 
 bool OptionPriceManager::EOD() {
-	if (currentPeriod >= endPeriod || eod)
+	if (currentPeriod > endPeriod || eod)
 		return true;
 
 	return false;
@@ -42,7 +42,7 @@ double OptionPriceManager::GetCurrentPrice(std::string contractID) {
 
 void OptionPriceManager::ImportInstrumentData(std::string ticker) {
 	CsvImporter dataImporter;
-	std::string fPath = "..\\data\\Options\\ES\\";
+	std::string fPath = "..\\data\\Options\\CL\\";
 	dataImporter.SetDataPath(fPath);
 
 	//Import all available option chains TODO use given dates
@@ -76,48 +76,52 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
 		strike, type, style, bid, ask, settlement, volume, openIntrest)) {
 
-		std::string chainId = rootSymbol + "_" + optionExpDate;
-		std::string contractId = chainId + "_" + type + "_" + strike;
+		//std::string chainId = rootSymbol + "_" + optionExpDate;
+		//std::string contractId = chainId + "_" + type + "_" + strike;
 
-		BidAskDataFrame dataFrame{
-			rootSymbol,
-			date,
-			stod(bid),
-			0,
-			stod(ask),
-			0
-		};
+		//BidAskDataFrame dataFrame{
+		//	rootSymbol,
+		//	date,
+		//	stod(bid),
+		//	0,
+		//	stod(ask),
+		//	0
+		//};
 
-		auto optionContract = new OptionContract(contractId, underlying, 
-			rootSymbol, optionExpDate, *this);
+		//auto optionContract = new OptionContract(contractId, underlying, 
+		//	rootSymbol, optionExpDate, *this);
 
-		bool chainExists = false;
-		for (auto& chain : optionChainData) {
-			if (chain.ChainId == chainId) {
-				if (chain.OptionContracts.find(contractId) == chain.OptionContracts.end()) {
-					chain.OptionContracts[contractId] = optionContract;
-				}
-				chain.OptionContracts[contractId]->AddMarketData(date, dataFrame);
-				chainExists = true;
+		//bool chainExists = false;
+		//for (auto& chain : optionChainData) {
+		//	if (chain.ChainId == chainId) {
+		//		if (chain.OptionContracts.find(contractId) == chain.OptionContracts.end()) {
+		//			chain.OptionContracts[contractId] = optionContract;
+		//		}
+		//		chain.OptionContracts[contractId]->AddMarketData(date, dataFrame);
+		//		chainExists = true;
 
-				optionContracts[contractId] = chain.OptionContracts[contractId];
-				break;
-			}
-		}
-		if (!chainExists) {
-			OptionChain tempChain(chainId,underlying, rootSymbol, optionExpDate);
-			optionChainData.push_back(tempChain);
-		}
+		//		optionContracts[contractId] = chain.OptionContracts[contractId];
+		//		break;
+		//	}
+		//}
+		//if (!chainExists) {
+		//	OptionChain tempChain(chainId,underlying, rootSymbol, optionExpDate);
+		//	optionChainData.push_back(tempChain);
+		//}
 
-		underlyingPrices[date] = stod(futuresClose);
+		//underlyingPrices[date] = stod(futuresClose);
 	}
 
 }
 
 void OptionPriceManager::GetNextTradingTimeStamp() {
-	//eod = true;
+	currentPeriod += boost::gregorian::days(1);
 }
 
 std::string OptionPriceManager::GetCurrentTimeStampString() {
-	return "";
+	std::ostringstream os;
+	auto* facet(new boost::gregorian::date_facet("%m/%d/%Y"));
+	os.imbue(std::locale(os.getloc(), facet));
+	os << currentPeriod;
+	return os.str();
 }

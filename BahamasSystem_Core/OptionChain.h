@@ -16,7 +16,6 @@ public:
 		std::string expDate) : ChainId(chainId), UnderlyingTicker(underlyingTicker), 
 		OptionTicker(optionTicker), ExpirationDate(expDate) {
 	}
-
 };
 
 #endif

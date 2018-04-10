@@ -10,6 +10,7 @@
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include <boost/date_time/gregorian/gregorian_io.hpp>
 #include <boost/iostreams/device/mapped_file.hpp> 
+#include <locale>
 
 #include "DataFrames.h"
 #include "OptionContract.h"
@@ -43,6 +44,7 @@ private:
 	void ImportInstrumentData(std::string);
 	void ImportOptionData(std::string);
 	void GetNextTradingTimeStamp();
+
 };
 
 #endif 

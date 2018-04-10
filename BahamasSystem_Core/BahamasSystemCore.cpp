@@ -5,13 +5,13 @@
 TradingSession CreateSession() {
 	double initEquity = 100000.0;
 	std::queue<TradingEvent*> eventsQueue;
-	std::vector<std::string> tickers = { "ES" };
+	std::vector<std::string> tickers = { "CL" };
 
-	boost::gregorian::date startDate = { 2016, 11, 01 };
-	boost::gregorian::date endDate = { 2017, 12, 01 };
+	boost::gregorian::date startDate = { 2017, 9, 21 };
+	boost::gregorian::date endDate = { 2017, 9, 22 };
 
 	//OHLCVPriceManager priceManager(eventsQueue, tickers,startDate,endDate);
-	OptionPriceManager priceManager(eventsQueue, "ES", startDate, endDate);
+	OptionPriceManager priceManager(eventsQueue, "CL", startDate, endDate);
 	
 	SimulatedExecutionManager executionManager(eventsQueue, priceManager);
 	PortfolioManager portfolioManager(initEquity,

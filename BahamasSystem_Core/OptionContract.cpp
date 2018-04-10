@@ -13,7 +13,7 @@ OptionContract::OptionContract(std::string id, std::string underlyingTicker,
 OptionContract::~OptionContract(){}
 
 BidAskDataFrame OptionContract::MarketData() {
-	return marketData["09/21/2017"];
+	return marketData[priceManager.GetCurrentTimeStampString()];
 }
 
 void OptionContract::AddMarketData(std::string date, BidAskDataFrame dataFrame) {
