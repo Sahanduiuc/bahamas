@@ -63,6 +63,7 @@ void TradingSession::Execute() {
 			eventsQueue.pop();
 		}
 	}
-	StatisticsManager::getInstance().GenerateTearSheetData();
+	//StatisticsManager::getInstance().GenerateTearSheetData();
 	std::cout << "Session Ended." << std::endl;
+	std::cout << portfolioManager.GetPortfolioValue() << std::endl;
 }

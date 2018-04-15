@@ -76,42 +76,62 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
 		strike, type, style, bid, ask, settlement, volume, openIntrest)) {
 
-		//std::string chainId = rootSymbol + "_" + optionExpDate;
-		//std::string contractId = chainId + "_" + type + "_" + strike;
+		std::string chainId = rootSymbol + "_" + optionExpDate;
+		std::string contractId = chainId + "_" + type + "_" + strike;
 
-		//BidAskDataFrame dataFrame{
-		//	rootSymbol,
-		//	date,
-		//	stod(bid),
-		//	0,
-		//	stod(ask),
-		//	0
-		//};
+		BidAskDataFrame dataFrame{
+			rootSymbol,
+			date,
+			stod(settlement),
+			0,
+			stod(settlement),
+			0
+		};
 
-		//auto optionContract = new OptionContract(contractId, underlying, 
-		//	rootSymbol, optionExpDate, *this);
+		auto optionContract = new OptionContract(contractId, underlying, 
+			rootSymbol, optionExpDate, *this);
 
-		//bool chainExists = false;
-		//for (auto& chain : optionChainData) {
-		//	if (chain.ChainId == chainId) {
-		//		if (chain.OptionContracts.find(contractId) == chain.OptionContracts.end()) {
-		//			chain.OptionContracts[contractId] = optionContract;
-		//		}
-		//		chain.OptionContracts[contractId]->AddMarketData(date, dataFrame);
-		//		chainExists = true;
+		bool chainExists = false;
+		for (auto& chain : optionChainData) {
+			if (chain.ChainId == chainId) {
+				if (chain.OptionContracts.find(contractId) == chain.OptionContracts.end()) {
+					chain.OptionContracts[contractId] = optionContract;
+				}
+				chain.OptionContracts[contractId]->AddMarketData(date, dataFrame);
+				chainExists = true;
 
-		//		optionContracts[contractId] = chain.OptionContracts[contractId];
-		//		break;
-		//	}
-		//}
-		//if (!chainExists) {
-		//	OptionChain tempChain(chainId,underlying, rootSymbol, optionExpDate);
-		//	optionChainData.push_back(tempChain);
-		//}
+				optionContracts[contractId] = chain.OptionContracts[contractId];
+				break;
+			}
+		}
+		if (!chainExists) {
+			OptionChain tempChain(chainId,underlying, rootSymbol, optionExpDate);
+			optionChainData.push_back(tempChain);
+		}
 
-		//underlyingPrices[date] = stod(futuresClose);
+		underlyingPrices[date] = stod(futuresClose);
 	}
+	//boost::iostreams::mapped_file mmap(file, boost::iostreams::mapped_file::readonly);
+	//const char* f = mmap.const_data();
+	//auto l = f + mmap.size();
 
+	//uintmax_t m_numLines = 0;
+	//while (f && f != l) {
+	//	char* line = (char*)f;
+	//	int lineLen = 0;
+	//	std::vector<char*> data;
+	//	while (*f != '\n' && f && f != l) {
+	//		char str[] = "0000000000000000000000";
+	//		int c = 0;
+	//		while (*f != ',' && *f != '\n' && *f != '\r') {
+	//			str[c] = f[0];
+	//			c++;
+	//			f++;
+	//		}
+	//		f++;
+	//	}
+	//	f++;
+	//}
 }
 
 void OptionPriceManager::GetNextTradingTimeStamp() {

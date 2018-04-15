@@ -7,8 +7,8 @@ TradingSession CreateSession() {
 	std::queue<TradingEvent*> eventsQueue;
 	std::vector<std::string> tickers = { "CL" };
 
-	boost::gregorian::date startDate = { 2017, 9, 21 };
-	boost::gregorian::date endDate = { 2017, 9, 22 };
+	boost::gregorian::date startDate = { 2018, 3, 1 };
+	boost::gregorian::date endDate = { 2018, 3, 16 };
 
 	//OHLCVPriceManager priceManager(eventsQueue, tickers,startDate,endDate);
 	OptionPriceManager priceManager(eventsQueue, "CL", startDate, endDate);

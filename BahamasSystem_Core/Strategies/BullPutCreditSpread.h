@@ -10,7 +10,7 @@ public:
 	}
 
 	void CalculateSignal(OptionChainUpdateEvent& event) override {
-		std::string chainId = "EW3_01/19/2018";
+		std::string chainId = "CL_07/17/2018";
 		OptionChain* optionChain = nullptr;
 		for (int i = 0; i < event.OptionChains.size(); i++) {
 			if (event.OptionChains[i]->ChainId == chainId) {
@@ -18,13 +18,20 @@ public:
 				break;
 			}
 		}
-		auto option = optionChain->OptionContracts["EW3_01/19/2018_C_2585"];
+		auto option = optionChain->OptionContracts["CL_07/17/2018_P_60"];
 		auto marketData = option->MarketData();
+
+		std::cout << marketData.Ask << std::endl;
 
 		if (!invested) {
 			TradingEvent* tempEvent = new SignalEvent(option->Id, 1, 1);
 			eventsQueue.push(tempEvent);
 			invested = true;
+
+			for (auto const& x : optionChain->OptionContracts)
+			{
+				optionChain->TestContracts.push_back(x.second);
+			}
 		}
 
 		auto testContract = GetContractWithDelta(optionChain, 10.0, 'P');
@@ -32,9 +39,9 @@ public:
 
 	OptionContract* GetContractWithDelta(OptionChain* optionChain, double targetDelta, char optionType) {
 		OptionContract* targetContract;
-		for (auto const& x : optionChain->OptionContracts)
+		for (int i = 0; i < optionChain->TestContracts.size(); i++)
 		{
-			auto mktData = x.second->MarketData();
+			auto mktData = optionChain->TestContracts[i];
 		}
 		
 		return nullptr;
