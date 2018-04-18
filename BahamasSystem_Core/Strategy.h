@@ -5,6 +5,9 @@
 #include <numeric>
 #include <map>
 #include <unordered_set>
+#include <unordered_map>
+#include <algorithm>
+#include "float.h"
 
 #include "TradingEvent.h"
 #include "OHLCVPriceManager.h"

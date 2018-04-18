@@ -14,9 +14,11 @@ public:
 	std::string UnderlyingTicker;
 	std::string OptionTicker;
 	std::string ExpirationDate;
+	double Strike;
+	char Type;
 
-	OptionContract(std::string, std::string,std::string, std::string,
-		OptionPriceManager&);
+	OptionContract(std::string, std::string,std::string, std::string, 
+		double strike, char type, OptionPriceManager&);
 
 	~OptionContract();
 

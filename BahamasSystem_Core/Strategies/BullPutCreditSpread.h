@@ -18,33 +18,42 @@ public:
 				break;
 			}
 		}
-		auto option = optionChain->OptionContracts["CL_07/17/2018_P_60"];
-		auto marketData = option->MarketData();
-
-		std::cout << marketData.Ask << std::endl;
 
 		if (!invested) {
-			TradingEvent* tempEvent = new SignalEvent(option->Id, 1, 1);
-			eventsQueue.push(tempEvent);
-			invested = true;
+			//TradingEvent* tempEvent = new SignalEvent(option->Id, -1, 1);
+			//eventsQueue.push(tempEvent);
+			//invested = true;
+		}
+		std::cout << "Day" << std::endl;
+		GetSpread(optionChain, 1, 250, 'P');
+	}
 
-			for (auto const& x : optionChain->OptionContracts)
-			{
-				optionChain->TestContracts.push_back(x.second);
+	std::vector<OptionContract*> GetSpread(OptionChain* optionChain, double width,
+		double targetValue, char type) {
+		std::sort(optionChain->PutStrikes.begin(), optionChain->PutStrikes.end());
+		std::vector<OptionContract*> results;
+
+		for (int i = 0; i < optionChain->PutStrikes.size(); i++) {
+
+			double strike_a = optionChain->PutStrikes[i];
+			double strike_b = optionChain->PutStrikes[i] + width;
+
+			if (optionChain->PutStrikeMappings.find(strike_b) == 
+				optionChain->PutStrikeMappings.end())
+				continue;
+
+			OptionContract* contract_a = optionChain->PutStrikeMappings[strike_a];
+			OptionContract* contract_b = optionChain->PutStrikeMappings[strike_b];
+
+			if ((std::abs(contract_b->MarketData().Ask - 
+				contract_a->MarketData().Ask)*1000) > targetValue) {
+				results.push_back(contract_a);
+				results.push_back(contract_b);
+				break;
 			}
 		}
 
-		auto testContract = GetContractWithDelta(optionChain, 10.0, 'P');
-	}
-
-	OptionContract* GetContractWithDelta(OptionChain* optionChain, double targetDelta, char optionType) {
-		OptionContract* targetContract;
-		for (int i = 0; i < optionChain->TestContracts.size(); i++)
-		{
-			auto mktData = optionChain->TestContracts[i];
-		}
-		
-		return nullptr;
+		return results;
 	}
 
 private:

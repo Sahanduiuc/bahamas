@@ -3,10 +3,10 @@
 #include "OptionPriceManager.h"
 
 OptionContract::OptionContract(std::string id, std::string underlyingTicker,
-	std::string optionTicker, std::string expirationDate,
-	OptionPriceManager& priceManager) :
+	std::string optionTicker, std::string expirationDate, 
+	double strike, char type, OptionPriceManager& priceManager) :
 	Id(id), UnderlyingTicker(underlyingTicker), OptionTicker(optionTicker),
-	ExpirationDate(expirationDate), priceManager(priceManager) {
+	ExpirationDate(expirationDate), Strike(strike), Type(type), priceManager(priceManager) {
 
 }
 

@@ -17,7 +17,7 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 
 void OptionPriceManager::StreamNextEvent() {
 	GetNextTradingTimeStamp();
-	OptionChainUpdateEvent* updateEvent = new OptionChainUpdateEvent("ES");
+	OptionChainUpdateEvent* updateEvent = new OptionChainUpdateEvent("CL");
 	for (auto& chain : optionChainData) {
 		auto chainExpDate = boost::gregorian::from_us_string(chain.ExpirationDate);
 		
@@ -70,8 +70,8 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 		"type", "style", "bid", "ask", "settlement", "volume", "open_interest");
 	std::string date, underlying, rootSymbol, exchange,
 		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
-		strike, type, style, bid, ask, settlement, volume, openIntrest;
-
+		strike, style, bid, ask, settlement, volume, openIntrest;
+	char type;
 	while (in.read_row(date, underlying, rootSymbol, exchange,
 		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
 		strike, type, style, bid, ask, settlement, volume, openIntrest)) {
@@ -88,24 +88,52 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 			0
 		};
 
+		double strike_d = stod(strike);
 		auto optionContract = new OptionContract(contractId, underlying, 
-			rootSymbol, optionExpDate, *this);
+			rootSymbol, optionExpDate, strike_d, type,*this);
 
 		bool chainExists = false;
 		for (auto& chain : optionChainData) {
 			if (chain.ChainId == chainId) {
-				if (chain.OptionContracts.find(contractId) == chain.OptionContracts.end()) {
-					chain.OptionContracts[contractId] = optionContract;
+				if (chain.ContractMappings.find(contractId) == chain.ContractMappings.end()) {
+					chain.ContractMappings[contractId] = optionContract;
+					chain.OptionContracts.push_back(chain.ContractMappings[contractId]);
+
+					if (type == 'C') {
+						chain.CallStrikes.push_back(strike_d);
+						chain.CallStrikeMappings[strike_d] = optionContract;
+
+						if (strike_d > chain.MaxCallStrike)
+							chain.MaxCallStrike = strike_d;
+						if (strike_d < chain.MinCallStrike)
+							chain.MinCallStrike = strike_d;
+					}
+					else if (type == 'P') {
+						chain.PutStrikes.push_back(strike_d);
+						chain.PutStrikeMappings[strike_d] = optionContract;
+
+						if (strike_d > chain.MaxPutStrike)
+							chain.MaxPutStrike = strike_d;
+						if (strike_d < chain.MinPutStrike)
+							chain.MinPutStrike = strike_d;
+					}
 				}
-				chain.OptionContracts[contractId]->AddMarketData(date, dataFrame);
+				chain.ContractMappings[contractId]->AddMarketData(date, dataFrame);
 				chainExists = true;
 
-				optionContracts[contractId] = chain.OptionContracts[contractId];
+				optionContracts[contractId] = chain.ContractMappings[contractId];
 				break;
 			}
 		}
 		if (!chainExists) {
-			OptionChain tempChain(chainId,underlying, rootSymbol, optionExpDate);
+			OptionChain tempChain = {
+				chainId,
+				underlying,
+				rootSymbol,
+				optionExpDate,
+				1000
+			};
+
 			optionChainData.push_back(tempChain);
 		}
 
@@ -116,13 +144,12 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 	//auto l = f + mmap.size();
 
 	//uintmax_t m_numLines = 0;
+	//
 	//while (f && f != l) {
-	//	char* line = (char*)f;
-	//	int lineLen = 0;
 	//	std::vector<char*> data;
 	//	while (*f != '\n' && f && f != l) {
-	//		char str[] = "0000000000000000000000";
 	//		int c = 0;
+	//		char str[] = "00000000000000000000000000000";
 	//		while (*f != ',' && *f != '\n' && *f != '\r') {
 	//			str[c] = f[0];
 	//			c++;
@@ -130,6 +157,7 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 	//		}
 	//		f++;
 	//	}
+	//	m_numLines++;
 	//	f++;
 	//}
 }
