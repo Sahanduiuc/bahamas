@@ -13,6 +13,7 @@ struct OptionChain {
 	std::string OptionTicker;
 	std::string ExpirationDate;
 	int Multiplier;
+	int Dte;
 
 	std::vector<OptionContract*> OptionContracts;
 	std::unordered_map<std::string, OptionContract*> ContractMappings;

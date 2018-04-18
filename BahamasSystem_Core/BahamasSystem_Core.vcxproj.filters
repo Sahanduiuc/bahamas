@@ -99,6 +99,9 @@
     <ClInclude Include="OptionChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Combo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -135,6 +138,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OptionContract.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Combo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

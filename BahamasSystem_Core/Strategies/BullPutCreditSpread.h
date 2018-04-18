@@ -20,12 +20,16 @@ public:
 		}
 
 		if (!invested) {
-			//TradingEvent* tempEvent = new SignalEvent(option->Id, -1, 1);
-			//eventsQueue.push(tempEvent);
-			//invested = true;
+			std::vector<OptionContract*> sContracts = 
+				GetSpread(optionChain, 1, 250, 'P');
+
+			TradingEvent* order_short = new SignalEvent(sContracts[1]->Id, -1, 1);
+			eventsQueue.push(order_short);
+			TradingEvent* order_long = new SignalEvent(sContracts[0]->Id, 1, 1);
+			eventsQueue.push(order_long);
+			
+			invested = true;
 		}
-		std::cout << "Day" << std::endl;
-		GetSpread(optionChain, 1, 250, 'P');
 	}
 
 	std::vector<OptionContract*> GetSpread(OptionChain* optionChain, double width,
@@ -46,7 +50,7 @@ public:
 			OptionContract* contract_b = optionChain->PutStrikeMappings[strike_b];
 
 			if ((std::abs(contract_b->MarketData().Ask - 
-				contract_a->MarketData().Ask)*1000) > targetValue) {
+				contract_a->MarketData().Ask)) > targetValue) {
 				results.push_back(contract_a);
 				results.push_back(contract_b);
 				break;

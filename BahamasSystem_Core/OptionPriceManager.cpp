@@ -18,11 +18,14 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 void OptionPriceManager::StreamNextEvent() {
 	GetNextTradingTimeStamp();
 	OptionChainUpdateEvent* updateEvent = new OptionChainUpdateEvent("CL");
-	for (auto& chain : optionChainData) {
-		auto chainExpDate = boost::gregorian::from_us_string(chain.ExpirationDate);
+	for(int i = 0; i < optionChainData.size(); i++){
+		auto chainExpDate = 
+			boost::gregorian::from_us_string(optionChainData[i].ExpirationDate);
 		
 		if (chainExpDate > currentPeriod) {
-			updateEvent->OptionChains.push_back(&chain);
+			updateEvent->OptionChains.push_back(&optionChainData[i]);
+			auto dte = chainExpDate - currentPeriod;
+			optionChainData[i].Dte = dte.days();
 		}
 	}
 	eventsQueue.push(updateEvent);
@@ -63,18 +66,22 @@ void OptionPriceManager::ImportInstrumentData(std::string ticker) {
 }
 
 void OptionPriceManager::ImportOptionData(std::string file) {
-	io::CSVReader<16> in(file);
+	io::CSVReader<17> in(file);
 	in.read_header(io::ignore_missing_column, "date", "underlying", "root_symbol",
 		"exchange", "futures_symbol", "futures_expiration_date",
 		"futures_close", "options_expiration_date", "strike",
-		"type", "style", "bid", "ask", "settlement", "volume", "open_interest");
+		"type", "style", "bid", "ask", "settlement", "volume", "open_interest", "dte");
 	std::string date, underlying, rootSymbol, exchange,
 		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
-		strike, style, bid, ask, settlement, volume, openIntrest;
+		strike, style, bid, ask, settlement, volume, openIntrest, dte;
 	char type;
 	while (in.read_row(date, underlying, rootSymbol, exchange,
 		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
-		strike, type, style, bid, ask, settlement, volume, openIntrest)) {
+		strike, type, style, bid, ask, settlement, volume, openIntrest, dte)) {
+
+		int dte_i = stoi(dte);
+		if (dte_i == 0 || dte_i > 200)
+			continue;
 
 		std::string chainId = rootSymbol + "_" + optionExpDate;
 		std::string contractId = chainId + "_" + type + "_" + strike;
@@ -82,9 +89,9 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 		BidAskDataFrame dataFrame{
 			rootSymbol,
 			date,
-			stod(settlement),
+			stod(settlement) * 1000.0,
 			0,
-			stod(settlement),
+			stod(settlement) * 1000.0,
 			0
 		};
 
@@ -131,7 +138,8 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 				underlying,
 				rootSymbol,
 				optionExpDate,
-				1000
+				1000,
+				dte_i
 			};
 
 			optionChainData.push_back(tempChain);
