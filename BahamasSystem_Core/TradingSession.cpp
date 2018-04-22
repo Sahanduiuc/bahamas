@@ -12,7 +12,6 @@ TradingSession::TradingSession(std::queue<TradingEvent*>& eventsQueue,
 	portfolioManager(portfolioManager),
 	strategy(strategy)
 {
-	int i = 9;
 }
 
 void TradingSession::Execute() {
@@ -30,8 +29,9 @@ void TradingSession::Execute() {
 			switch (t_event->GetEventType()) {
 				case EventType::OptionChainUpdateEventType: {
 					OptionChainUpdateEvent& tempEvent = static_cast<OptionChainUpdateEvent&>(*t_event);
-					strategy.CalculateSignal(tempEvent);
 					portfolioManager.UpdatePortfolioValue();
+					portfolioManager.UpdatePortfolioRecords();
+					strategy.CalculateSignal(tempEvent);
 					break;
 				}
 				case EventType::OrderBookUpdateEventType: {
@@ -65,5 +65,4 @@ void TradingSession::Execute() {
 	}
 	//StatisticsManager::getInstance().GenerateTearSheetData();
 	std::cout << "Session Ended." << std::endl;
-	std::cout << portfolioManager.GetPortfolioValue() << std::endl;
 }

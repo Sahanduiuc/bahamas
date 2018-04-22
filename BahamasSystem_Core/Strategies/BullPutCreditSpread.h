@@ -1,25 +1,20 @@
 #pragma once
 
 #include "..\Strategy.h"
+#include "..\PortfolioManager.h"
 
 class BullPutCreditSpread : public Strategy {
 public:
 	BullPutCreditSpread(std::queue<TradingEvent*>& eventsQueue,
-		std::vector<std::string> tickers) :
-		Strategy(eventsQueue, tickers) {
+		std::vector<std::string> tickers, PortfolioManager& portfolioManager) :
+		portfolioManager(portfolioManager), Strategy(eventsQueue, tickers) {
 	}
 
 	void CalculateSignal(OptionChainUpdateEvent& event) override {
-		std::string chainId = "CL_07/17/2018";
-		OptionChain* optionChain = nullptr;
-		for (int i = 0; i < event.OptionChains.size(); i++) {
-			if (event.OptionChains[i]->ChainId == chainId) {
-				optionChain = event.OptionChains[i];
-				break;
-			}
-		}
 
 		if (!invested) {
+			OptionChain* optionChain = GetFurthestDteChain(140,event.OptionChains);
+
 			std::vector<OptionContract*> sContracts = 
 				GetSpread(optionChain, 1, 250, 'P');
 
@@ -28,8 +23,18 @@ public:
 			TradingEvent* order_long = new SignalEvent(sContracts[0]->Id, 1, 1);
 			eventsQueue.push(order_long);
 			
+			OptionContract* dContract = GetDeltaTargetContract(optionChain, 25.0, 'P');
 			invested = true;
 		}
+
+		Portfolio& portfolio = portfolioManager.GetPortfolio();
+
+		std::cout << "Data event" << std::endl;
+		for (auto const& x : portfolio.GetInvestedPositions()) {
+			std::cout << x.first << " " << x.second.UnRealisedPnL() << std::endl;
+		}
+
+		std::cout << portfolioManager.GetPortfolioValue() << std::endl;
 	}
 
 	std::vector<OptionContract*> GetSpread(OptionChain* optionChain, double width,
@@ -60,6 +65,37 @@ public:
 		return results;
 	}
 
+	OptionChain* GetFurthestDteChain(int maxDte, std::vector<OptionChain*>& optionChains) {
+		if (optionChains.size() == 0)
+			return nullptr;
+		
+		OptionChain* targetChain = optionChains[0];
+		for (int i = 1; i < optionChains.size(); i++) {
+			if (optionChains[i]->Dte < maxDte && optionChains[i]->Dte > targetChain->Dte)
+				targetChain = optionChains[i];
+		}
+		return targetChain->Dte <= maxDte ? targetChain : nullptr;
+	}
+
+	OptionContract* GetDeltaTargetContract(OptionChain* optionChain, 
+		double delta, char optionType) {
+		OptionContract* result = nullptr;
+		double min_deltaDiff = DBL_MAX;
+
+		for (int i = 0; i < optionChain->PutStrikes.size(); i++) {
+			OptionContract* contract = 
+				optionChain->PutStrikeMappings[optionChain->PutStrikes[i]];
+			
+			double deltaDiff = std::abs((contract->MarketData().Delta*-1.0) - delta);
+			if (deltaDiff < min_deltaDiff) {
+				min_deltaDiff = deltaDiff;
+				result = contract;
+			}
+		}
+		return result;
+	}
+
 private:
 	bool invested = false;
+	PortfolioManager& portfolioManager;
 };

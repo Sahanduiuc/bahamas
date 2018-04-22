@@ -3,9 +3,11 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include <algorithm>
 #include <iostream>
 
+#include "DataFrames.h"
 #include "Position.h"
 #include "PriceManager.h"
 
@@ -15,6 +17,7 @@ public:
 	virtual ~Portfolio();
 
 	void UpdatePortfolio();
+	void UpdateRecords();
 	void ProcessPosition(std::string, int, double, int, double);
 	std::map<std::string, Position> GetInvestedPositions() const;
 	double GetEquityValue() const {
@@ -28,6 +31,7 @@ private:
 	double equity = 0.0;
 	PriceManager& priceManager;
 	std::map<std::string, Position> investedPositions;
+	std::vector<PriceDataFrame> historicEquity;
 
 	void AddPosition(int, std::string, int, double, double);
 	void UpdatePosition(int, std::string, int, double, double);

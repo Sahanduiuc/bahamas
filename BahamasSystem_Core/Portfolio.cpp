@@ -25,6 +25,14 @@ void Portfolio::UpdatePortfolio() {
 	}
 }
 
+void Portfolio::UpdateRecords() {
+	PriceDataFrame dataFrame = {
+		priceManager.GetCurrentTimeStampString(),
+		equity
+	};
+	historicEquity.push_back(dataFrame);
+}
+
 void Portfolio::ProcessPosition(std::string ticker, int action, double price, int units, double commission) {
 
 	if (action == 0)

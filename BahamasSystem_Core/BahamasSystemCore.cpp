@@ -16,7 +16,7 @@ TradingSession CreateSession() {
 	SimulatedExecutionManager executionManager(eventsQueue, priceManager);
 	PortfolioManager portfolioManager(initEquity,
 		eventsQueue, priceManager);
-	BullPutCreditSpread strategy(eventsQueue, tickers);
+	BullPutCreditSpread strategy(eventsQueue, tickers, portfolioManager);
 
 	auto session = TradingSession(eventsQueue, 
 		priceManager,

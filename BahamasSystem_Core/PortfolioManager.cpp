@@ -14,6 +14,10 @@ void PortfolioManager::UpdatePortfolioValue() {
 	portfolio.UpdatePortfolio();
 }
 
+void PortfolioManager::UpdatePortfolioRecords() {
+	portfolio.UpdateRecords();
+}
+
 void PortfolioManager::ProcessSignal(SignalEvent& event) {
 	MarketOrder order = { event.GetEventTicker(),event.action,
 		event.setOrderUnits, priceManager.GetCurrentPrice(event.GetEventTicker()) };

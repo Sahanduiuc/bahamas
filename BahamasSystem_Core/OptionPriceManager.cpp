@@ -66,18 +66,18 @@ void OptionPriceManager::ImportInstrumentData(std::string ticker) {
 }
 
 void OptionPriceManager::ImportOptionData(std::string file) {
-	io::CSVReader<17> in(file);
+	io::CSVReader<18> in(file);
 	in.read_header(io::ignore_missing_column, "date", "underlying", "root_symbol",
-		"exchange", "futures_symbol", "futures_expiration_date",
+		"futures_symbol", "exchange", "futures_expiration_date",
 		"futures_close", "options_expiration_date", "strike",
-		"type", "style", "bid", "ask", "settlement", "volume", "open_interest", "dte");
-	std::string date, underlying, rootSymbol, exchange,
-		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
-		strike, style, bid, ask, settlement, volume, openIntrest, dte;
+		"type", "style", "bid", "ask", "settlement", "volume", "open_interest", "dte","delta");
+	std::string date, underlying, rootSymbol, futuresSymbol,
+		exchange, futuresExpDate, futuresClose, optionExpDate,
+		strike, style, bid, ask, settlement, volume, openIntrest, dte, delta;
 	char type;
-	while (in.read_row(date, underlying, rootSymbol, exchange,
-		futuresSymbol, futuresExpDate, futuresClose, optionExpDate,
-		strike, type, style, bid, ask, settlement, volume, openIntrest, dte)) {
+	while (in.read_row(date, underlying, rootSymbol, futuresSymbol,
+		exchange, futuresExpDate, futuresClose, optionExpDate,
+		strike, type, style, bid, ask, settlement, volume, openIntrest, dte, delta)) {
 
 		int dte_i = stoi(dte);
 		if (dte_i == 0 || dte_i > 200)
@@ -92,7 +92,8 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 			stod(settlement) * 1000.0,
 			0,
 			stod(settlement) * 1000.0,
-			0
+			0,
+			stod(delta)
 		};
 
 		double strike_d = stod(strike);
@@ -146,6 +147,13 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 		}
 
 		underlyingPrices[date] = stod(futuresClose);
+		FuturesContractDataFrame futDataFrame = {
+			underlying,
+			date,
+			futuresSymbol,
+			stod(futuresClose)
+		};
+		underlyingData[date].push_back(futDataFrame);
 	}
 	//boost::iostreams::mapped_file mmap(file, boost::iostreams::mapped_file::readonly);
 	//const char* f = mmap.const_data();
