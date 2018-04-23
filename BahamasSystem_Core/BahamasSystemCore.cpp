@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BahamasSystemCore.h"
 #include "Strategies\BullPutCreditSpread.h"
+#include "Strategies\NetZero.h"
 
 TradingSession CreateSession() {
 	double initEquity = 100000.0;
@@ -10,13 +11,12 @@ TradingSession CreateSession() {
 	boost::gregorian::date startDate = { 2018, 3, 1 };
 	boost::gregorian::date endDate = { 2018, 3, 16 };
 
-	//OHLCVPriceManager priceManager(eventsQueue, tickers,startDate,endDate);
 	OptionPriceManager priceManager(eventsQueue, "CL", startDate, endDate);
 	
 	SimulatedExecutionManager executionManager(eventsQueue, priceManager);
 	PortfolioManager portfolioManager(initEquity,
 		eventsQueue, priceManager);
-	BullPutCreditSpread strategy(eventsQueue, tickers, portfolioManager);
+	NetZero strategy(eventsQueue, tickers, portfolioManager, priceManager);
 
 	auto session = TradingSession(eventsQueue, 
 		priceManager,

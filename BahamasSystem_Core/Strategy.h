@@ -25,4 +25,10 @@ protected:
 	std::queue<TradingEvent*>& eventsQueue;
 };
 
+std::vector<OptionContract*> GetSpread(OptionChain* optionChain, double width,
+	double targetValue, char type);
+OptionChain* GetFurthestDteChain(int maxDte, std::vector<OptionChain*>& optionChains);
+OptionContract* GetDeltaTargetContract(OptionChain* optionChain,
+	double delta, char optionType);
+
 #endif

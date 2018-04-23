@@ -29,6 +29,7 @@ public:
 
 	void StreamNextEvent();
 	double GetCurrentPrice(std::string);
+	BidAskDataFrame GetCurrentDataFrame(std::string);
 	bool EOD();
 	std::string GetCurrentTimeStampString();
 	//boost::gregorian::date GetCurrentTimeStamp() const;

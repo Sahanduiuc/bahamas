@@ -99,7 +99,10 @@
     <ClInclude Include="OptionChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Combo.h">
+    <ClInclude Include="Structure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategies\NetZero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -140,7 +143,10 @@
     <ClCompile Include="OptionContract.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Combo.cpp">
+    <ClCompile Include="StructureUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -166,7 +166,8 @@
     <ClInclude Include="PriceManager.h" />
     <ClInclude Include="QuandlAPIPriceHandler.h" />
     <ClInclude Include="RiskManager.h" />
-    <ClInclude Include="Combo.h" />
+    <ClInclude Include="Strategies\NetZero.h" />
+    <ClInclude Include="Structure.h" />
     <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategies\BullPutCreditSpread.h" />
@@ -182,7 +183,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BahamasSystemCore.cpp" />
-    <ClCompile Include="Combo.cpp" />
+    <ClCompile Include="StrategyUtils.cpp" />
+    <ClCompile Include="StructureUtils.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="OHLCVPriceManager.cpp" />
     <ClCompile Include="OptionContract.cpp" />

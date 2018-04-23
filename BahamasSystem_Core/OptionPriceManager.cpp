@@ -43,6 +43,10 @@ double OptionPriceManager::GetCurrentPrice(std::string contractID) {
 	return optionContracts[contractID]->MarketData().Ask;
 }
 
+BidAskDataFrame OptionPriceManager::GetCurrentDataFrame(std::string contractID) {
+	return optionContracts[contractID]->MarketData();
+}
+
 void OptionPriceManager::ImportInstrumentData(std::string ticker) {
 	CsvImporter dataImporter;
 	std::string fPath = "..\\data\\Options\\CL\\";
