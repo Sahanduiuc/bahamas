@@ -6,22 +6,28 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <queue>
 
 #include "DataFrames.h"
 #include "Position.h"
 #include "PriceManager.h"
+#include "TradingEvent.h"
 
 class Portfolio {
 public:
-	Portfolio(double, PriceManager&);
+	Portfolio(double, std::queue<TradingEvent*>&, PriceManager&);
 	virtual ~Portfolio();
 
 	void UpdatePortfolio();
 	void UpdateRecords();
 	void ProcessPosition(std::string, int, double, int, double);
+	void CloseAllPositions();
 	std::map<std::string, Position> GetInvestedPositions() const;
 	double GetEquityValue() const {
 		return equity;
+	}
+	double GetUnrealisedPnL() const {
+		return unrealisedPnL;
 	}
 private:
 	double cashBalance = 0.0;
@@ -32,6 +38,7 @@ private:
 	PriceManager& priceManager;
 	std::map<std::string, Position> investedPositions;
 	std::vector<PriceDataFrame> historicEquity;
+	std::queue<TradingEvent*>& eventsQueue;
 
 	void AddPosition(int, std::string, int, double, double);
 	void UpdatePosition(int, std::string, int, double, double);

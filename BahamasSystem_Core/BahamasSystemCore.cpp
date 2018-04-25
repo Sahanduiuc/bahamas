@@ -3,6 +3,8 @@
 #include "Strategies\BullPutCreditSpread.h"
 #include "Strategies\NetZero.h"
 
+#include "spdlog\spdlog.h"
+
 TradingSession CreateSession() {
 	double initEquity = 100000.0;
 	std::queue<TradingEvent*> eventsQueue;

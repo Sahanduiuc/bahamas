@@ -17,6 +17,8 @@ class OptionPriceManager;
 
 double GetStructureValue(OptionStructure structure,OptionPriceManager& priceManager);
 double GetStructureDelta(OptionStructure structure, OptionPriceManager& priceManager);
+double GetStructureRegTRisk(OptionStructure structure, OptionPriceManager& priceManager);
+double GetRiskAtPosition(OptionStructure structure, OptionPriceManager& priceManager, double price);
 
 #endif
 

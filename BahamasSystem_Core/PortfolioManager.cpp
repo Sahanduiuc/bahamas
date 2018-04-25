@@ -2,7 +2,9 @@
 #include "PortfolioManager.h"
 
 PortfolioManager::PortfolioManager(double initialBalance, std::queue<TradingEvent*>& eventsQueue, PriceManager& priceManager) :
-	currentBalance(initialBalance), eventsQueue(eventsQueue), portfolio(Portfolio(initialBalance, priceManager)), priceManager(priceManager) {
+	currentBalance(initialBalance), eventsQueue(eventsQueue), 
+	portfolio(Portfolio(initialBalance, eventsQueue, priceManager)), 
+	priceManager(priceManager) {
 
 }
 

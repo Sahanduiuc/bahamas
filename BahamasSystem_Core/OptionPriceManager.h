@@ -33,11 +33,13 @@ public:
 	bool EOD();
 	std::string GetCurrentTimeStampString();
 	//boost::gregorian::date GetCurrentTimeStamp() const;
+
+	std::map<std::string, OptionContract*> OptionContracts;
+
 private:
 	std::vector<OptionChain> optionChainData;
 	std::map<std::string, double> underlyingPrices;
 	std::map<std::string, std::vector<FuturesContractDataFrame>> underlyingData;
-	std::map<std::string, OptionContract*> optionContracts;
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;

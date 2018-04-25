@@ -2,8 +2,10 @@
 #include "Portfolio.h"
 //#include "StatisticsManager.h"
 
-Portfolio::Portfolio(double initBalance, PriceManager& priceManager) :
-	cashBalance(initBalance), initialBalace(initBalance), equity(initBalance), priceManager(priceManager) {}
+Portfolio::Portfolio(double initBalance, std::queue<TradingEvent*>& eventsQueue,
+	PriceManager& priceManager) :
+	cashBalance(initBalance), initialBalace(initBalance), 
+	equity(initBalance), eventsQueue(eventsQueue), priceManager(priceManager) {}
 
 void Portfolio::UpdatePortfolio() {
 	unrealisedPnL = 0;
@@ -89,6 +91,14 @@ void Portfolio::UpdatePosition(int action, std::string ticker, int units,
 	}
 
 	UpdatePortfolio();
+}
+
+void Portfolio::CloseAllPositions() {
+	for (auto const& position : investedPositions) {
+		TradingEvent* order = new SignalEvent(position.first,
+			position.second.action * -1, position.second.totalUnits);
+		eventsQueue.push(order);
+	}
 }
 
 Portfolio::~Portfolio() {

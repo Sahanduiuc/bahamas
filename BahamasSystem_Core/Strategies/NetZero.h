@@ -5,6 +5,8 @@
 #include "..\Structure.h"
 #include "..\OptionPriceManager.h"
 
+#include "spdlog\spdlog.h"
+
 class NetZero : public Strategy {
 public:
 	NetZero(std::queue<TradingEvent*>& eventsQueue,
@@ -12,15 +14,21 @@ public:
 		OptionPriceManager& priceManager) :
 		portfolioManager(portfolioManager), priceManager(priceManager),
 		Strategy(eventsQueue, tickers) {
+
+		console = spdlog::stdout_color_mt("console");		
 	}
 
 	void CalculateSignal(OptionChainUpdateEvent& event) override {
+
+		Portfolio& portfolio = portfolioManager.GetPortfolio();
 
 		if (invested) {
 			//Close the trade if short leg delta  30 > x > 50
 			// or if gain is >= 5% of Reg-T risk
 			double delta = priceManager.GetCurrentDataFrame(shortLegId).Delta * -1;
-			if ((delta <= 30 || delta >= 50) && delta != 0.0) {
+			double profitPerc = (portfolio.GetUnrealisedPnL())/maxRisk * 100;
+			if ((delta <= 30 || delta >= 50 || profitPerc > 4.90) && delta != 0.0) {
+				portfolio.CloseAllPositions();
 				invested = false;
 			}
 		}
@@ -44,6 +52,7 @@ public:
 
 			double value = GetStructureValue(pcs_structure, priceManager);
 			double delta = GetStructureDelta(pcs_structure, priceManager);
+			maxRisk = GetStructureRegTRisk(pcs_structure, priceManager);
 
 			eventsQueue.push(order_60d);
 			eventsQueue.push(order_40d);
@@ -53,18 +62,18 @@ public:
 			shortLegId = oc_40d->Id;
 		}
 
-		Portfolio& portfolio = portfolioManager.GetPortfolio();
-
-		std::cout << "Data event" << std::endl;
-		for (auto const& x : portfolio.GetInvestedPositions()) {
-			std::cout << x.first << " " << x.second.UnRealisedPnL() << std::endl;
-		}
+		console->info("Data event");
+		//for (auto const& x : portfolio.GetInvestedPositions()) {
+		//	std::cout << x.first << " " << x.second.UnRealisedPnL() << std::endl;
+		//}
 
 		std::cout << portfolioManager.GetPortfolioValue() << std::endl;
 	}
 private:
 	bool invested = false;
+	double maxRisk = 0.0;
 	std::string shortLegId;
 	PortfolioManager& portfolioManager;
 	OptionPriceManager& priceManager;
+	std::shared_ptr<spdlog::logger> console;
 };

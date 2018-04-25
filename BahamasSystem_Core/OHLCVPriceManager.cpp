@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "OHLCVPriceManager.h"
 
-
 OHLCVPriceManager::OHLCVPriceManager(std::queue<TradingEvent*>& eventsQueue,
 	std::vector<std::string> tickers,
 	boost::gregorian::date& startDate,

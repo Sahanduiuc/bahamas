@@ -28,6 +28,10 @@ public:
 		return totalUnits;
 	}
 
+	int action;
+	std::string ticker;
+	int totalUnits;
+
 private:
 	int unitsBought = 0;
 	int unitsSold = 0;
@@ -44,9 +48,6 @@ private:
 	double avgBuyValue = 0.0;
 	double avgSellValue = 0.0;
 
-	int action;
-	std::string ticker;
-	int totalUnits;
 	double price;
 	double totalCommission;
 

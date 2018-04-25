@@ -40,11 +40,11 @@ bool OptionPriceManager::EOD() {
 
 
 double OptionPriceManager::GetCurrentPrice(std::string contractID) {
-	return optionContracts[contractID]->MarketData().Ask;
+	return OptionContracts[contractID]->MarketData().Ask;
 }
 
 BidAskDataFrame OptionPriceManager::GetCurrentDataFrame(std::string contractID) {
-	return optionContracts[contractID]->MarketData();
+	return OptionContracts[contractID]->MarketData();
 }
 
 void OptionPriceManager::ImportInstrumentData(std::string ticker) {
@@ -133,7 +133,7 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 				chain.ContractMappings[contractId]->AddMarketData(date, dataFrame);
 				chainExists = true;
 
-				optionContracts[contractId] = chain.ContractMappings[contractId];
+				OptionContracts[contractId] = chain.ContractMappings[contractId];
 				break;
 			}
 		}
