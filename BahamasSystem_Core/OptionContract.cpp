@@ -19,3 +19,7 @@ BidAskDataFrame OptionContract::MarketData() {
 void OptionContract::AddMarketData(std::string date, BidAskDataFrame dataFrame) {
 	marketData[date] = dataFrame;
 }
+
+void OptionContract::AddMarketData(uint32_t index, BidAskDataFrame dataFrame) {
+	//marketData_exp[index] = dataFrame;
+}

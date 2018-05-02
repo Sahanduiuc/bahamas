@@ -2,6 +2,7 @@
 #define OPTIONCONTRACT_H_
 
 #include <string>
+#include <unordered_map>
 
 #include "DataFrames.h"
 #include <boost/bind.hpp>
@@ -25,9 +26,11 @@ public:
 	BidAskDataFrame MarketData();
 
 	void AddMarketData(std::string, BidAskDataFrame);
+	void AddMarketData(uint32_t, BidAskDataFrame);
 private:
-	std::map<std::string, BidAskDataFrame> marketData;
+	std::unordered_map<std::string, BidAskDataFrame> marketData;
 	OptionPriceManager& priceManager;
+	//BidAskDataFrame* marketData_exp = new BidAskDataFrame[12];
 };
 
 #endif

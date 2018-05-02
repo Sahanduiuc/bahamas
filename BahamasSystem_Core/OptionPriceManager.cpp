@@ -11,6 +11,7 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 	this->endPeriod = endDate;
 
 	ImportInstrumentData(ticker);
+	//ExperimentalDataLoad(ticker);
 
 	std::cout << "All Option contracts for symbol " << ticker << " successfully loaded." << std::endl;
 }
@@ -20,12 +21,12 @@ void OptionPriceManager::StreamNextEvent() {
 	OptionChainUpdateEvent* updateEvent = new OptionChainUpdateEvent("CL");
 	for(int i = 0; i < optionChainData.size(); i++){
 		auto chainExpDate = 
-			boost::gregorian::from_us_string(optionChainData[i].ExpirationDate);
+			boost::gregorian::from_us_string(optionChainData[i]->ExpirationDate);
 		
 		if (chainExpDate > currentPeriod) {
-			updateEvent->OptionChains.push_back(&optionChainData[i]);
+			updateEvent->OptionChains.push_back(optionChainData[i]);
 			auto dte = chainExpDate - currentPeriod;
-			optionChainData[i].Dte = dte.days();
+			optionChainData[i]->Dte = dte.days();
 		}
 	}
 	eventsQueue.push(updateEvent);
@@ -37,7 +38,6 @@ bool OptionPriceManager::EOD() {
 
 	return false;
 }
-
 
 double OptionPriceManager::GetCurrentPrice(std::string contractID) {
 	return OptionContracts[contractID]->MarketData().Ask;
@@ -86,6 +86,8 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 		int dte_i = stoi(dte);
 		if (dte_i == 0 || dte_i > 200)
 			continue;
+		if (rootSymbol != "CL")
+			continue;
 
 		std::string chainId = rootSymbol + "_" + optionExpDate;
 		std::string contractId = chainId + "_" + type + "_" + strike;
@@ -106,39 +108,39 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 
 		bool chainExists = false;
 		for (auto& chain : optionChainData) {
-			if (chain.ChainId == chainId) {
-				if (chain.ContractMappings.find(contractId) == chain.ContractMappings.end()) {
-					chain.ContractMappings[contractId] = optionContract;
-					chain.OptionContracts.push_back(chain.ContractMappings[contractId]);
+			if (chain->ChainId == chainId) {
+				if (chain->ContractMappings.find(contractId) == chain->ContractMappings.end()) {
+					chain->ContractMappings[contractId] = optionContract;
+					chain->OptionContracts.push_back(chain->ContractMappings[contractId]);
 
 					if (type == 'C') {
-						chain.CallStrikes.push_back(strike_d);
-						chain.CallStrikeMappings[strike_d] = optionContract;
+						chain->CallStrikes.push_back(strike_d);
+						chain->CallStrikeMappings[strike_d] = optionContract;
 
-						if (strike_d > chain.MaxCallStrike)
-							chain.MaxCallStrike = strike_d;
-						if (strike_d < chain.MinCallStrike)
-							chain.MinCallStrike = strike_d;
+						if (strike_d > chain->MaxCallStrike)
+							chain->MaxCallStrike = strike_d;
+						if (strike_d < chain->MinCallStrike)
+							chain->MinCallStrike = strike_d;
 					}
 					else if (type == 'P') {
-						chain.PutStrikes.push_back(strike_d);
-						chain.PutStrikeMappings[strike_d] = optionContract;
+						chain->PutStrikes.push_back(strike_d);
+						chain->PutStrikeMappings[strike_d] = optionContract;
 
-						if (strike_d > chain.MaxPutStrike)
-							chain.MaxPutStrike = strike_d;
-						if (strike_d < chain.MinPutStrike)
-							chain.MinPutStrike = strike_d;
+						if (strike_d > chain->MaxPutStrike)
+							chain->MaxPutStrike = strike_d;
+						if (strike_d < chain->MinPutStrike)
+							chain->MinPutStrike = strike_d;
 					}
 				}
-				chain.ContractMappings[contractId]->AddMarketData(date, dataFrame);
+				chain->ContractMappings[contractId]->AddMarketData(date, dataFrame);
 				chainExists = true;
 
-				OptionContracts[contractId] = chain.ContractMappings[contractId];
+				OptionContracts[contractId] = chain->ContractMappings[contractId];
 				break;
 			}
 		}
 		if (!chainExists) {
-			OptionChain tempChain = {
+			OptionChain* tempChain = new OptionChain{
 				chainId,
 				underlying,
 				rootSymbol,
@@ -159,27 +161,6 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 		};
 		underlyingData[date].push_back(futDataFrame);
 	}
-	//boost::iostreams::mapped_file mmap(file, boost::iostreams::mapped_file::readonly);
-	//const char* f = mmap.const_data();
-	//auto l = f + mmap.size();
-
-	//uintmax_t m_numLines = 0;
-	//
-	//while (f && f != l) {
-	//	std::vector<char*> data;
-	//	while (*f != '\n' && f && f != l) {
-	//		int c = 0;
-	//		char str[] = "00000000000000000000000000000";
-	//		while (*f != ',' && *f != '\n' && *f != '\r') {
-	//			str[c] = f[0];
-	//			c++;
-	//			f++;
-	//		}
-	//		f++;
-	//	}
-	//	m_numLines++;
-	//	f++;
-	//}
 }
 
 void OptionPriceManager::GetNextTradingTimeStamp() {
@@ -192,4 +173,127 @@ std::string OptionPriceManager::GetCurrentTimeStampString() {
 	os.imbue(std::locale(os.getloc(), facet));
 	os << currentPeriod;
 	return os.str();
+}
+
+void OptionPriceManager::ExperimentalDataLoad(std::string ticker) {
+	io::CSVReader<1> in("..\\data\\Options\\CL\\experimental\\exp_CL_dates.csv");
+	in.read_header(io::ignore_missing_column, "date");
+	std::string date;
+	while (in.read_row(date)) {
+		TradingTimeStamps.push_back(date);
+	}
+	
+	LoadChainData();
+	LoadContractData();
+	LoadPriceData();
+}
+
+void OptionPriceManager::LoadChainData() {
+	io::CSVReader<3> in("..\\data\\Options\\CL\\experimental\\exp_CL_chains.csv");
+	in.read_header(io::ignore_missing_column, "id","option_symbol","expiration_date");
+	std::string id, option_symbol, expiration_date;
+	while (in.read_row(id, option_symbol, expiration_date)) {
+		OptionChain* tempChain = new OptionChain;
+		tempChain->ChainId = id;
+		tempChain->UnderlyingTicker = "CL";
+		tempChain->OptionTicker = option_symbol;
+		tempChain->ExpirationDate = expiration_date;
+		tempChain->Multiplier = 1000;
+		tempChain->Dte = 1000; //TODO update DTE
+
+		optionChainData.push_back(tempChain);
+		OptionChains[id] = tempChain;
+	}
+}
+
+void OptionPriceManager::LoadContractData() {
+	io::CSVReader<7> in("..\\data\\Options\\CL\\experimental\\exp_CL_contracts.csv");
+	in.read_header(io::ignore_missing_column, "id", "option_symbol", "expiration_date",
+		"strike", "type", "chain_id", "close_index");
+	std::string id, option_symbol, expiration_date, strike, chain_id, close_index;
+	char type;
+	while (in.read_row(id, option_symbol, expiration_date, strike,
+		type, chain_id, close_index)) {
+
+		double strike_d = stod(strike);
+		OptionContract* optionContract = new OptionContract(id, "CL", 
+			option_symbol, expiration_date, strike_d, type,*this);
+
+		OptionContracts[id] = optionContract;
+		closeMappings[stoi(close_index)] = optionContract;
+		OptionChains[chain_id]->OptionContracts.push_back(optionContract);
+		OptionChains[chain_id]->ContractMappings[id] = optionContract;
+
+		if (type == 'C') {
+			OptionChains[chain_id]->CallStrikes.push_back(strike_d);
+			OptionChains[chain_id]->CallStrikeMappings[strike_d] = optionContract;
+
+			if (strike_d > OptionChains[chain_id]->MaxCallStrike)
+				OptionChains[chain_id]->MaxCallStrike = strike_d;
+			if (strike_d < OptionChains[chain_id]->MinCallStrike)
+				OptionChains[chain_id]->MinCallStrike = strike_d;
+		}
+		else if (type == 'P') {
+			OptionChains[chain_id]->PutStrikes.push_back(strike_d);
+			OptionChains[chain_id]->PutStrikeMappings[strike_d] = optionContract;
+
+			if (strike_d > OptionChains[chain_id]->MaxPutStrike)
+				OptionChains[chain_id]->MaxPutStrike = strike_d;
+			if (strike_d < OptionChains[chain_id]->MinPutStrike)
+				OptionChains[chain_id]->MinPutStrike = strike_d;
+		}
+	}
+}
+
+void OptionPriceManager::LoadPriceData() {
+	boost::iostreams::mapped_file mmap("..\\data\\Options\\CL\\experimental\\exp_CL_data.csv",
+		boost::iostreams::mapped_file::readonly);
+	const char* f = mmap.const_data();
+	auto l = f + mmap.size();
+	std::vector<char*> data;
+	uint16_t col_index = 0;
+	size_t max_col = TradingTimeStamps.size() + 1;
+	uint32_t row_index = 0;
+
+	//Skip header
+	while (*f != '\n' && f && f != l) {
+		f++;
+	}
+
+	while (f && f != l) {
+		while (*f != '\n' && f && f != l) {
+			int c = 0;
+			char str[] = "               ";
+			while (*f != ',' && *f != '\n' && *f != '\r') {
+				str[c] = f[0];
+				c++;
+				f++;
+			}
+			f++;
+
+			double val = atof(str);
+
+			if (col_index == 0) {
+				row_index = val;
+			}
+			else if(col_index > 0 && val != -1.0) {
+				BidAskDataFrame dataFrame{
+					closeMappings[row_index]->Id,
+					TradingTimeStamps[col_index - 1],
+					val * 1000.0,
+					0,
+					val * 1000.0,
+					0,
+					100 //TODO Delta
+				};
+				closeMappings[row_index]->AddMarketData(TradingTimeStamps[col_index - 1],
+					dataFrame);
+			}
+
+			col_index++;
+			if (col_index >= max_col)
+				col_index = 0;
+		}
+		f++;
+	}
 }

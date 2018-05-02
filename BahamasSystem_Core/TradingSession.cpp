@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TradingSession.h"
+#include "Logger.h"
 
 TradingSession::TradingSession(std::queue<TradingEvent*>& eventsQueue,
 	PriceManager& priceManager,
@@ -30,7 +31,6 @@ void TradingSession::Execute() {
 				case EventType::OptionChainUpdateEventType: {
 					OptionChainUpdateEvent& tempEvent = static_cast<OptionChainUpdateEvent&>(*t_event);
 					portfolioManager.UpdatePortfolioValue();
-					portfolioManager.UpdatePortfolioRecords();
 					strategy.CalculateSignal(tempEvent);
 					break;
 				}
@@ -51,7 +51,6 @@ void TradingSession::Execute() {
 				case EventType::FillEventType: {
 					FillEvent& tempEvent = static_cast<FillEvent&>(*t_event);
 					portfolioManager.ProcessFill(tempEvent);
-					StatisticsManager::getInstance().UpdateTradeHistory(tempEvent);
 					break;
 				}
 				case EventType::BaseEventType:
@@ -61,8 +60,17 @@ void TradingSession::Execute() {
 			//TODO Mem leak test
 			delete t_event;
 			eventsQueue.pop();
+
+			//Update metrics at end of each trading timestamp
+			if (eventsQueue.empty()) {
+				portfolioManager.UpdatePortfolioRecords();
+			}
 		}
 	}
-	//StatisticsManager::getInstance().GenerateTearSheetData();
-	std::cout << "Session Ended." << std::endl;
+	
+	Logger::instance().ConsoleLog("Session Ended.");
+
+	Logger::instance().ConsoleLog("Exporting backtest results...");
+	Logger::instance().ExportPortfolioMetrics(portfolioManager.GetPortfolio());
+	Logger::instance().ConsoleLog("Export complete.");
 }

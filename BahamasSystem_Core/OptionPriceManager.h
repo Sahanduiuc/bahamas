@@ -35,20 +35,28 @@ public:
 	//boost::gregorian::date GetCurrentTimeStamp() const;
 
 	std::map<std::string, OptionContract*> OptionContracts;
+	std::map<std::string, OptionChain*> OptionChains;
+	std::vector<std::string> TradingTimeStamps;
 
 private:
-	std::vector<OptionChain> optionChainData;
+	std::vector<OptionChain*> optionChainData;
 	std::map<std::string, double> underlyingPrices;
 	std::map<std::string, std::vector<FuturesContractDataFrame>> underlyingData;
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;
+	std::map<uint32_t, OptionContract*> closeMappings;
+
 	bool eod = false;
 
 	void ImportInstrumentData(std::string);
 	void ImportOptionData(std::string);
 	void GetNextTradingTimeStamp();
 
+	void ExperimentalDataLoad(std::string);
+	void LoadChainData();
+	void LoadContractData();
+	void LoadPriceData();
 };
 
 #endif 

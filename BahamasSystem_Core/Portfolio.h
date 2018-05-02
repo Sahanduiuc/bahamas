@@ -29,6 +29,8 @@ public:
 	double GetUnrealisedPnL() const {
 		return unrealisedPnL;
 	}
+
+	std::vector<PriceDataFrame> historicEquity;
 private:
 	double cashBalance = 0.0;
 	double initialBalace = 0.0;
@@ -37,7 +39,6 @@ private:
 	double equity = 0.0;
 	PriceManager& priceManager;
 	std::map<std::string, Position> investedPositions;
-	std::vector<PriceDataFrame> historicEquity;
 	std::queue<TradingEvent*>& eventsQueue;
 
 	void AddPosition(int, std::string, int, double, double);

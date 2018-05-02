@@ -4,8 +4,7 @@
 #include "..\PortfolioManager.h"
 #include "..\Structure.h"
 #include "..\OptionPriceManager.h"
-
-#include "spdlog\spdlog.h"
+#include "..\Logger.h"
 
 class NetZero : public Strategy {
 public:
@@ -14,8 +13,7 @@ public:
 		OptionPriceManager& priceManager) :
 		portfolioManager(portfolioManager), priceManager(priceManager),
 		Strategy(eventsQueue, tickers) {
-
-		console = spdlog::stdout_color_mt("console");		
+	
 	}
 
 	void CalculateSignal(OptionChainUpdateEvent& event) override {
@@ -27,7 +25,7 @@ public:
 			// or if gain is >= 5% of Reg-T risk
 			double delta = priceManager.GetCurrentDataFrame(shortLegId).Delta * -1;
 			double profitPerc = (portfolio.GetUnrealisedPnL())/maxRisk * 100;
-			if ((delta <= 30 || delta >= 50 || profitPerc > 4.90) && delta != 0.0) {
+			if ((delta <= 30 || delta >= 50 || profitPerc >= 4.95) && delta != 0.0) {
 				portfolio.CloseAllPositions();
 				invested = false;
 			}
@@ -61,13 +59,8 @@ public:
 			invested = true;
 			shortLegId = oc_40d->Id;
 		}
-
-		console->info("Data event");
-		//for (auto const& x : portfolio.GetInvestedPositions()) {
-		//	std::cout << x.first << " " << x.second.UnRealisedPnL() << std::endl;
-		//}
-
-		std::cout << portfolioManager.GetPortfolioValue() << std::endl;
+		
+		Logger::instance().ConsoleLog(std::to_string(portfolioManager.GetPortfolioValue()));
 	}
 private:
 	bool invested = false;
@@ -75,5 +68,4 @@ private:
 	std::string shortLegId;
 	PortfolioManager& portfolioManager;
 	OptionPriceManager& priceManager;
-	std::shared_ptr<spdlog::logger> console;
 };

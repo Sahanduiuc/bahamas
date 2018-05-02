@@ -142,6 +142,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;BAHAMASSYSTEMCORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\shami\Desktop\bahamas\ext_includes\spdlog-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,6 +158,7 @@
     <ClInclude Include="DataImporter.h" />
     <ClInclude Include="ExecutionManager.h" />
     <ClInclude Include="GoogleAPIPriceHandler.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="OHLCVPriceManager.h" />
     <ClInclude Include="OptionChain.h" />
     <ClInclude Include="OptionContract.h" />
@@ -169,7 +171,6 @@
     <ClInclude Include="RiskManager.h" />
     <ClInclude Include="Strategies\NetZero.h" />
     <ClInclude Include="Structure.h" />
-    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategies\BullPutCreditSpread.h" />
     <ClInclude Include="Strategies\FundOfFunds.h" />
