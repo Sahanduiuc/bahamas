@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Portfolio.h"
-//#include "StatisticsManager.h"
+#include "Logger.h"
 
 Portfolio::Portfolio(double initBalance, std::queue<TradingEvent*>& eventsQueue,
 	PriceManager& priceManager) :
@@ -27,15 +27,8 @@ void Portfolio::UpdatePortfolio() {
 	}
 }
 
-void Portfolio::UpdateRecords() {
-	PriceDataFrame dataFrame = {
-		priceManager.GetCurrentTimeStampString(),
-		equity
-	};
-	historicEquity.push_back(dataFrame);
-}
-
-void Portfolio::ProcessPosition(std::string ticker, int action, double price, int units, double commission) {
+void Portfolio::ProcessPosition(std::string ticker, int action, double price, 
+	int units, double commission, int tradeId) {
 
 	if (action == 0)
 		return;
@@ -47,13 +40,13 @@ void Portfolio::ProcessPosition(std::string ticker, int action, double price, in
 		cashBalance += ((price*units) - commission);
 
 	if (investedPositions.find(ticker) == investedPositions.end())
-		AddPosition(action, ticker, units, price, commission);
+		AddPosition(action, ticker, units, price, commission, tradeId);
 	else
 		UpdatePosition(action, ticker, units, price, commission);
 }
 
 void Portfolio::AddPosition(int action, std::string ticker, int units,
-	double price, double commission) {
+	double price, double commission, int tradeId) {
 	//TODO: Implement BID/ASK
 	double bid = price;
 	double ask = price;
@@ -64,7 +57,8 @@ void Portfolio::AddPosition(int action, std::string ticker, int units,
 		price,
 		commission,
 		bid,
-		ask);
+		ask,
+		tradeId);
 
 	UpdatePortfolio();
 }
@@ -88,6 +82,11 @@ void Portfolio::UpdatePosition(int action, std::string ticker, int units,
 
 		std::cout << priceManager.GetCurrentTimeStampString()
 			<< " CLOSE position " << ticker << " @ " << price << std::endl;
+
+		//Log close price
+		Logger::instance().ContractMarketData[ticker].push_back(
+			priceManager.GetCurrentDataFrame(ticker)
+		);
 	}
 
 	UpdatePortfolio();
@@ -96,7 +95,8 @@ void Portfolio::UpdatePosition(int action, std::string ticker, int units,
 void Portfolio::CloseAllPositions() {
 	for (auto const& position : investedPositions) {
 		TradingEvent* order = new SignalEvent(position.first,
-			position.second.action * -1, position.second.totalUnits);
+			position.second.action * -1, position.second.totalUnits, 
+			position.second.tradeId);
 		eventsQueue.push(order);
 	}
 }

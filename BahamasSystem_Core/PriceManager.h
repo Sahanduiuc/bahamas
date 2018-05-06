@@ -13,6 +13,7 @@ public:
 	virtual double GetCurrentPrice(std::string) = 0;
 	virtual bool EOD() = 0;
 	virtual std::string GetCurrentTimeStampString() = 0;
+	virtual BidAskDataFrame GetCurrentDataFrame(std::string) = 0;
 };
 
 #endif

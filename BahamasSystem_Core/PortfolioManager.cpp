@@ -16,23 +16,23 @@ void PortfolioManager::UpdatePortfolioValue() {
 	portfolio.UpdatePortfolio();
 }
 
-void PortfolioManager::UpdatePortfolioRecords() {
-	portfolio.UpdateRecords();
-}
-
 void PortfolioManager::ProcessSignal(SignalEvent& event) {
-	MarketOrder order = { event.GetEventTicker(),event.action,
-		event.setOrderUnits, priceManager.GetCurrentPrice(event.GetEventTicker()) };
+	MarketOrder order = { event.GetEventTicker(),
+		event.action,
+		event.setOrderUnits, 
+		priceManager.GetCurrentPrice(event.GetEventTicker()) 
+	};
 	orderSizer.SizeOrder(order, portfolio);
 	std::vector<MarketOrder> profiledOrders = riskManager.ProfileOrder(order);
 
 	//Place Order on Events queue for execution
 	for (MarketOrder& curOrder : profiledOrders) {
-		OrderEvent* event = new OrderEvent(curOrder.Ticker,
+		OrderEvent* o_event = new OrderEvent(curOrder.Ticker,
 			curOrder.Action,
-			curOrder.Units);
+			curOrder.Units,
+			event.tradeId);
 
-		eventsQueue.push(event);
+		eventsQueue.push(o_event);
 	}
 }
 
@@ -42,7 +42,8 @@ void PortfolioManager::ProcessFill(FillEvent& event) {
 		event.Action,
 		event.FillPrice,
 		event.Units,
-		event.Commission);
+		event.Commission,
+		event.tradeId);
 }
 
 Portfolio PortfolioManager::GetPortfolio() const {

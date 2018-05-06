@@ -5,6 +5,12 @@
 #include <boost/bind.hpp>
 #include "boost/date_time/gregorian/gregorian.hpp"
 
+struct ExecutionDataFrame {
+	std::string EventDateTime;
+	std::string Ticker;
+	int TradeId;
+};
+
 struct PriceDataFrame {
 	std::string EventDateTime;
 	double Price;

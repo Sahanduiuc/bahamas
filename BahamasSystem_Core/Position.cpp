@@ -2,8 +2,9 @@
 #include "Position.h"
 
 Position::Position(int action, std::string ticker, int units,
-	double price, double commission, double bid, double ask) :
-	action(action), ticker(ticker), totalUnits(units), price(price), totalCommission(commission) {
+	double price, double commission, double bid, double ask, int tradeId) :
+	action(action), ticker(ticker), totalUnits(units), 
+	price(price), totalCommission(commission), tradeId(tradeId) {
 	CalculatePositionValue();
 	UpdateMarketValue(bid, ask);
 }

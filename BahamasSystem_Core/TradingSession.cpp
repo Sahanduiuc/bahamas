@@ -57,20 +57,28 @@ void TradingSession::Execute() {
 					break;
 			}
 
-			//TODO Mem leak test
 			delete t_event;
 			eventsQueue.pop();
 
 			//Update metrics at end of each trading timestamp
 			if (eventsQueue.empty()) {
-				portfolioManager.UpdatePortfolioRecords();
+				PriceDataFrame dataFrame = {
+					priceManager.GetCurrentTimeStampString(),
+					portfolioManager.GetPortfolioValue()
+				};
+				Logger::instance().PortfolioData.push_back(dataFrame);
+
+				std::map<std::string, Position> positions = 
+					portfolioManager.GetPortfolio().GetInvestedPositions();
+				for (auto const& kv_pair : positions) {
+					Logger::instance().ContractMarketData[kv_pair.first].push_back(
+						priceManager.GetCurrentDataFrame(kv_pair.first)
+					);
+				}
 			}
 		}
 	}
 	
 	Logger::instance().ConsoleLog("Session Ended.");
-
-	Logger::instance().ConsoleLog("Exporting backtest results...");
-	Logger::instance().ExportPortfolioMetrics(portfolioManager.GetPortfolio());
-	Logger::instance().ConsoleLog("Export complete.");
+	Logger::instance().ExportBacktestResults();
 }

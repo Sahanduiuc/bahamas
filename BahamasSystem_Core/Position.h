@@ -6,7 +6,7 @@
 class Position {
 public:
 	Position() {}
-	Position(int, std::string, int, double, double, double, double);
+	Position(int, std::string, int, double, double, double, double, int);
 	void CalculatePositionValue();
 	void UpdateMarketValue(double, double);
 	void ModifyPosition(int, int, double, double);
@@ -31,6 +31,7 @@ public:
 	int action;
 	std::string ticker;
 	int totalUnits;
+	int tradeId;
 
 private:
 	int unitsBought = 0;

@@ -22,9 +22,9 @@ public:
 			std::vector<OptionContract*> sContracts = 
 				GetSpread(optionChain, 1, 250, 'P');
 
-			TradingEvent* order_short = new SignalEvent(sContracts[1]->Id, -1, 1);
+			TradingEvent* order_short = new SignalEvent(sContracts[1]->Id, -1, 1, 0);
 			eventsQueue.push(order_short);
-			TradingEvent* order_long = new SignalEvent(sContracts[0]->Id, 1, 1);
+			TradingEvent* order_long = new SignalEvent(sContracts[0]->Id, 1, 1, 0);
 			eventsQueue.push(order_long);
 
 			invested = true;

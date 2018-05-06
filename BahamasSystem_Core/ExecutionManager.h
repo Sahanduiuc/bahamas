@@ -3,6 +3,7 @@
 
 #include "TradingEvent.h"
 #include "PriceManager.h"
+#include "Logger.h"
 
 #include <iostream>
 #include <queue>
@@ -34,15 +35,24 @@ public:
 			event.Action,
 			event.OrderUnits,
 			priceManager.GetCurrentPrice(event.GetEventTicker()),
-			commission
+			commission,
+			event.tradeId
 		);
+
+		//Log Trade execution
+		ExecutionDataFrame dataframe{
+			priceManager.GetCurrentTimeStampString(),
+			event.GetEventTicker(),
+			event.tradeId
+		};
+		Logger::instance().ExecutionData.push_back(dataframe);
 
 		eventsQueue.push(tempEvent);
 	}
 private:
 	//TODO: Add transaction costs
 	double GetCommission(OrderEvent& event) const {
-		return 0.0;
+		return event.OrderUnits * 2.35;
 	}
 };
 

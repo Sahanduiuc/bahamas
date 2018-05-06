@@ -25,7 +25,7 @@ public:
 			// or if gain is >= 5% of Reg-T risk
 			double delta = priceManager.GetCurrentDataFrame(shortLegId).Delta * -1;
 			double profitPerc = (portfolio.GetUnrealisedPnL())/maxRisk * 100;
-			if ((delta <= 30 || delta >= 50 || profitPerc >= 4.95) && delta != 0.0) {
+			if ((delta <= 30 || delta >= 50 || profitPerc >= 10) && delta != 0.0) {
 				portfolio.CloseAllPositions();
 				invested = false;
 			}
@@ -34,13 +34,13 @@ public:
 		if (!invested) {
 			OptionChain* optionChain = GetFurthestDteChain(80, event.OptionChains);
 
-			OptionContract* oc_60d = GetDeltaTargetContract(optionChain, 60.0, 'P');
+			OptionContract* oc_60d = GetDeltaTargetContract(optionChain, 70.0, 'P');
 			OptionContract* oc_40d = GetDeltaTargetContract(optionChain, 40.0, 'P');
-			OptionContract* oc_20d = GetDeltaTargetContract(optionChain, 20.0, 'P');
+			OptionContract* oc_20d = GetDeltaTargetContract(optionChain, 10.0, 'P');
 
-			TradingEvent* order_60d = new SignalEvent(oc_60d->Id, 1, 2);
-			TradingEvent* order_40d = new SignalEvent(oc_40d->Id, -1, 4);
-			TradingEvent* order_20d = new SignalEvent(oc_20d->Id, 1, 2);
+			TradingEvent* order_60d = new SignalEvent(oc_60d->Id, 1, 2, tradeCount);
+			TradingEvent* order_40d = new SignalEvent(oc_40d->Id, -1, 4, tradeCount);
+			TradingEvent* order_20d = new SignalEvent(oc_20d->Id, 1, 2, tradeCount);
 
 			OptionStructure pcs_structure;
 			pcs_structure.Id = "NZ";
@@ -58,11 +58,16 @@ public:
 			
 			invested = true;
 			shortLegId = oc_40d->Id;
+
+			tradeCount += 1;
+			Logger::instance().ConsoleLog("Trade Risk " + std::to_string(maxRisk));
 		}
 		
+
 		Logger::instance().ConsoleLog(std::to_string(portfolioManager.GetPortfolioValue()));
 	}
 private:
+	int tradeCount = 0;
 	bool invested = false;
 	double maxRisk = 0.0;
 	std::string shortLegId;

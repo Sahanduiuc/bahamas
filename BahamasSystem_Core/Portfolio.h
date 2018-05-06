@@ -19,8 +19,7 @@ public:
 	virtual ~Portfolio();
 
 	void UpdatePortfolio();
-	void UpdateRecords();
-	void ProcessPosition(std::string, int, double, int, double);
+	void ProcessPosition(std::string, int, double, int, double, int);
 	void CloseAllPositions();
 	std::map<std::string, Position> GetInvestedPositions() const;
 	double GetEquityValue() const {
@@ -30,7 +29,6 @@ public:
 		return unrealisedPnL;
 	}
 
-	std::vector<PriceDataFrame> historicEquity;
 private:
 	double cashBalance = 0.0;
 	double initialBalace = 0.0;
@@ -41,7 +39,7 @@ private:
 	std::map<std::string, Position> investedPositions;
 	std::queue<TradingEvent*>& eventsQueue;
 
-	void AddPosition(int, std::string, int, double, double);
+	void AddPosition(int, std::string, int, double, double, int);
 	void UpdatePosition(int, std::string, int, double, double);
 };
 

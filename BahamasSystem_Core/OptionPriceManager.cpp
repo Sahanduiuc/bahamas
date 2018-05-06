@@ -9,6 +9,7 @@ OptionPriceManager::OptionPriceManager(std::queue<TradingEvent*>& eventsQueue,
 
 	this->currentPeriod = startDate - boost::gregorian::days(1);
 	this->endPeriod = endDate;
+	this->currentPeriodIndex = -1;
 
 	ImportInstrumentData(ticker);
 	//ExperimentalDataLoad(ticker);
@@ -22,7 +23,8 @@ void OptionPriceManager::StreamNextEvent() {
 	for(int i = 0; i < optionChainData.size(); i++){
 		auto chainExpDate = 
 			boost::gregorian::from_us_string(optionChainData[i]->ExpirationDate);
-		
+		currentPeriod = boost::gregorian::from_us_string(TradingTimeStamps[currentPeriodIndex]);
+
 		if (chainExpDate > currentPeriod) {
 			updateEvent->OptionChains.push_back(optionChainData[i]);
 			auto dte = chainExpDate - currentPeriod;
@@ -33,7 +35,7 @@ void OptionPriceManager::StreamNextEvent() {
 }
 
 bool OptionPriceManager::EOD() {
-	if (currentPeriod > endPeriod || eod)
+	if (currentPeriodIndex == TradingTimeStamps.size()-1)
 		return true;
 
 	return false;
@@ -49,7 +51,7 @@ BidAskDataFrame OptionPriceManager::GetCurrentDataFrame(std::string contractID) 
 
 void OptionPriceManager::ImportInstrumentData(std::string ticker) {
 	CsvImporter dataImporter;
-	std::string fPath = "..\\data\\Options\\CL\\";
+	std::string fPath = "C:\\Users\\shami\\Desktop\\bahamas_data\\CL\\";
 	dataImporter.SetDataPath(fPath);
 
 	//Import all available option chains TODO use given dates
@@ -67,6 +69,15 @@ void OptionPriceManager::ImportInstrumentData(std::string ticker) {
 		else
 			continue;
 	}
+
+	//TEMP Override timestamp stream
+	io::CSVReader<1> in(fPath + "meta\\trading_timestamps.csv");
+	in.read_header(io::ignore_missing_column, "date");
+	std::string date;
+	while (in.read_row(date)) {
+		TradingTimeStamps.push_back(date);
+	}
+
 }
 
 void OptionPriceManager::ImportOptionData(std::string file) {
@@ -164,15 +175,17 @@ void OptionPriceManager::ImportOptionData(std::string file) {
 }
 
 void OptionPriceManager::GetNextTradingTimeStamp() {
-	currentPeriod += boost::gregorian::days(1);
+	//currentPeriod += boost::gregorian::days(1);
+	currentPeriodIndex++;
 }
 
 std::string OptionPriceManager::GetCurrentTimeStampString() {
-	std::ostringstream os;
-	auto* facet(new boost::gregorian::date_facet("%m/%d/%Y"));
-	os.imbue(std::locale(os.getloc(), facet));
-	os << currentPeriod;
-	return os.str();
+	//std::ostringstream os;
+	//auto* facet(new boost::gregorian::date_facet("%m/%d/%Y"));
+	//os.imbue(std::locale(os.getloc(), facet));
+	//os << currentPeriod;
+	//return os.str();
+	return TradingTimeStamps[currentPeriodIndex];
 }
 
 void OptionPriceManager::ExperimentalDataLoad(std::string ticker) {

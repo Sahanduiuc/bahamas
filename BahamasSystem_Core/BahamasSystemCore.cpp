@@ -4,7 +4,7 @@
 #include "Strategies\NetZero.h"
 
 TradingSession CreateSession() {
-	double initEquity = 1000.0;
+	double initEquity = 10000.0;
 	std::queue<TradingEvent*> eventsQueue;
 	std::vector<std::string> tickers = { "CL" };
 

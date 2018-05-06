@@ -55,18 +55,22 @@ class SignalEvent : public TradingEvent {
 public:
 	const int action;
 	const int setOrderUnits;
+	const int tradeId;
 
-	SignalEvent(std::string ticker, int action, int units = 0) :
-		TradingEvent(ticker, EventType::SignalEventType), action(action), setOrderUnits(units) {}
+	SignalEvent(std::string ticker, int action, int units, int tradeId) :
+		TradingEvent(ticker, EventType::SignalEventType), 
+		action(action), setOrderUnits(units), tradeId(tradeId) {}
 };
 
 class OrderEvent : public TradingEvent {
 public:
 	const int Action;
 	const int OrderUnits;
+	const int tradeId;
 
-	OrderEvent(std::string ticker, int action, int units) :
-		TradingEvent(ticker, EventType::OrderEventType), Action(action), OrderUnits(units) {}
+	OrderEvent(std::string ticker, int action, int units, int tradeId) :
+		TradingEvent(ticker, EventType::OrderEventType), 
+		Action(action), OrderUnits(units), tradeId(tradeId) {}
 };
 
 class FillEvent : public TradingEvent {
@@ -75,9 +79,13 @@ public:
 	const int Units;
 	const double FillPrice;
 	const double Commission;
+	const int tradeId;
 
-	FillEvent(std::string ticker, int action, int units, double fillPrice, double commission) :
-		TradingEvent(ticker, EventType::FillEventType), Action(action), Units(units), FillPrice(fillPrice), Commission(commission) {}
+	FillEvent(std::string ticker, int action, int units, double fillPrice, 
+		double commission, int tradeId) :
+		TradingEvent(ticker, EventType::FillEventType), 
+		Action(action), Units(units), FillPrice(fillPrice), 
+		Commission(commission), tradeId(tradeId) {}
 
 };
 

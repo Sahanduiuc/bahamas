@@ -1,6 +1,7 @@
 #ifndef OPTIONPRICEMANAGER_H_
 #define OPTIONPRICEMANAGER_H_
 
+#include <unordered_set>
 #include <queue>
 #include <boost/bind.hpp>
 #include <algorithm> 
@@ -46,6 +47,7 @@ private:
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;
 	std::map<uint32_t, OptionContract*> closeMappings;
+	int currentPeriodIndex;
 
 	bool eod = false;
 

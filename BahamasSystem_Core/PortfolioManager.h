@@ -15,7 +15,6 @@ public:
 	virtual ~PortfolioManager();
 
 	void UpdatePortfolioValue();
-	void UpdatePortfolioRecords();
 	void ProcessSignal(SignalEvent&);
 	void ProcessFill(FillEvent&);
 
