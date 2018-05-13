@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "TradingSession.h"
 #include "Logger.h"
+#include "Strategy.h"
 
 TradingSession::TradingSession(std::queue<TradingEvent*>& eventsQueue,
-	PriceManager& priceManager,
+	OptionPriceManager& priceManager,
 	ExecutionManager& executionManager,
 	PortfolioManager& portfolioManager,
 	Strategy& strategy):

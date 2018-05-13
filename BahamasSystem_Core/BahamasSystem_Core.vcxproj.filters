@@ -90,9 +90,6 @@
     <ClInclude Include="DataFrames.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="csv.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OptionChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>

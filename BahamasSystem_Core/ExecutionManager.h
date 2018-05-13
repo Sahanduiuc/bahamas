@@ -2,7 +2,7 @@
 #define EXECUTIONMANAGER_H_
 
 #include "TradingEvent.h"
-#include "PriceManager.h"
+#include "OptionPriceManager.h"
 #include "Logger.h"
 
 #include <iostream>
@@ -11,19 +11,19 @@
 class ExecutionManager {
 public:
 	ExecutionManager(std::queue<TradingEvent*>& eventsQueue,
-		PriceManager& priceManager):
+		OptionPriceManager& priceManager):
 		eventsQueue(eventsQueue), priceManager(priceManager) {}
 
 	virtual void ExecuteOrder(OrderEvent&) = 0;
 protected:
 	std::queue<TradingEvent*>& eventsQueue;
-	PriceManager& priceManager;
+	OptionPriceManager& priceManager;
 };
 
 class SimulatedExecutionManager : public ExecutionManager {
 public:
 	SimulatedExecutionManager(std::queue<TradingEvent*>& eventsQueue, 
-		PriceManager& priceManager):
+		OptionPriceManager& priceManager):
 		ExecutionManager(eventsQueue, priceManager){}
 
 	void ExecuteOrder(OrderEvent& event) {
@@ -43,7 +43,10 @@ public:
 		ExecutionDataFrame dataframe{
 			priceManager.GetCurrentTimeStampString(),
 			event.GetEventTicker(),
-			event.tradeId
+			event.tradeId,
+			event.Action,
+			event.OrderUnits,
+			priceManager.OptionContracts[event.GetEventTicker()]
 		};
 		Logger::instance().ExecutionData.push_back(dataframe);
 

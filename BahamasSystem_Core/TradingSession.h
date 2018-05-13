@@ -7,15 +7,16 @@
 #include <queue>
 
 #include "TradingEvent.h"
-#include "PriceManager.h"
+#include "OptionPriceManager.h"
 #include "ExecutionManager.h"
 #include "PortfolioManager.h"
-#include "Strategy.h"
+
+class Strategy;
 
 class TradingSession {
 public:
 	TradingSession(std::queue<TradingEvent*>& eventsQueue,
-		PriceManager& priceManager,
+		OptionPriceManager& priceManager,
 		ExecutionManager& executionManager,
 		PortfolioManager& portfolioManager,
 		Strategy& strategy);
@@ -25,7 +26,7 @@ public:
 private:
 	bool isBackTest;
 	std::queue<TradingEvent*>& eventsQueue;
-	PriceManager& priceManager;
+	OptionPriceManager& priceManager;
 	ExecutionManager& executionManager;
 	PortfolioManager& portfolioManager;
 	Strategy& strategy;

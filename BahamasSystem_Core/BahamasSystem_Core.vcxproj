@@ -153,7 +153,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BahamasSystemCore.h" />
-    <ClInclude Include="csv.h" />
     <ClInclude Include="DataFrames.h" />
     <ClInclude Include="DataImporter.h" />
     <ClInclude Include="ExecutionManager.h" />

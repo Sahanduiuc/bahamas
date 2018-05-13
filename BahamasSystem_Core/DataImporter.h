@@ -7,87 +7,59 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <boost/coroutine/all.hpp>
-#include "csv.h"
+#include <boost/iostreams/device/mapped_file.hpp> 
 
 class CsvImporter {
 public:
 	void GetDataItem(std::vector<std::string>& dataRow) {
-		if (dataStream.is_open()) {
-			if (dataStream.good()) {
-				dataRow = csv_read_row(dataStream, ',');
-			}
-			else
-				dataRow.clear();
-		}
-		else {
-			dataStream.open(currentFile);
+		uint16_t col_index = 0;
 
-			if (dataStream.fail()) {
-				std::cout << "Error importing data file" << std::endl; return;
+		while (*fPointer != '\n' && fPointer && fPointer != eodIndex) {
+			int c = 0;
+			char str[] = "                                       ";
+			while (*fPointer != ',' && *fPointer != '\n' && *fPointer != '\r') {
+				str[c] = fPointer[0];
+				c++;
+				fPointer++;
 			}
+			str[c] = 0;
+			fPointer++;
 
-			dataRow = csv_read_row(dataStream, ',');
+			std::string val(str);
+			dataRow.push_back(val);
+
+			col_index++;
+			if (col_index >= maxColCount)
+				col_index = 0;
 		}
+		fPointer++;
 	}
 
-	void SetLoadFile(std::string fileName) {
+	void SetDataFile(std::string fileName) {
 		this->currentFile = dataPath + fileName;
-		dataStream.close();
 	}
+
+	void SetDataFile(std::string fileName, int colCount) {
+		SetDataFile(fileName);
+		this->maxColCount = colCount;
+
+		mmap.close();
+		mmap.open(this->currentFile, boost::iostreams::mapped_file::readonly);
+		fPointer = mmap.const_data();
+		eodIndex = fPointer + mmap.size();
+	}
+
 	void SetDataPath(std::string path) {
 		this->dataPath = path;
 	}
 private:
 	std::string currentFile;
-	std::ifstream dataStream;
 	std::string dataPath = "";
+	int maxColCount;
 
-	std::vector<std::string> csv_read_row(std::istream &in, char delimiter)
-	{
-		std::stringstream ss;
-		bool inquotes = false;
-		std::vector<std::string> row;//relying on RVO
-		while (in.good())
-		{
-			char c = in.get();
-			if (!inquotes && c == '"') //beginquotechar
-			{
-				inquotes = true;
-			}
-			else if (inquotes && c == '"') //quotechar
-			{
-				if (in.peek() == '"')//2 consecutive quotes resolve to 1
-				{
-					ss << (char)in.get();
-				}
-				else //endquotechar
-				{
-					inquotes = false;
-				}
-			}
-			else if (!inquotes && c == delimiter) //end of field
-			{
-				row.push_back(ss.str());
-				ss.str("");
-			}
-			else if (!inquotes && (c == '\r' || c == '\n'))
-			{
-				if (in.peek() == '\n') { in.get(); }
-				row.push_back(ss.str());
-				return row;
-			}
-			else
-			{
-				ss << c;
-			}
-		}
-	}
-	std::vector<std::string> csv_read_row(std::string &line, char delimiter)
-	{
-		std::stringstream ss(line);
-		return csv_read_row(ss, delimiter);
-	}
+	const char* fPointer = nullptr;
+	const char* eodIndex = nullptr;
+	boost::iostreams::mapped_file mmap;
 };
 
 #endif

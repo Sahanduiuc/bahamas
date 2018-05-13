@@ -5,10 +5,15 @@
 #include <boost/bind.hpp>
 #include "boost/date_time/gregorian/gregorian.hpp"
 
+class OptionContract;
+
 struct ExecutionDataFrame {
 	std::string EventDateTime;
 	std::string Ticker;
 	int TradeId;
+	int Action;
+	int Units;
+	OptionContract* Contract;
 };
 
 struct PriceDataFrame {
@@ -39,6 +44,7 @@ struct FuturesContractDataFrame {
 	std::string Ticker;
 	std::string EventDateTime;
 	std::string ContractSymbol;
+	std::string ExpirationDate;
 	double Price;
 };
 

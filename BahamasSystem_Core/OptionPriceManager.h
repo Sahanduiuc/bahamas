@@ -38,11 +38,12 @@ public:
 	std::map<std::string, OptionContract*> OptionContracts;
 	std::map<std::string, OptionChain*> OptionChains;
 	std::vector<std::string> TradingTimeStamps;
+	std::map<std::string, 
+		std::map<std::string,FuturesContractDataFrame>> UnderlyingData;
 
 private:
 	std::vector<OptionChain*> optionChainData;
-	std::map<std::string, double> underlyingPrices;
-	std::map<std::string, std::vector<FuturesContractDataFrame>> underlyingData;
+
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;
@@ -52,13 +53,8 @@ private:
 	bool eod = false;
 
 	void ImportInstrumentData(std::string);
-	void ImportOptionData(std::string);
+	void LoadPriceData(boost::iostreams::mapped_file&,size_t,size_t);
 	void GetNextTradingTimeStamp();
-
-	void ExperimentalDataLoad(std::string);
-	void LoadChainData();
-	void LoadContractData();
-	void LoadPriceData();
 };
 
 #endif 

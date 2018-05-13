@@ -8,7 +8,7 @@ public:
 		std::string fundHoldingsFile, OHLCVPriceManager& priceManager) :
 		Strategy(eventsQueue, tickers), priceManager(priceManager) {
 		CsvImporter csvImporter;
-		csvImporter.SetLoadFile(fundHoldingsFile);
+		csvImporter.SetDataFile(fundHoldingsFile);
 
 		std::vector<std::string> dataRow;
 

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "spdlog\spdlog.h"
 #include "DataFrames.h"
 
@@ -26,6 +27,7 @@ public:
 		console->info("Exporting backtest results...");
 		this->ExportPortfolioData();
 		this->ExportExecutionData();
+		this->ExportContractData();
 		console->info("Export complete.");
 	}
 
@@ -42,7 +44,7 @@ public:
 private:
 	const std::string portfolio_fname = "portfolio_records.csv";
 	const std::string execution_fname = "execution_records.csv";
-	const std::string contract_fname = "\\contract_data\\";
+	const std::string contract_fname = ".\\contract_data\\";
 
 	std::shared_ptr<spdlog::logger> console;
 	Logger() {
@@ -67,15 +69,38 @@ private:
 		std::ofstream outputFile(execution_fname);
 		if (outputFile.is_open())
 		{
-			outputFile << "timestamp,option_contract,trade_id" << "\n";
+			outputFile << "trade_id,timestamp,action,units,option_contract,expiration_date,type,strike" << "\n";
 			for (int i = 0; i < PortfolioData.size(); i++) {
 				outputFile << ExecutionData[i].TradeId << "," <<
 					ExecutionData[i].EventDateTime << "," <<
-					ExecutionData[i].Ticker <<"\n";
+					ExecutionData[i].Action << "," <<
+					ExecutionData[i].Units << "," <<
+					ExecutionData[i].Ticker << "," <<
+					ExecutionData[i].Contract->ExpirationDate << "," <<
+					ExecutionData[i].Contract->Type << "," << 
+					ExecutionData[i].Contract->Strike << "\n";
 			}
 			outputFile.close();
 		}
 		else console->error("[ExportExecutionData] Unable to open file");
+	}
+
+	void ExportContractData() {
+		for (auto const& data : ContractMarketData) {
+			std::string contract_name = data.first;
+			std::replace(contract_name.begin(), contract_name.end(), '/', '-');
+			std::string fname = contract_fname + contract_name + ".csv";
+			std::ofstream outputFile(fname);
+			if (outputFile.is_open())
+			{
+				outputFile << "timestamp,settle_price" << "\n";
+				for (int i = 0; i < data.second.size(); i++) {
+					outputFile << data.second[i].EventDateTime << "," <<
+						data.second[i].Ask << "\n";
+				}
+				outputFile.close();
+			}
+		}
 	}
 
 public:
