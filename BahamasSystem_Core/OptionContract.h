@@ -15,22 +15,18 @@ public:
 	std::string UnderlyingTicker;
 	std::string OptionTicker;
 	std::string ExpirationDate;
+	std::string ChainId;
 	double Strike;
 	char Type;
 
 	OptionContract(std::string, std::string,std::string, std::string, 
-		double strike, char type, OptionPriceManager&);
+		double strike, char type, std::string, OptionPriceManager&);
+
+	OptionDataFrame MarketData();
 
 	~OptionContract();
-
-	BidAskDataFrame MarketData();
-
-	void AddMarketData(std::string, BidAskDataFrame);
-	void AddMarketData(uint32_t, BidAskDataFrame);
 private:
-	std::unordered_map<std::string, BidAskDataFrame> marketData;
 	OptionPriceManager& priceManager;
-	//BidAskDataFrame* marketData_exp = new BidAskDataFrame[12];
 };
 
 #endif

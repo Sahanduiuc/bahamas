@@ -23,14 +23,14 @@ struct PriceDataFrame {
 
 struct OHCLVDataFrame {
 	std::string Ticker;
-	boost::gregorian::date EventDateTime;
+	std::string EventDateTime;
 	double Open;
 	double High;
 	double Low;
 	double Settle;
 };
 
-struct BidAskDataFrame {
+struct OptionDataFrame {
 	std::string Ticker;
 	std::string EventDateTime;
 	double Bid;

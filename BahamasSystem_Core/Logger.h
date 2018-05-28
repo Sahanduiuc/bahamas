@@ -19,15 +19,18 @@ enum ConsoleLogType {
 
 class Logger {
 public:
-	void ConsoleLog(std::string message) {
+	void LogInfo(std::string message) {
 		console->info(message);
+	}
+
+	void LogError(std::string message){
+		console->error(message);
 	}
 
 	void ExportBacktestResults() {
 		console->info("Exporting backtest results...");
 		this->ExportPortfolioData();
 		this->ExportExecutionData();
-		this->ExportContractData();
 		console->info("Export complete.");
 	}
 
@@ -37,9 +40,18 @@ public:
 		return instance;
 	}
 
+	void AddToTimeSeries(std::string series, std::string eventperiod,
+		double value) {
+		PriceDataFrame dataframe{
+			eventperiod,
+			value
+		};
+		TimeSeriesData[series].push_back(dataframe);
+	}
+
 	std::vector<PriceDataFrame> PortfolioData;
 	std::vector<ExecutionDataFrame> ExecutionData;
-	std::map<std::string, std::vector<BidAskDataFrame>> ContractMarketData;
+	std::map<std::string, std::vector<PriceDataFrame>> TimeSeriesData;
 
 private:
 	const std::string portfolio_fname = "portfolio_records.csv";
@@ -83,24 +95,6 @@ private:
 			outputFile.close();
 		}
 		else console->error("[ExportExecutionData] Unable to open file");
-	}
-
-	void ExportContractData() {
-		for (auto const& data : ContractMarketData) {
-			std::string contract_name = data.first;
-			std::replace(contract_name.begin(), contract_name.end(), '/', '-');
-			std::string fname = contract_fname + contract_name + ".csv";
-			std::ofstream outputFile(fname);
-			if (outputFile.is_open())
-			{
-				outputFile << "timestamp,settle_price" << "\n";
-				for (int i = 0; i < data.second.size(); i++) {
-					outputFile << data.second[i].EventDateTime << "," <<
-						data.second[i].Ask << "\n";
-				}
-				outputFile.close();
-			}
-		}
 	}
 
 public:

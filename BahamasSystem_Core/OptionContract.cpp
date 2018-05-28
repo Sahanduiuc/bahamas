@@ -4,22 +4,15 @@
 
 OptionContract::OptionContract(std::string id, std::string underlyingTicker,
 	std::string optionTicker, std::string expirationDate, 
-	double strike, char type, OptionPriceManager& priceManager) :
+	double strike, char type, std::string chainId, OptionPriceManager& priceManager) :
 	Id(id), UnderlyingTicker(underlyingTicker), OptionTicker(optionTicker),
-	ExpirationDate(expirationDate), Strike(strike), Type(type), priceManager(priceManager) {
+	ExpirationDate(expirationDate), Strike(strike), 
+	Type(type), ChainId(chainId), priceManager(priceManager) {
 
+}
+
+OptionDataFrame OptionContract::MarketData() {
+	return this->priceManager.GetCurrentDataFrame(Id);
 }
 
 OptionContract::~OptionContract(){}
-
-BidAskDataFrame OptionContract::MarketData() {
-	return marketData[priceManager.GetCurrentTimeStampString()];
-}
-
-void OptionContract::AddMarketData(std::string date, BidAskDataFrame dataFrame) {
-	marketData[date] = dataFrame;
-}
-
-void OptionContract::AddMarketData(uint32_t index, BidAskDataFrame dataFrame) {
-	//marketData_exp[index] = dataFrame;
-}

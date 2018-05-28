@@ -82,11 +82,6 @@ void Portfolio::UpdatePosition(int action, std::string ticker, int units,
 
 		std::cout << priceManager.GetCurrentTimeStampString()
 			<< " CLOSE position " << ticker << " @ " << price << std::endl;
-
-		//Log close price
-		Logger::instance().ContractMarketData[ticker].push_back(
-			priceManager.GetCurrentDataFrame(ticker)
-		);
 	}
 
 	UpdatePortfolio();

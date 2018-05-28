@@ -7,8 +7,8 @@ double GetStructureValue(OptionStructure structure,
 	double totValue = 0.0;
 
 	for (int i = 0; i < structure.TargetPositions.size(); i++) {
-		totValue += priceManager.GetCurrentPrice(
-			structure.TargetPositions[i]->GetEventTicker()) *			
+		totValue += 
+			priceManager.GetCurrentPrice(structure.TargetPositions[i]->GetEventTicker()) *			
 			structure.TargetPositions[i]->action *
 			structure.TargetPositions[i]->setOrderUnits;
 	}

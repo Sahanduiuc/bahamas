@@ -12,6 +12,8 @@
 #include <boost/date_time/gregorian/gregorian_io.hpp>
 #include <boost/iostreams/device/mapped_file.hpp> 
 #include <locale>
+#include <thread>
+#include "sqlite3.h"
 
 #include "DataFrames.h"
 #include "OptionContract.h"
@@ -19,6 +21,8 @@
 #include "PriceManager.h"
 #include "DataImporter.h"
 #include "OptionChain.h"
+#include "Logger.h"
+#include "OptionPricer.h"
 
 class OptionPriceManager : public PriceManager {
 public:
@@ -30,32 +34,31 @@ public:
 
 	void StreamNextEvent();
 	double GetCurrentPrice(std::string);
-	BidAskDataFrame GetCurrentDataFrame(std::string);
+	OptionDataFrame GetCurrentDataFrame(std::string);
 	bool EOD();
 	std::string GetCurrentTimeStampString();
+	//OHCLVDataFrame GetFuturesDataFrame(std::string);
 	//boost::gregorian::date GetCurrentTimeStamp() const;
 
 	std::map<std::string, OptionContract*> OptionContracts;
-	std::map<std::string, OptionChain*> OptionChains;
-	std::vector<std::string> TradingTimeStamps;
+	std::vector<std::string> TradingDates;
 	std::map<std::string, 
-		std::map<std::string,FuturesContractDataFrame>> UnderlyingData;
+		std::map<std::string,FuturesContractDataFrame>> FuturesData;
 
+	std::map<std::string, std::map<std::string,OptionChain*>> OptionChainHistory;
 private:
-	std::vector<OptionChain*> optionChainData;
-
 	std::queue<TradingEvent*>& eventsQueue;
 	boost::gregorian::date currentPeriod;
 	boost::gregorian::date endPeriod;
-	std::map<uint32_t, OptionContract*> closeMappings;
-	int currentPeriodIndex;
+	int currentDateIndex;
+	std::string QuoteTime;
 
 	bool eod = false;
 
 	void ImportInstrumentData(std::string);
-	void LoadPriceData(boost::iostreams::mapped_file&,size_t,size_t);
 	void GetNextTradingTimeStamp();
+
+	void TestMethod();
 };
 
 #endif 
-

@@ -60,11 +60,11 @@ public:
 			shortLegId = oc_40d->Id;
 
 			tradeCount += 1;
-			Logger::instance().ConsoleLog("Trade Risk " + std::to_string(maxRisk));
+			Logger::instance().LogInfo("Trade Risk " + std::to_string(maxRisk));
 		}
 		
 
-		Logger::instance().ConsoleLog(std::to_string(portfolioManager.GetPortfolioValue()));
+		Logger::instance().LogInfo(std::to_string(portfolioManager.GetPortfolioValue()));
 	}
 private:
 	int tradeCount = 0;

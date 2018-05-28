@@ -103,7 +103,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
@@ -158,9 +158,9 @@
     <ClInclude Include="ExecutionManager.h" />
     <ClInclude Include="GoogleAPIPriceHandler.h" />
     <ClInclude Include="Logger.h" />
-    <ClInclude Include="OHLCVPriceManager.h" />
     <ClInclude Include="OptionChain.h" />
     <ClInclude Include="OptionContract.h" />
+    <ClInclude Include="OptionPricer.h" />
     <ClInclude Include="OrderSizer.h" />
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioManager.h" />
@@ -168,6 +168,8 @@
     <ClInclude Include="PriceManager.h" />
     <ClInclude Include="QuandlAPIPriceHandler.h" />
     <ClInclude Include="RiskManager.h" />
+    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="sqlite3ext.h" />
     <ClInclude Include="Strategies\NetZero.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="stdafx.h" />
@@ -187,7 +189,6 @@
     <ClCompile Include="StrategyUtils.cpp" />
     <ClCompile Include="StructureUtils.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="OHLCVPriceManager.cpp" />
     <ClCompile Include="OptionContract.cpp" />
     <ClCompile Include="OptionPriceManager.cpp" />
     <ClCompile Include="OrderSizer.cpp" />

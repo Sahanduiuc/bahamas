@@ -68,18 +68,10 @@ void TradingSession::Execute() {
 					portfolioManager.GetPortfolioValue()
 				};
 				Logger::instance().PortfolioData.push_back(dataFrame);
-
-				std::map<std::string, Position> positions = 
-					portfolioManager.GetPortfolio().GetInvestedPositions();
-				for (auto const& kv_pair : positions) {
-					Logger::instance().ContractMarketData[kv_pair.first].push_back(
-						priceManager.GetCurrentDataFrame(kv_pair.first)
-					);
-				}
 			}
 		}
 	}
 	
-	Logger::instance().ConsoleLog("Session Ended.");
+	Logger::instance().LogInfo("Session Ended.");
 	Logger::instance().ExportBacktestResults();
 }
