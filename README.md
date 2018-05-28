@@ -1,1 +1,1 @@
-![Alt text](logo.jpg?raw=true "Logo")
+![Alt text](logo.png?raw=true "Logo")
