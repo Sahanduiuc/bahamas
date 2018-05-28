@@ -1,3 +1,3 @@
 <p align="center">
-![Alt text](logo.png?raw=true "Logo")
+	<img src="https://github.com/Shamitha-R/bahamas/blob/master/logo.png?raw=true" alt="Logo"/>
 </p>
