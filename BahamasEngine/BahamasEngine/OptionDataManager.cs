@@ -36,21 +36,22 @@ namespace BahamasEngine
             var contents = File.ReadAllLines(dataPath + @"2017\" + date + @"\LO\" +
                 contractId + ".csv");
 
-            string[] targetRow = contents[1].Split(',');
-            for (int i = 2; i < contents.Length; i++)
+            int targetIndex = 1;
+            for (int i = 1; i < contents.Length; i++)
             {
-                string[] rowData = contents[i].Split(',');
-
-                if (rowData.Length < 57)
+                if (contents[i].Length < 10)
                     continue;
 
-                int rowTimeIndex = GetTimeIndex(rowData[6]);
+                string timeBarValue = ExtractTimeBarColumn(contents[i]);
+
+                int rowTimeIndex = GetTimeIndex(timeBarValue);
                 if (rowTimeIndex > timeIndex)
                     break;
 
-                targetRow = rowData;
+                targetIndex = i;
             }
 
+            string[] targetRow = contents[targetIndex].Split(',');
             targetRow = ProcessRow(targetRow);
             double midPrice = (Convert.ToDouble(targetRow[1]) + Convert.ToDouble(targetRow[3])) / 2.0;
 
@@ -62,7 +63,7 @@ namespace BahamasEngine
                 BidSize = Convert.ToInt32(targetRow[2]),
                 Ask = Convert.ToDouble(targetRow[3]) * 1000.0,
                 Asksize = Convert.ToInt32(targetRow[4]),
-                //Delta = GetOptionDelta(contractId, midPrice)               
+                Delta = GetOptionDelta(contractId, midPrice)               
             };
 
             return dataFrame;
@@ -170,7 +171,7 @@ namespace BahamasEngine
             char type = contractId[5];
             double delta = 0.0;
             string chainId = OptionContracts[contractId].ChainId;
-            double dte = 103.0 / 365.0;
+            double dte = OptionChains[chainId].Dte / 365.0;
 
             if (type == 'C')
             {
@@ -202,6 +203,21 @@ namespace BahamasEngine
             contractId[4] = optionChainId[3];
 
             return new string(contractId);
+        }
+
+        private string ExtractTimeBarColumn(string line)
+        {
+            int startIndex = 0;
+            int seperatorCount = 5;
+
+            while(seperatorCount >= 0)
+            {
+                if (line[startIndex] == ',')
+                    seperatorCount--;
+                startIndex++;
+            }
+
+            return line.Substring(startIndex,5);
         }
 
         #endregion

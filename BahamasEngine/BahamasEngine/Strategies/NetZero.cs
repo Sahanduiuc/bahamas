@@ -22,7 +22,6 @@ namespace BahamasEngine.Strategies
                 OptionChainSnapshot targetChain = Utilities.GetDteTargetChain(
                     updateEvent.OptionChains, 70);
 
-
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
@@ -32,10 +31,10 @@ namespace BahamasEngine.Strategies
                 stopWatch.Stop();
                 Console.WriteLine("RunTime " + stopWatch.ElapsedMilliseconds);
 
-                //OptionContract delta40 = Utilities.GetDeltaTargetContract(targetChain,
-                //    0.40, 'P', DataManager);
-                //OptionContract delta60 = Utilities.GetDeltaTargetContract(targetChain,
-                //    0.60, 'P', DataManager);
+                OptionContract delta40 = Utilities.GetDeltaTargetContract(targetChain,
+                    0.40, 'P', DataManager);
+                OptionContract delta60 = Utilities.GetDeltaTargetContract(targetChain,
+                    0.60, 'P', DataManager);
 
                 //OrderEvent order = new OrderEvent(delta20.ID, -1, 1);
                 //EventsQueue.Enqueue(order);

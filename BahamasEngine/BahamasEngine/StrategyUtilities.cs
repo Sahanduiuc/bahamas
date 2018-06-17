@@ -30,7 +30,7 @@ namespace BahamasEngine
             return targetChain;
         }
 
-        public OptionContract GetDeltaTargetContract(OptionChainSnapshot optionChain, 
+        public OptionContract GetDeltaTargetContract(OptionChainSnapshot optionChain,
             double targetDelta, char optionType, InstrumentDataManager dataManager)
         {
             OptionContract targetContract = null;
@@ -39,21 +39,42 @@ namespace BahamasEngine
             if (optionType == 'C')
             {
                 throw new NotImplementedException();
-            }else if(optionType == 'P')
-            {                
-                foreach(OptionContract contract in optionChain.PutOptionContracts)
+            }
+            else if (optionType == 'P')
+            {
+                int contractCount = optionChain.PutOptionContracts.Count;
+                double[] deltaValues = new double[contractCount];
+
+                Task t1 = Task.Run(() => CalculateDeltaValues(0, contractCount / 2,
+                    deltaValues, dataManager, optionChain.PutOptionContracts));
+                Task t2 = Task.Run(() => CalculateDeltaValues(contractCount / 2, contractCount,
+                    deltaValues, dataManager, optionChain.PutOptionContracts));
+
+                Task.WaitAll(t1, t2);
+
+                for (int i = 0; i < contractCount; i++)
                 {
-                    double detla = Math.Abs(dataManager.GetCurrentOptionDataFrame(contract.ID).Delta);
-                    double deltaDiff = Math.Abs(detla - targetDelta);
+                    double deltaDiff = Math.Abs(deltaValues[i] - targetDelta);
                     if (deltaDiff < minDeltaDiff)
                     {
                         minDeltaDiff = deltaDiff;
-                        targetContract = contract;
+                        targetContract = optionChain.PutOptionContracts[i];
                     }
                 }
             }
 
             return targetContract;
+        }
+
+        private void CalculateDeltaValues(int startIndex, int endIndex, double[] deltaValues,
+            InstrumentDataManager dataManager, List<OptionContract> contracts)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                string contractId = contracts[i].ID;
+                double delta = dataManager.GetCurrentOptionDataFrame(contractId).Delta;
+                deltaValues[i] = Math.Abs(delta);
+            }
         }
     }
 }
