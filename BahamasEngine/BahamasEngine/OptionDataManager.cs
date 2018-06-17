@@ -53,17 +53,21 @@ namespace BahamasEngine
 
             string[] targetRow = contents[targetIndex].Split(',');
             targetRow = ProcessRow(targetRow);
-            double midPrice = (Convert.ToDouble(targetRow[1]) + Convert.ToDouble(targetRow[3])) / 2.0;
+
+            double bid = Convert.ToDouble(targetRow[1]);
+            double ask = Convert.ToDouble(targetRow[3]);
+
+            double midPrice = dataManager.CalculateMidPrice(bid,ask);
 
             OptionDataFrame dataFrame = new OptionDataFrame
             {
                 Ticker = ticker,
                 EventDate = date,
-                Bid = Convert.ToDouble(targetRow[1]) * 1000.0,
+                Bid = bid * 1000.0,
                 BidSize = Convert.ToInt32(targetRow[2]),
-                Ask = Convert.ToDouble(targetRow[3]) * 1000.0,
+                Ask = ask * 1000.0,
                 Asksize = Convert.ToInt32(targetRow[4]),
-                Delta = GetOptionDelta(contractId, midPrice)               
+                Delta = GetOptionDelta(contractId, midPrice)
             };
 
             return dataFrame;
@@ -96,14 +100,14 @@ namespace BahamasEngine
                     if (!OptionChains.ContainsKey(rowData[1]))
                         OptionChains.Add(rowData[1], chain);
 
-                    if(!OptionContracts.ContainsKey(contract.ID))
+                    if (!OptionContracts.ContainsKey(contract.ID))
                         OptionContracts.Add(contract.ID, contract);
 
                     if (!OptionChainHistory[dateIndex].ContainsKey(rowData[1]))
                         OptionChainHistory[dateIndex].Add(rowData[1], chainSnapshot);
 
                     OptionChainSnapshot targetchain = OptionChainHistory[dateIndex][rowData[1]];
-                    
+
                     if (type == 'C')
                     {
                         targetchain.CallOptionContracts.Add(contract);
@@ -210,14 +214,14 @@ namespace BahamasEngine
             int startIndex = 0;
             int seperatorCount = 5;
 
-            while(seperatorCount >= 0)
+            while (seperatorCount >= 0)
             {
                 if (line[startIndex] == ',')
                     seperatorCount--;
                 startIndex++;
             }
 
-            return line.Substring(startIndex,5);
+            return line.Substring(startIndex, 5);
         }
 
         #endregion

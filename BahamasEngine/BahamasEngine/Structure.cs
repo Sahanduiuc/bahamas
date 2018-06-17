@@ -67,6 +67,7 @@ namespace BahamasEngine
                 }
                 else if (contract.Type == 'P')
                 {
+                    double optVal = dataManager.GetCurrentPrice(contract.ID);
                     riskVal += dataManager.GetCurrentPrice(contract.ID) * action * units;
                     if (priceSlice < contract.Strike)
                         riskVal += (contract.Strike - priceSlice) * action * units * -1000;

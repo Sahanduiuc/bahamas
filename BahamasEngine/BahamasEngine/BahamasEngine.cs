@@ -6,7 +6,7 @@ namespace BahamasEngine
     public class BahamasEngine
     {
         private const string ticker = "CL";
-        private const double initialEquity = 10000.0;
+        private const double initialEquity = 100000.0;
         private Queue<TradingEvent> eventsQueue;
         private InstrumentDataManager dataManager;
         private ExecutionManager executionManager;

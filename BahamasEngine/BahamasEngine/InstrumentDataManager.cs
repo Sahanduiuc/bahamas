@@ -57,7 +57,7 @@ namespace BahamasEngine
         public double GetCurrentPrice(string contractId)
         {
             OptionDataFrame dataFrame = GetCurrentOptionDataFrame(contractId);
-            return ((dataFrame.Bid + dataFrame.Ask) / 2.0);
+            return CalculateMidPrice(dataFrame.Bid, dataFrame.Ask);
         }
 
         public OptionDataFrame GetCurrentOptionDataFrame(string contractId)
@@ -74,6 +74,24 @@ namespace BahamasEngine
         {
             return optionDataManager.OptionContracts[contractId];
         }
+
+        public double CalculateMidPrice(double bid, double ask)
+        {
+            double midPrice = 0.0;
+            if (bid != 0.0 && ask != 0.0)
+            {
+                midPrice = (bid + ask) / 2.0;
+            }
+            else if (bid == 0.0)
+            {
+                midPrice = ask;
+            }
+            else if (ask == 0.0)
+            {
+                midPrice = bid;
+            }
+            return midPrice;
+        } 
 
         #region Private Methods
 

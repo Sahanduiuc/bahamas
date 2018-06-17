@@ -13,6 +13,7 @@ namespace BahamasEngine
         private Queue<TradingEvent> eventsQueue;
         private InstrumentDataManager dataManager;
 
+        public double UnrealisedPnL { get { return unrealisedPnL; } }
         public double EquityValue { get { return equity; } }
         public Dictionary<string, Position> InvestedPositions { get; private set; }
 
@@ -65,6 +66,16 @@ namespace BahamasEngine
                 AddPosition(ticker, action, units, price, commission);
             else
                 UpdatePosition(ticker, action, units, price, commission);
+        }
+
+        public void CloseAllPositions()
+        {
+            foreach(var element in InvestedPositions)
+            {
+                SignalEvent sEvent = new SignalEvent(element.Key,
+                    element.Value.Action * -1, element.Value.Units);
+                eventsQueue.Enqueue(sEvent);
+            }
         }
 
         #region Private Methods

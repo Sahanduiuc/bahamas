@@ -7,6 +7,8 @@ namespace BahamasEngine.Strategies
     public class NetZero : StrategyBase
     {
         private bool isInvested = false;
+        private string shortContractId = "";
+        private double structureRisk = 0.0;
 
         public NetZero(Queue<TradingEvent> eventsQueue, InstrumentDataManager dataManager, 
             PortfolioManager portfolioManager):
@@ -17,33 +19,49 @@ namespace BahamasEngine.Strategies
 
         public override void ExecuteStrategy(OptionChainUpdateEvent updateEvent)
         {
-            if (!isInvested)
+            //if (DataManager.GetCurrentTradingDate() == "20170227")
+            //    Console.WriteLine("");
+
+            if (isInvested)
+            {
+                double shortDelta = DataManager.GetCurrentOptionDataFrame(shortContractId).Delta * -100;
+                double profitPerc = (PortfolioManager.Portfolio.UnrealisedPnL)/structureRisk * 100.0;
+
+                if ((shortDelta <= 25 || shortDelta >= 55 || profitPerc >= 10) && shortDelta != 0.0)
+                {
+                    Console.WriteLine($"     Closing Trade with PnL % : {profitPerc}");
+                    PortfolioManager.Portfolio.CloseAllPositions();
+                    isInvested = false;
+                }
+            }
+            else if (!isInvested)
             {
                 Console.WriteLine($"     Starting new BWB trade");
 
                 OptionChainSnapshot targetChain = Utilities.GetDteTargetChain(
                     updateEvent.OptionChains, 70);
 
-                OptionContract delta20 = Utilities.GetDeltaTargetContract(targetChain,
-                    0.20, 'P', DataManager);
-                OptionContract delta40 = Utilities.GetDeltaTargetContract(targetChain,
+                OptionContract wingBottom = Utilities.GetDeltaTargetContract(targetChain,
+                    0.10, 'P', DataManager);
+                OptionContract wingCenter = Utilities.GetDeltaTargetContract(targetChain,
                     0.40, 'P', DataManager);
-                OptionContract delta60 = Utilities.GetDeltaTargetContract(targetChain,
-                    0.60, 'P', DataManager);
+                OptionContract wingTop = Utilities.GetDeltaTargetContract(targetChain,
+                    0.70, 'P', DataManager);
 
-                OrderEvent order20 = new OrderEvent(delta20.ID, 1, 1);
-                OrderEvent order40 = new OrderEvent(delta40.ID, -1, 2);
-                OrderEvent order60 = new OrderEvent(delta60.ID, 1, 1);
+                OrderEvent orderBottom = new OrderEvent(wingBottom.ID, 1, 2);
+                OrderEvent orderCenter = new OrderEvent(wingCenter.ID, -1, 4);
+                OrderEvent orderTop = new OrderEvent(wingTop.ID, 1, 2);
 
-                Structure bwbStructure = new Structure(DataManager, order20, order40, order60);
-                double maxRisk = bwbStructure.GetRegTRisk();
-                Console.WriteLine($"        Structure Risk : {maxRisk}");
+                Structure bwbStructure = new Structure(DataManager, orderBottom, orderCenter, orderTop);
+                structureRisk = bwbStructure.GetRegTRisk();
+                Console.WriteLine($"        Structure Risk : {structureRisk}");
 
-                //EventsQueue.Enqueue(order20);
-                //EventsQueue.Enqueue(order40);
-                //EventsQueue.Enqueue(order60);
+                EventsQueue.Enqueue(orderBottom);
+                EventsQueue.Enqueue(orderCenter);
+                EventsQueue.Enqueue(orderTop);
 
-                //isInvested = true;
+                shortContractId = wingCenter.ID;
+                isInvested = true;
             }
             Console.WriteLine($"{DataManager.GetCurrentTradingDate()} Portfolio Value " +
                 $"{PortfolioManager.GetPortfolioValue()}");
