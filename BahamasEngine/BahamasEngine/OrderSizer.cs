@@ -36,6 +36,10 @@ namespace BahamasEngine
                 {
                     order.Units = portfolio.InvestedPositions[order.Ticker].Units;
                 }
+                else
+                {
+                    throw new NotSupportedException();
+                }
             }
         }
     }

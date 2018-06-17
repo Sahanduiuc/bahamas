@@ -82,6 +82,7 @@
     <Compile Include="Strategies\NetZero.cs" />
     <Compile Include="StrategyBase.cs" />
     <Compile Include="StrategyUtilities.cs" />
+    <Compile Include="Structure.cs" />
     <Compile Include="TradingEvent.cs" />
     <Compile Include="TradingSession.cs" />
   </ItemGroup>

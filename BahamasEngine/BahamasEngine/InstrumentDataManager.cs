@@ -12,8 +12,8 @@ namespace BahamasEngine
         private readonly string ticker;
         private int currentDateIndex;
         private int quoteIndex;
-        private string dataPath = @"D:\bahamas_data\";       
-        
+        private string dataPath = @"D:\bahamas_data\";
+
         private OptionDataManager optionDataManager;
         private FuturesDataManager futuresDataManager;
 
@@ -68,6 +68,11 @@ namespace BahamasEngine
         public string GetCurrentTradingDate()
         {
             return TradingDates[currentDateIndex];
+        }
+
+        public OptionContract GetContractData(string contractId)
+        {
+            return optionDataManager.OptionContracts[contractId];
         }
 
         #region Private Methods

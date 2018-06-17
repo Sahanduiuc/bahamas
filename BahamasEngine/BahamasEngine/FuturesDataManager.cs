@@ -37,8 +37,6 @@ namespace BahamasEngine
                 prevDataFrame = dataFrame;
             }
             return prevDataFrame;
-
-            throw new InvalidDataException();
         }
 
         public void LoadFuturesData()
