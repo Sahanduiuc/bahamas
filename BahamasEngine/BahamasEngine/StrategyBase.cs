@@ -26,5 +26,13 @@ namespace BahamasEngine
         {
 
         }
+
+        public virtual void ExecuteStructureTrades(Structure structure)
+        {
+            for(int i = 0; i < structure.Positions.Count; i++)
+            {
+                EventsQueue.Enqueue(structure.Positions[i]);
+            }
+        }
     }
 }

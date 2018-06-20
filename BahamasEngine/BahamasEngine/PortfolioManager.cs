@@ -25,7 +25,7 @@ namespace BahamasEngine
 
             this.orderSizer = new OrderSizer();
             this.riskManager = new RiskManager();
-            this.Portfolio = new Portfolio(eventsQueue, initialBalance, dataManager);
+            this.Portfolio = new Portfolio(0, eventsQueue, initialBalance, dataManager);
         }
 
         public void UpdatePortfolioValue()

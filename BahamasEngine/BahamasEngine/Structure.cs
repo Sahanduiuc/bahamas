@@ -5,33 +5,33 @@ namespace BahamasEngine
 {
     public class Structure
     {
-        private List<OrderEvent> positions;
+        public List<OrderEvent> Positions { get; private set; }
         private InstrumentDataManager dataManager;
 
         public Structure(InstrumentDataManager dataManager, params OrderEvent[] contracts)
         {
-            this.positions = new List<OrderEvent>();
+            this.Positions = new List<OrderEvent>();
             this.dataManager = dataManager;
 
             for (int i = 0; i < contracts.Length; i++)
             {
-                this.positions.Add(contracts[i]);
+                this.Positions.Add(contracts[i]);
             }
         }
 
         public void AddToStructure(OrderEvent contract)
         {
-            positions.Add(contract);
+            Positions.Add(contract);
         }
 
         public double GetCost()
         {
             double value = 0.0;
 
-            for (int i = 0; i < positions.Count; i++)
+            for (int i = 0; i < Positions.Count; i++)
             {
-                double contractPrice = dataManager.GetCurrentPrice(positions[i].Ticker);
-                value += (contractPrice * positions[i].Action * positions[i].OrderUnits);
+                double contractPrice = dataManager.GetCurrentPrice(Positions[i].Ticker);
+                value += (contractPrice * Positions[i].Action * Positions[i].OrderUnits);
             }
             return value;
         }
@@ -40,9 +40,9 @@ namespace BahamasEngine
         {
             double maxRisk = double.MinValue;
 
-            for (int i = 0; i < positions.Count; i++)
+            for (int i = 0; i < Positions.Count; i++)
             {
-                OptionContract contract = dataManager.GetContractData(positions[i].Ticker);
+                OptionContract contract = dataManager.GetContractData(Positions[i].Ticker);
 
                 double risk = GetRiskAtSlice(contract.Strike);
                 if (risk > maxRisk)
@@ -55,11 +55,11 @@ namespace BahamasEngine
         {
             double riskVal = 0.0;
 
-            for (int i = 0; i < positions.Count; i++)
+            for (int i = 0; i < Positions.Count; i++)
             {
-                OptionContract contract = dataManager.GetContractData(positions[i].Ticker);
-                int units = positions[i].OrderUnits;
-                int action = positions[i].Action;
+                OptionContract contract = dataManager.GetContractData(Positions[i].Ticker);
+                int units = Positions[i].OrderUnits;
+                int action = Positions[i].Action;
 
                 if (contract.Type == 'C')
                 {

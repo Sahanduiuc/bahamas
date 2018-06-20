@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BahamasEngine
 {
@@ -30,13 +31,13 @@ namespace BahamasEngine
             this.OptionChains = new Dictionary<string, OptionChain>();
         }
 
-        public OptionDataFrame GetCurrentDataFrame(string contractId, int timeIndex)
+        public async Task<OptionDataFrame> GetCurrentDataFrameAsync(string contractId, int timeIndex)
         {
             string date = dataManager.GetCurrentTradingDate();
-            var contents = File.ReadAllLines(dataPath + @"2017\" + date + @"\LO\" +
-                contractId + ".csv");
-
             int targetIndex = 1;
+            var contents = File.ReadAllLines(dataPath + @"2017\" + date + @"\LO\" +
+            contractId + ".csv");
+
             for (int i = 1; i < contents.Length; i++)
             {
                 if (contents[i].Length < 10)
@@ -57,7 +58,7 @@ namespace BahamasEngine
             double bid = Convert.ToDouble(targetRow[1]);
             double ask = Convert.ToDouble(targetRow[3]);
 
-            double midPrice = dataManager.CalculateMidPrice(bid,ask);
+            double midPrice = dataManager.CalculateMidPrice(bid, ask);
 
             OptionDataFrame dataFrame = new OptionDataFrame
             {
@@ -67,7 +68,7 @@ namespace BahamasEngine
                 BidSize = Convert.ToInt32(targetRow[2]),
                 Ask = ask * 1000.0,
                 Asksize = Convert.ToInt32(targetRow[4]),
-                Delta = GetOptionDelta(contractId, midPrice)
+                Delta = GetOptionDelta(contractId, midPrice, timeIndex)
             };
 
             return dataFrame;
@@ -167,10 +168,10 @@ namespace BahamasEngine
             return data;
         }
 
-        private double GetOptionDelta(string contractId, double optionPrice)
+        private double GetOptionDelta(string contractId, double optionPrice, int timeIndex)
         {
             OHLCVDataFrame futuresData = futuresDataManager.GetCurrentDataFrame(
-                GetFuturesContractId(contractId));
+                GetFuturesContractId(contractId), timeIndex);
 
             char type = contractId[5];
             double delta = 0.0;

@@ -23,7 +23,7 @@ namespace BahamasEngine
                 Dictionary<string, List<OHLCVDataFrame>>>();
         }
 
-        public OHLCVDataFrame GetCurrentDataFrame(string contractId)
+        public OHLCVDataFrame GetCurrentDataFrame(string contractId, int timeIndex)
         {
             List<OHLCVDataFrame> data = contractData[contractId][
                 dataManager.GetCurrentTradingDate()];
@@ -31,7 +31,7 @@ namespace BahamasEngine
 
             foreach (OHLCVDataFrame dataFrame in data)
             {
-                if (dataFrame.TimeIndex > 1080)
+                if (dataFrame.TimeIndex > timeIndex)
                     return prevDataFrame;
 
                 prevDataFrame = dataFrame;

@@ -9,17 +9,20 @@ namespace BahamasEngine
         private double realisedPnL = 0.0;
         private double unrealisedPnL = 0.0;
         private double equity = 0.0;
-        
+        private readonly int portfolioId;
+
         private Queue<TradingEvent> eventsQueue;
         private InstrumentDataManager dataManager;
 
+        public int PortfolioId { get { return portfolioId; }  }
         public double UnrealisedPnL { get { return unrealisedPnL; } }
         public double EquityValue { get { return equity; } }
         public Dictionary<string, Position> InvestedPositions { get; private set; }
 
-        public Portfolio(Queue<TradingEvent> eventsQueue, double initialBalance, 
+        public Portfolio(int portfolioId, Queue<TradingEvent> eventsQueue, double initialBalance, 
             InstrumentDataManager dataManager)
         {
+            this.portfolioId = portfolioId;
             this.eventsQueue = eventsQueue;
             this.cashBalance = initialBalance;
             this.initialBalance = initialBalance;

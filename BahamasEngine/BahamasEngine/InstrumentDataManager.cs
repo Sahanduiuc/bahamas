@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BahamasEngine
 {
@@ -11,12 +12,13 @@ namespace BahamasEngine
         private Queue<TradingEvent> eventsQueue;
         private readonly string ticker;
         private int currentDateIndex;
-        private int quoteIndex;
+        private int timestampIndex;
         private string dataPath = @"D:\bahamas_data\";
 
         private OptionDataManager optionDataManager;
         private FuturesDataManager futuresDataManager;
 
+        public int TimeStampIndex { get { return timestampIndex; } }
         public const string DATEFORMAT = "yyyyMMdd";
         public IList<string> TradingDates { get; private set; }
 
@@ -25,7 +27,7 @@ namespace BahamasEngine
             this.ticker = ticker;
             this.eventsQueue = eventsQueue;
             this.currentDateIndex = -1;
-            this.quoteIndex = 1080;
+            this.timestampIndex = 1075;
             this.dataPath += ticker + @"\";
 
             this.TradingDates = new List<string>();
@@ -39,8 +41,8 @@ namespace BahamasEngine
         {
             GetNextTradingTimeStamp();
             OptionChainUpdateEvent updateEvent = new OptionChainUpdateEvent(ticker);
-            
-            foreach(var element in optionDataManager.OptionChainHistory[currentDateIndex])
+
+            foreach (var element in optionDataManager.OptionChainHistory[currentDateIndex])
             {
                 updateEvent.OptionChains.Add(element.Value);
             }
@@ -56,13 +58,13 @@ namespace BahamasEngine
 
         public double GetCurrentPrice(string contractId)
         {
-            OptionDataFrame dataFrame = GetCurrentOptionDataFrame(contractId);
+            OptionDataFrame dataFrame = GetCurrentOptionDataFrameAsync(contractId).ConfigureAwait(false).GetAwaiter().GetResult();
             return CalculateMidPrice(dataFrame.Bid, dataFrame.Ask);
         }
 
-        public OptionDataFrame GetCurrentOptionDataFrame(string contractId)
+        public async Task<OptionDataFrame> GetCurrentOptionDataFrameAsync(string contractId)
         {
-            return optionDataManager.GetCurrentDataFrame(contractId, quoteIndex);
+            return await optionDataManager.GetCurrentDataFrameAsync(contractId, timestampIndex);
         }
 
         public string GetCurrentTradingDate()
@@ -91,7 +93,7 @@ namespace BahamasEngine
                 midPrice = bid;
             }
             return midPrice;
-        } 
+        }
 
         #region Private Methods
 
@@ -104,7 +106,7 @@ namespace BahamasEngine
             foreach (var line in tDayContents.Skip(1))
             {
                 string date = line.Split(',')[0];
-                TradingDates.Add(date);                
+                TradingDates.Add(date);
             }
 
             Console.WriteLine("     Loading Futures data");
@@ -116,9 +118,14 @@ namespace BahamasEngine
 
         private void GetNextTradingTimeStamp()
         {
-            currentDateIndex++;
+            timestampIndex+=5;
+            if (timestampIndex > 1200)
+                timestampIndex = 1080;
+
+            if (timestampIndex == 1080)
+                currentDateIndex++;
         }
 
-#endregion
+        #endregion
     }
 }

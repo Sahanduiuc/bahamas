@@ -44,13 +44,17 @@ namespace BahamasEngine
             {
                 int contractCount = optionChain.PutOptionContracts.Count;
                 double[] deltaValues = new double[contractCount];
+                List<Task> tasks = new List<Task>();
 
-                Task t1 = Task.Run(() => CalculateDeltaValues(0, contractCount / 2,
-                    deltaValues, dataManager, optionChain.PutOptionContracts));
-                Task t2 = Task.Run(() => CalculateDeltaValues(contractCount / 2, contractCount,
-                    deltaValues, dataManager, optionChain.PutOptionContracts));
+                for (int i = 0; i < contractCount; i++)
+                {
+                    int index = i;
+                    Task t = Task.Run(async () => await CalculateDeltaValueAsync(index, deltaValues,
+                        dataManager, optionChain.PutOptionContracts[index]));
+                    tasks.Add(t);
+                }
 
-                Task.WaitAll(t1, t2);
+                Task.WaitAll(tasks.ToArray());
 
                 for (int i = 0; i < contractCount; i++)
                 {
@@ -66,15 +70,12 @@ namespace BahamasEngine
             return targetContract;
         }
 
-        private void CalculateDeltaValues(int startIndex, int endIndex, double[] deltaValues,
-            InstrumentDataManager dataManager, List<OptionContract> contracts)
+        private async Task CalculateDeltaValueAsync(int index, double[] deltaValues,
+            InstrumentDataManager dataManager, OptionContract contract)
         {
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                string contractId = contracts[i].ID;
-                double delta = dataManager.GetCurrentOptionDataFrame(contractId).Delta;
-                deltaValues[i] = Math.Abs(delta);
-            }
+            string contractId = contract.ID;
+            OptionDataFrame dataFrame = await dataManager.GetCurrentOptionDataFrameAsync(contractId);
+            deltaValues[index] = Math.Abs(dataFrame.Delta);           
         }
     }
 }
