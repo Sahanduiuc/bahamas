@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BahamasEngine
@@ -9,37 +6,45 @@ namespace BahamasEngine
     public class PortfolioManager
     {
         private double currentBalance = 0.0;
+        private double initialBalance = 0.0;
         private InstrumentDataManager dataManager;
         private Queue<TradingEvent> eventsQueue;
         private OrderSizer orderSizer;
         private RiskManager riskManager;
 
-        public Portfolio Portfolio { get; private set; }
+        public Dictionary<int, Portfolio> Portfolios { get; private set; }
 
         public PortfolioManager(Queue<TradingEvent> eventsQueue, InstrumentDataManager dataManager,
             double initialBalance)
         {
+            this.initialBalance = initialBalance;
             this.eventsQueue = eventsQueue;
             this.currentBalance = initialBalance;
             this.dataManager = dataManager;
 
             this.orderSizer = new OrderSizer();
             this.riskManager = new RiskManager();
-            this.Portfolio = new Portfolio(0, eventsQueue, initialBalance, dataManager);
+            Portfolios = new Dictionary<int, Portfolio>();
         }
 
-        public void UpdatePortfolioValue()
+        public void UpdatePortfolioValues()
         {
-            this.Portfolio.UpdatePortfolio();
+            foreach(var element in Portfolios)
+            {
+                Task.Run(()=>element.Value.UpdatePortfolio());
+            }
         }
 
-        public double GetPortfolioValue()
+        public double GetPortfolioValue(int portfolioId)
         {
-            return Portfolio.EquityValue;
+            InitializePortfolio(portfolioId);
+            return Portfolios[portfolioId].EquityValue;
         }
 
         public void ProcessSignal(SignalEvent sEvent)
         {
+            InitializePortfolio(sEvent.PortfolioId);
+
             MarketOrder order = new MarketOrder
             {
                 Ticker = sEvent.Ticker,
@@ -47,7 +52,7 @@ namespace BahamasEngine
                 Units = sEvent.OrderUnits,
                 Price = dataManager.GetCurrentPrice(sEvent.Ticker)
             };
-            orderSizer.SizeOrder(order, Portfolio);
+            orderSizer.SizeOrder(order, Portfolios[sEvent.PortfolioId]);
             IList<MarketOrder> profiledOrders = riskManager.ProfileOrder(order);
 
             //Place Order on Events queue for execution
@@ -55,7 +60,8 @@ namespace BahamasEngine
             {
                 OrderEvent oEvent = new OrderEvent(curOrder.Ticker,
                     curOrder.Action,
-                    curOrder.Units);
+                    curOrder.Units,
+                    sEvent.PortfolioId);
 
                 eventsQueue.Enqueue(oEvent);
             }
@@ -63,12 +69,19 @@ namespace BahamasEngine
 
         public void ProcessFill(FillEvent fEvent)
         {
-            Portfolio.ProcessPosition(
+            Portfolios[fEvent.PortfolioId].ProcessPosition(
                 fEvent.Ticker,
                 fEvent.Action,
                 fEvent.FillPrice,
                 fEvent.OrderUnits,
                 fEvent.Commission);
+        }
+
+        private void InitializePortfolio(int portfolioId)
+        {
+            if (!Portfolios.ContainsKey(portfolioId))
+                Portfolios[portfolioId] = new Portfolio(portfolioId, eventsQueue,
+                    initialBalance, dataManager);
         }
     }
 }

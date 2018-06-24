@@ -36,7 +36,8 @@ namespace BahamasEngine
                 orderEvent.Action,
                 orderEvent.OrderUnits,
                 dataManager.GetCurrentPrice(orderEvent.Ticker),
-                commission);
+                commission,
+                orderEvent.PortfolioId);
 
             eventsQueue.Enqueue(tempEvent);
         }

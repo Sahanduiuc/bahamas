@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace BahamasEngine
         private InstrumentDataManager dataManager;
         private FuturesDataManager futuresDataManager;
         private OptionPricingHelper pricingHelper;
+        private static ConcurrentDictionary<string, string[]> optionData;
 
         public Dictionary<string, OptionContract> OptionContracts { get; private set; }
         public Dictionary<string, OptionChainSnapshot>[] OptionChainHistory { get; private set; }
@@ -25,7 +27,8 @@ namespace BahamasEngine
             this.dataPath = dataPath;
             this.dataManager = dataManager;
             this.futuresDataManager = futuresDataManager;
-
+            optionData = new ConcurrentDictionary<string, string[]>();
+            
             this.pricingHelper = new OptionPricingHelper();
             this.OptionContracts = new Dictionary<string, OptionContract>();
             this.OptionChains = new Dictionary<string, OptionChain>();
@@ -35,8 +38,17 @@ namespace BahamasEngine
         {
             string date = dataManager.GetCurrentTradingDate();
             int targetIndex = 1;
-            var contents = File.ReadAllLines(dataPath + @"2017\" + date + @"\LO\" +
-            contractId + ".csv");
+
+            string[] contents = null;
+            string key = date + contractId;
+            bool exists = optionData.TryGetValue(key, out contents);
+
+            if (!exists)
+            {
+                contents = File.ReadAllLines(dataPath + @"2017\" + date + @"\LO\" +
+                    contractId + ".csv");
+                optionData.TryAdd(key, contents);
+            }
 
             for (int i = 1; i < contents.Length; i++)
             {

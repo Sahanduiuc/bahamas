@@ -5,12 +5,12 @@ namespace BahamasEngine
 {
     public class Structure
     {
-        public List<OrderEvent> Positions { get; private set; }
+        public List<SignalEvent> Positions { get; private set; }
         private InstrumentDataManager dataManager;
 
-        public Structure(InstrumentDataManager dataManager, params OrderEvent[] contracts)
+        public Structure(InstrumentDataManager dataManager, params SignalEvent[] contracts)
         {
-            this.Positions = new List<OrderEvent>();
+            this.Positions = new List<SignalEvent>();
             this.dataManager = dataManager;
 
             for (int i = 0; i < contracts.Length; i++)
@@ -19,7 +19,7 @@ namespace BahamasEngine
             }
         }
 
-        public void AddToStructure(OrderEvent contract)
+        public void AddToStructure(SignalEvent contract)
         {
             Positions.Add(contract);
         }

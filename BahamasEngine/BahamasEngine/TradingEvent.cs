@@ -33,12 +33,14 @@ namespace BahamasEngine
     {
         public int Action { get; private set; }
         public int OrderUnits { get; private set; }
+        public int PortfolioId { get; private set; }
 
-        public SignalEvent(string ticker, int action, int orderUnits)
+        public SignalEvent(string ticker, int action, int orderUnits, int portfolioId)
             : base(ticker,EventType.SignalEventType)
         {
             this.Action = action;
             this.OrderUnits = orderUnits;
+            this.PortfolioId = portfolioId;
         }
     }
 
@@ -46,12 +48,14 @@ namespace BahamasEngine
     {
         public int Action { get; private set; }
         public int OrderUnits { get; private set; }
+        public int PortfolioId { get; private set; }
 
-        public OrderEvent(string ticker, int action, int orderUnits)
+        public OrderEvent(string ticker, int action, int orderUnits, int portfolioId)
             : base(ticker,EventType.OrderEventType)
         {
             this.Action = action;
             this.OrderUnits = orderUnits;
+            this.PortfolioId = portfolioId;
         }
     }
 
@@ -61,21 +65,24 @@ namespace BahamasEngine
         public int OrderUnits { get; private set; }
         public double FillPrice { get; private set; }
         public double Commission { get; private set; }
+        public int PortfolioId { get; private set; }
 
         public FillEvent(string ticker, int action, int orderUnits,
-            double fillPrice, double commission)
+            double fillPrice, double commission, int portfolioId)
             : base(ticker,EventType.FillEventType)
         {
             this.Action = action;
             this.OrderUnits = orderUnits;
             this.FillPrice = fillPrice;
             this.Commission = commission;
+            this.PortfolioId = portfolioId;
         }
     }
 
     public sealed class OptionChainUpdateEvent : TradingEvent
     {
         public IList<OptionChainSnapshot> OptionChains;
+        public OHLCVDataFrame FuturesDataFrame;
 
         public OptionChainUpdateEvent(string underlyingTicker)
             : base(underlyingTicker, EventType.OptionChainUpdateEventType)

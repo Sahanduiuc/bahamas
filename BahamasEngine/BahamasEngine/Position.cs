@@ -39,7 +39,7 @@ namespace BahamasEngine
             this.NetCommission = commission;
 
             CalculatePositionValue();
-            UpdateMarketValue(bid, ask);
+            UpdateMarketValue(purchasePrice);
         }
 
         public void CalculatePositionValue()
@@ -64,9 +64,9 @@ namespace BahamasEngine
             netValueAfterCommission = netValue - NetCommission;
         }
 
-        public void UpdateMarketValue(double bid, double ask)
+        public void UpdateMarketValue(double price)
         {
-            double midValue = (bid + ask) / 2.0;
+            double midValue = price;
             MarketValue = Units * midValue * Math.Sign(netUnits);
             UnRealisedPnL = MarketValue - CostBasis;
             RealisedPnL = MarketValue + netValueAfterCommission;

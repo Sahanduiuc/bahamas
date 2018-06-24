@@ -42,7 +42,7 @@ namespace BahamasEngine
                     switch (tEvent)
                     {
                         case OptionChainUpdateEvent dataUpdateEvent:
-                            portfolioManager.UpdatePortfolioValue();
+                            portfolioManager.UpdatePortfolioValues();
                             strategy.ExecuteStrategy(dataUpdateEvent);
                             break;
                         case SignalEvent signalEvent:

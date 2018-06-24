@@ -47,7 +47,7 @@ namespace BahamasEngine
                 double bid = price;
                 double ask = price;
 
-                targetPosition.UpdateMarketValue(bid, ask);
+                targetPosition.UpdateMarketValue(price);
                 unrealisedPnL += targetPosition.UnRealisedPnL;
                 double netPnL = targetPosition.RealisedPnL - targetPosition.UnRealisedPnL;
                 equity += targetPosition.MarketValue - targetPosition.CostBasis + netPnL;
@@ -76,7 +76,7 @@ namespace BahamasEngine
             foreach(var element in InvestedPositions)
             {
                 SignalEvent sEvent = new SignalEvent(element.Key,
-                    element.Value.Action * -1, element.Value.Units);
+                    element.Value.Action * -1, element.Value.Units, 0);
                 eventsQueue.Enqueue(sEvent);
             }
         }
@@ -109,7 +109,7 @@ namespace BahamasEngine
             double bid = currentPrice;
             double ask = currentPrice;
 
-            InvestedPositions[ticker].UpdateMarketValue(bid, ask);
+            InvestedPositions[ticker].UpdateMarketValue(currentPrice);
 
             if (InvestedPositions[ticker].Units == 0)
             {
