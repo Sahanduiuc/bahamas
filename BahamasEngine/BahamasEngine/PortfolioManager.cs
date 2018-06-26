@@ -77,6 +77,12 @@ namespace BahamasEngine
                 fEvent.Commission);
         }
 
+        public void LiquidatePortfolio(int portfolioId)
+        {
+            Portfolios[portfolioId].CloseAllPositions();
+            Portfolios.Remove(portfolioId);
+        }
+
         private void InitializePortfolio(int portfolioId)
         {
             if (!Portfolios.ContainsKey(portfolioId))

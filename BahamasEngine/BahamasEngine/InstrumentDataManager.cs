@@ -27,7 +27,7 @@ namespace BahamasEngine
             this.ticker = ticker;
             this.eventsQueue = eventsQueue;
             this.currentDateIndex = -1;
-            this.timestampIndex = 1079;
+            this.timestampIndex = 1065;
             this.dataPath += ticker + @"\";
 
             this.TradingDates = new List<string>();
@@ -118,8 +118,8 @@ namespace BahamasEngine
 
         private void GetNextTradingTimeStamp()
         {
-            timestampIndex++;
-            if (timestampIndex > 1200)
+            timestampIndex+=15;
+            if (timestampIndex > 1080)
                 timestampIndex = 1080;
 
             if (timestampIndex == 1080)
