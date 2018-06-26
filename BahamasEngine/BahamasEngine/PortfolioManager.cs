@@ -12,7 +12,7 @@ namespace BahamasEngine
         private OrderSizer orderSizer;
         private RiskManager riskManager;
 
-        public Dictionary<int, Portfolio> Portfolios { get; private set; }
+        public Portfolio Portfolio;
 
         public PortfolioManager(Queue<TradingEvent> eventsQueue, InstrumentDataManager dataManager,
             double initialBalance)
@@ -24,27 +24,21 @@ namespace BahamasEngine
 
             this.orderSizer = new OrderSizer();
             this.riskManager = new RiskManager();
-            Portfolios = new Dictionary<int, Portfolio>();
+            Portfolio = new Portfolio(0, eventsQueue, initialBalance, dataManager);
         }
 
         public void UpdatePortfolioValues()
         {
-            foreach(var element in Portfolios)
-            {
-                Task.Run(()=>element.Value.UpdatePortfolio());
-            }
+            Portfolio.UpdatePortfolio();
         }
 
-        public double GetPortfolioValue(int portfolioId)
+        public double GetPortfolioValue()
         {
-            InitializePortfolio(portfolioId);
-            return Portfolios[portfolioId].EquityValue;
+            return Portfolio.EquityValue;
         }
 
         public void ProcessSignal(SignalEvent sEvent)
         {
-            InitializePortfolio(sEvent.PortfolioId);
-
             MarketOrder order = new MarketOrder
             {
                 Ticker = sEvent.Ticker,
@@ -52,7 +46,7 @@ namespace BahamasEngine
                 Units = sEvent.OrderUnits,
                 Price = dataManager.GetCurrentPrice(sEvent.Ticker)
             };
-            orderSizer.SizeOrder(order, Portfolios[sEvent.PortfolioId]);
+            orderSizer.SizeOrder(order, Portfolio);
             IList<MarketOrder> profiledOrders = riskManager.ProfileOrder(order);
 
             //Place Order on Events queue for execution
@@ -69,7 +63,7 @@ namespace BahamasEngine
 
         public void ProcessFill(FillEvent fEvent)
         {
-            Portfolios[fEvent.PortfolioId].ProcessPosition(
+            Portfolio.ProcessPosition(
                 fEvent.Ticker,
                 fEvent.Action,
                 fEvent.FillPrice,
@@ -77,17 +71,9 @@ namespace BahamasEngine
                 fEvent.Commission);
         }
 
-        public void LiquidatePortfolio(int portfolioId)
+        public void LiquidatePortfolio()
         {
-            Portfolios[portfolioId].CloseAllPositions();
-            Portfolios.Remove(portfolioId);
-        }
-
-        private void InitializePortfolio(int portfolioId)
-        {
-            if (!Portfolios.ContainsKey(portfolioId))
-                Portfolios[portfolioId] = new Portfolio(portfolioId, eventsQueue,
-                    initialBalance, dataManager);
+            Portfolio.CloseAllPositions();
         }
     }
 }

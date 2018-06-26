@@ -14,7 +14,8 @@ namespace BahamasEngine
         SignalEventType,
         OrderEventType,
         FillEventType,
-        OptionChainUpdateEventType
+        OptionChainUpdateEventType,
+        TerminationEventType
     };    
 
     public abstract class TradingEvent
@@ -91,4 +92,11 @@ namespace BahamasEngine
         }
     }
 
+    public sealed class TerminationEvent : TradingEvent
+    {
+        public TerminationEvent(string ticker = "null") 
+            : base(ticker, EventType.TerminationEventType)
+        {
+        }
+    }
 }

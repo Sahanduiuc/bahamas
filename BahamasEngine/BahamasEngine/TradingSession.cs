@@ -10,6 +10,7 @@ namespace BahamasEngine
         private ExecutionManager executionManager;
         private PortfolioManager portfolioManager;
         private StrategyBase strategy;
+        private bool terminate = false;
 
         public TradingSession(Queue<TradingEvent> eventsQueue,
             InstrumentDataManager dataManager,
@@ -33,6 +34,8 @@ namespace BahamasEngine
             {
                 if (eventsQueue.Count == 0)
                 {
+                    if (terminate)
+                        break;
                     dataManager.StreamNextEvent();
                 }
                 else
@@ -53,6 +56,9 @@ namespace BahamasEngine
                             break;
                         case FillEvent fillEvent:
                             portfolioManager.ProcessFill(fillEvent);
+                            break;
+                        case TerminationEvent terminationEvent:
+                            terminate = true;
                             break;
                         default:
                             break;

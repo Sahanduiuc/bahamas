@@ -119,7 +119,7 @@ namespace BahamasEngine
         private void GetNextTradingTimeStamp()
         {
             timestampIndex+=15;
-            if (timestampIndex > 1080)
+            if (timestampIndex > 1200)
                 timestampIndex = 1080;
 
             if (timestampIndex == 1080)
