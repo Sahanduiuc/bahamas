@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BahamasEngine
 {
@@ -40,6 +36,7 @@ namespace BahamasEngine
                 orderEvent.PortfolioId);
 
             eventsQueue.Enqueue(tempEvent);
+            Logger.LogTradeExecution(tempEvent, dataManager);
         }
 
         private double GetCommission(OrderEvent orderEvent)

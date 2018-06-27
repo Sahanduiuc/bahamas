@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -14,6 +15,7 @@ namespace BahamasEngine
         private int currentDateIndex;
         private int timestampIndex;
         private string dataPath = @"D:\bahamas_data\";
+        private int timeStepSize = 5;
 
         private OptionDataManager optionDataManager;
         private FuturesDataManager futuresDataManager;
@@ -22,12 +24,13 @@ namespace BahamasEngine
         public const string DATEFORMAT = "yyyyMMdd";
         public IList<string> TradingDates { get; private set; }
 
-        public InstrumentDataManager(string ticker, ref Queue<TradingEvent> eventsQueue)
+        public InstrumentDataManager(string ticker, Queue<TradingEvent> eventsQueue,
+            int startDateIndex = 0, int startTimeIndex = 1080)
         {
             this.ticker = ticker;
             this.eventsQueue = eventsQueue;
-            this.currentDateIndex = -1;
-            this.timestampIndex = 1065;
+            this.currentDateIndex = startDateIndex;
+            this.timestampIndex = startTimeIndex - timeStepSize;
             this.dataPath += ticker + @"\";
 
             this.TradingDates = new List<string>();
@@ -35,6 +38,13 @@ namespace BahamasEngine
             this.optionDataManager = new OptionDataManager(ticker, dataPath, this, futuresDataManager);
 
             LoadMetaData();
+        }
+
+        public void SetTradePeriod(int dateIndex, int timeIndex)
+        {
+            currentDateIndex = dateIndex;
+            timestampIndex = timeIndex - timeStepSize;
+            OptionDataManager.OptionData = new ConcurrentDictionary<string, string[]>();
         }
 
         public void StreamNextEvent()
@@ -118,12 +128,12 @@ namespace BahamasEngine
 
         private void GetNextTradingTimeStamp()
         {
-            timestampIndex+=15;
+            timestampIndex+=timeStepSize;
             if (timestampIndex > 1200)
+            {
                 timestampIndex = 1080;
-
-            if (timestampIndex == 1080)
                 currentDateIndex++;
+            }              
         }
 
         #endregion

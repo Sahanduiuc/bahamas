@@ -22,8 +22,8 @@ namespace BahamasEngine.Strategies
 
         public override void ExecuteStrategy(OptionChainUpdateEvent updateEvent)
         {
-            Console.WriteLine($"Trading TimeStamp   {DataManager.GetCurrentTradingDate()} : {DataManager.TimeStampIndex}");
-            Console.WriteLine($"    Portfolio Value {PortfolioManager.GetPortfolioValue()}");
+            //Console.WriteLine($"Trading TimeStamp   {DataManager.GetCurrentTradingDate()} : {DataManager.TimeStampIndex}");
+            //Console.WriteLine($"    Portfolio Value {PortfolioManager.GetPortfolioValue()}");
 
             string currentDate = DataManager.GetCurrentTradingDate();
             if (currentDate.Equals(lastTradingDate))
@@ -36,7 +36,7 @@ namespace BahamasEngine.Strategies
 
                 if ((shortDelta <= 25 || shortDelta >= 55 || profitPerc >= 10) && shortDelta != 0.0)
                 {
-                    Console.WriteLine($"     Closing Trade with PnL % : {profitPerc}");
+                    Console.WriteLine($"{currentDate}:{DataManager.TimeStampIndex}     Closing Trade with PnL % : {profitPerc}");
                     PortfolioManager.LiquidatePortfolio();
                     isInvested = false;
                     lastTradingDate = DataManager.GetCurrentTradingDate();
@@ -46,7 +46,7 @@ namespace BahamasEngine.Strategies
             }
             else if (!isInvested)
             {
-                Console.WriteLine($"     Starting new BWB trade");
+                Console.WriteLine($"{currentDate}:{DataManager.TimeStampIndex}     Starting new BWB trade");
 
                 OptionChainSnapshot targetChain = Utilities.GetDteTargetChain(
                     updateEvent.OptionChains, 70);
@@ -64,7 +64,7 @@ namespace BahamasEngine.Strategies
 
                 Structure bwbStructure = new Structure(DataManager, orderBottom, orderCenter, orderTop);
                 structureRisk = bwbStructure.GetRegTRisk();
-                Console.WriteLine($"        Structure Risk : {structureRisk}");
+                Console.WriteLine($"{currentDate}:{DataManager.TimeStampIndex}        Structure Risk : {structureRisk}");
 
                 EventsQueue.Enqueue(orderBottom);
                 EventsQueue.Enqueue(orderCenter);
@@ -74,7 +74,10 @@ namespace BahamasEngine.Strategies
                 portfolioId++;
                 lastTradingDate = DataManager.GetCurrentTradingDate();
                 isInvested = true;
+                Logger.LogSeriesData("RegTRisk", structureRisk, currentDate);
             }
+            //Logger.LogSeriesData("PortfolioValue", PortfolioManager.GetPortfolioValue(), 
+            //    currentDate);
         }
     }
 }
