@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace BahamasEngine.Strategies
 {
@@ -22,9 +20,6 @@ namespace BahamasEngine.Strategies
 
         public override void ExecuteStrategy(OptionChainUpdateEvent updateEvent)
         {
-            //Console.WriteLine($"Trading TimeStamp   {DataManager.GetCurrentTradingDate()} : {DataManager.TimeStampIndex}");
-            //Console.WriteLine($"    Portfolio Value {PortfolioManager.GetPortfolioValue()}");
-
             string currentDate = DataManager.GetCurrentTradingDate();
             if (currentDate.Equals(lastTradingDate))
                 return;
@@ -74,10 +69,8 @@ namespace BahamasEngine.Strategies
                 portfolioId++;
                 lastTradingDate = DataManager.GetCurrentTradingDate();
                 isInvested = true;
-                Logger.LogSeriesData("RegTRisk", structureRisk, currentDate);
+                Logger.LogSeriesData("RegTRisk", structureRisk, currentDate, DataManager.TimeStampIndex);
             }
-            //Logger.LogSeriesData("PortfolioValue", PortfolioManager.GetPortfolioValue(), 
-            //    currentDate);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace BahamasEngine
                 CreateNewSession();
             }
 
-            Logger.GenerateReport("");
+            Logger.GenerateReport("NZBWB");
         }
 
         private void CreateNewSession(int sessionStartDate = 0,

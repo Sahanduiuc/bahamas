@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 
 namespace BahamasEngine
 {
@@ -30,7 +32,7 @@ namespace BahamasEngine
 
     public static class Logger
     {
-        private static readonly string outputDir = @"C:\Users\shami\Desktop\bahamas\ResearchTools\Backtest_Results";
+        private static readonly string outputDir = @"D:\Backtest_Results\";
         private static TradeReport report = new TradeReport();
 
         public static void LogTradeExecution(FillEvent fEvent, 
@@ -39,16 +41,30 @@ namespace BahamasEngine
                                
         }
 
-        public static void LogSeriesData(string name, double value, string timeStamp)
+        public static void LogSeriesData(string name, double value, string date, int timeIndex)
         {
             if (!report.SeriesData.ContainsKey(name))
                 report.SeriesData.Add(name, new List<Tuple<string, double>>());
-            report.SeriesData[name].Add(new Tuple<string, double>(timeStamp, value));
+
+            string timestamp = GetDateTimeString(date, timeIndex);
+            report.SeriesData[name].Add(new Tuple<string, double>(timestamp, value));
         }
 
         public static void GenerateReport(string reportId)
         {
-            string output = JsonConvert.SerializeObject(report);
+            string content = JsonConvert.SerializeObject(report);
+            string fileName = DateTime.Now.ToFileTime().ToString() + 
+                "_" + reportId + ".json";
+            File.WriteAllText(outputDir + fileName, content);
+        }
+
+        private static string GetDateTimeString(string date, int timeIndex)
+        {
+            DateTime datetime = DateTime.ParseExact(date, "yyyyMMdd", 
+                CultureInfo.InvariantCulture);
+            datetime = datetime.AddMinutes(timeIndex);
+
+            return datetime.ToString();
         }
     }
 }
