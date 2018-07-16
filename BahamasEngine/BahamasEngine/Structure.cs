@@ -70,7 +70,7 @@ namespace BahamasEngine
                     double optVal = dataManager.GetCurrentPrice(contract.ID);
                     riskVal += dataManager.GetCurrentPrice(contract.ID) * action * units;
                     if (priceSlice < contract.Strike)
-                        riskVal += (contract.Strike - priceSlice) * action * units * -1000;
+                        riskVal += (contract.Strike - priceSlice) * action * units * -100;
                 }
             }
             return riskVal;

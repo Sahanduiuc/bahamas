@@ -47,11 +47,11 @@ namespace BahamasEngine.Strategies
                     updateEvent.OptionChains, 70);
 
                 OptionContract wingBottom = Utilities.GetDeltaTargetContract(targetChain,
-                    0.10, 'P', DataManager);
+                    0.20, 'P', DataManager);
                 OptionContract wingCenter = Utilities.GetDeltaTargetContract(targetChain,
                     0.40, 'P', DataManager);
                 OptionContract wingTop = Utilities.GetDeltaTargetContract(targetChain,
-                    0.70, 'P', DataManager);
+                    0.60, 'P', DataManager);
 
                 SignalEvent orderBottom = new SignalEvent(wingBottom.ID, 1, 1, portfolioId);
                 SignalEvent orderCenter = new SignalEvent(wingCenter.ID, -1, 2, portfolioId);

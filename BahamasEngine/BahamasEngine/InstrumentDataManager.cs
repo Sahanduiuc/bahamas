@@ -18,11 +18,11 @@ namespace BahamasEngine
         private int timeStepSize = 5;
 
         private OptionDataManager optionDataManager;
-        private FuturesDataManager futuresDataManager;
+        //private FuturesDataManager futuresDataManager;
 
         public int TimeStampIndex { get { return timestampIndex; } }
         public const string DATEFORMAT = "yyyyMMdd";
-        public IList<string> TradingDates { get; private set; }
+        public string[] TradingDates { get; private set; }
 
         public InstrumentDataManager(string ticker, Queue<TradingEvent> eventsQueue,
             int startDateIndex = 0, int startTimeIndex = 1080)
@@ -33,9 +33,8 @@ namespace BahamasEngine
             this.timestampIndex = startTimeIndex - timeStepSize;
             this.dataPath += ticker + @"\";
 
-            this.TradingDates = new List<string>();
-            this.futuresDataManager = new FuturesDataManager(ticker, dataPath, this);
-            this.optionDataManager = new OptionDataManager(ticker, dataPath, this, futuresDataManager);
+            this.TradingDates = new string[1];
+            this.optionDataManager = new OptionDataManager(ticker, dataPath, this);
 
             LoadMetaData();
         }
@@ -61,7 +60,7 @@ namespace BahamasEngine
 
         public bool EOD()
         {
-            if (currentDateIndex == TradingDates.Count - 1)
+            if (currentDateIndex == TradingDates.Length - 1)
                 return true;
             return false;
         }
@@ -89,6 +88,8 @@ namespace BahamasEngine
 
         public double CalculateMidPrice(double bid, double ask)
         {
+            return (bid + ask) / 2.0;
+
             double midPrice = 0.0;
             if (bid != 0.0 && ask != 0.0)
             {
@@ -111,16 +112,10 @@ namespace BahamasEngine
         {
             Console.WriteLine("Starting data load...");
             //Load Trading Dates
-            var tDayContents = File.ReadAllText(dataPath + "FUT_Continuous.csv").
-                Split('\n');
-            foreach (var line in tDayContents.Skip(1))
-            {
-                string date = line.Split(',')[0];
-                TradingDates.Add(date);
-            }
+            TradingDates = File.ReadAllLines(dataPath + "TRADINGDATES.txt");
 
-            Console.WriteLine("     Loading Futures data");
-            futuresDataManager.LoadFuturesData();
+            //Console.WriteLine("     Loading Futures data");
+            //futuresDataManager.LoadFuturesData();
             Console.WriteLine("     Loading Contract MetaData");
             optionDataManager.LoadOptionsMetaData();
             Console.WriteLine("     Loading data complete.");
@@ -129,9 +124,9 @@ namespace BahamasEngine
         private void GetNextTradingTimeStamp()
         {
             timestampIndex+=timeStepSize;
-            if (timestampIndex > 1200)
+            if (timestampIndex > 600)
             {
-                timestampIndex = 1080;
+                timestampIndex = 600;
                 currentDateIndex++;
             }              
         }

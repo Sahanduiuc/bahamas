@@ -12,7 +12,6 @@ namespace BahamasEngine
         private string ticker;
         private string dataPath;
         private InstrumentDataManager dataManager;
-        private FuturesDataManager futuresDataManager;
         private OptionPricingHelper pricingHelper;
 
         public static ConcurrentDictionary<string, string[]> OptionData;
@@ -21,12 +20,11 @@ namespace BahamasEngine
         public Dictionary<string, OptionChain> OptionChains;
 
         public OptionDataManager(string ticker, string dataPath,
-            InstrumentDataManager dataManager, FuturesDataManager futuresDataManager)
+            InstrumentDataManager dataManager)
         {
             this.ticker = ticker;
             this.dataPath = dataPath;
             this.dataManager = dataManager;
-            this.futuresDataManager = futuresDataManager;
             OptionData = new ConcurrentDictionary<string, string[]>();
             
             this.pricingHelper = new OptionPricingHelper();
@@ -40,13 +38,13 @@ namespace BahamasEngine
             int targetIndex = 1;
 
             string[] contents = null;
-            string key = date + contractId;
+            string key = date + "_" + contractId;
             bool exists = OptionData.TryGetValue(key, out contents);
 
             if (!exists)
             {
-                contents = File.ReadAllLines(dataPath + @"2017\" + date + @"\LO\" +
-                    contractId + ".csv");
+                contents = File.ReadAllLines(dataPath + @"OptionData\" + date + @"\" +
+                    key + ".csv");
                 OptionData.TryAdd(key, contents);
             }
 
@@ -55,9 +53,7 @@ namespace BahamasEngine
                 if (contents[i].Length < 10)
                     continue;
 
-                string timeBarValue = ExtractTimeBarColumn(contents[i]);
-
-                int rowTimeIndex = GetTimeIndex(timeBarValue);
+                int rowTimeIndex = Convert.ToInt32(contents[i].Substring(0,3));
                 if (rowTimeIndex > timeIndex)
                     break;
 
@@ -65,7 +61,6 @@ namespace BahamasEngine
             }
 
             string[] targetRow = contents[targetIndex].Split(',');
-            targetRow = ProcessRow(targetRow);
 
             double bid = Convert.ToDouble(targetRow[1]);
             double ask = Convert.ToDouble(targetRow[3]);
@@ -76,11 +71,11 @@ namespace BahamasEngine
             {
                 Ticker = ticker,
                 EventDate = date,
-                Bid = bid * 1000.0,
+                Bid = bid * 100.0,
                 BidSize = Convert.ToInt32(targetRow[2]),
-                Ask = ask * 1000.0,
+                Ask = ask * 100.0,
                 Asksize = Convert.ToInt32(targetRow[4]),
-                Delta = GetOptionDelta(contractId, midPrice, timeIndex)
+                Delta = GetOptionDelta(contractId, midPrice, Convert.ToDouble(targetRow[5]))
             };
 
             return dataFrame;
@@ -88,14 +83,13 @@ namespace BahamasEngine
 
         public void LoadOptionsMetaData()
         {
-            OptionChainHistory = new Dictionary<string, OptionChainSnapshot>[dataManager.TradingDates.Count];
-            for (int dateIndex = 0; dateIndex < dataManager.TradingDates.Count; dateIndex++)
+            OptionChainHistory = new Dictionary<string, OptionChainSnapshot>[dataManager.TradingDates.Length];
+            for (int dateIndex = 0; dateIndex < dataManager.TradingDates.Length; dateIndex++)
             {
                 OptionChainHistory[dateIndex] = new Dictionary<string, OptionChainSnapshot>();
 
                 string date = dataManager.TradingDates[dateIndex];
-                var manifestData = File.ReadAllText(dataPath + @"Manifests\" +
-                    date + ".csv").Split('\n');
+                var manifestData = File.ReadAllText(dataPath + "MANIFEST_" + date + ".csv").Split('\n');
 
                 foreach (var line in manifestData.Skip(1))
                 {
@@ -103,23 +97,25 @@ namespace BahamasEngine
                     if (rowData.Length < 5)
                         continue;
 
-                    char type = rowData[3][0];
-                    double strike = Convert.ToDouble(rowData[4]) / 100.0;
+                    char type = rowData[4][0];
+                    double strike = Convert.ToDouble(rowData[5]);
+                    string chainId = rowData[0];
+                    string optionId = rowData[1];
 
-                    OptionChain chain = new OptionChain(rowData[1], ticker, "LO", rowData[2], 1000, dataManager);
+                    OptionChain chain = new OptionChain(chainId, ticker, rowData[2], rowData[3], 100, dataManager);
                     OptionChainSnapshot chainSnapshot = new OptionChainSnapshot(chain);
-                    OptionContract contract = new OptionContract(rowData[0], ticker, "LO", rowData[2], strike, type, rowData[1], dataManager);
+                    OptionContract contract = new OptionContract(optionId, ticker, rowData[2], rowData[3], strike, type, chainId, dataManager);
 
-                    if (!OptionChains.ContainsKey(rowData[1]))
-                        OptionChains.Add(rowData[1], chain);
+                    if (!OptionChains.ContainsKey(chainId))
+                        OptionChains.Add(chainId, chain);
 
                     if (!OptionContracts.ContainsKey(contract.ID))
                         OptionContracts.Add(contract.ID, contract);
 
-                    if (!OptionChainHistory[dateIndex].ContainsKey(rowData[1]))
-                        OptionChainHistory[dateIndex].Add(rowData[1], chainSnapshot);
+                    if (!OptionChainHistory[dateIndex].ContainsKey(chainId))
+                        OptionChainHistory[dateIndex].Add(chainId, chainSnapshot);
 
-                    OptionChainSnapshot targetchain = OptionChainHistory[dateIndex][rowData[1]];
+                    OptionChainSnapshot targetchain = OptionChainHistory[dateIndex][chainId];
 
                     if (type == 'C')
                     {
@@ -180,12 +176,10 @@ namespace BahamasEngine
             return data;
         }
 
-        private double GetOptionDelta(string contractId, double optionPrice, int timeIndex)
+        private double GetOptionDelta(string contractId, double optionPrice, 
+            double underlyingPrice)
         {
-            OHLCVDataFrame futuresData = futuresDataManager.GetCurrentDataFrame(
-                GetFuturesContractId(contractId), timeIndex);
-
-            char type = contractId[5];
+            char type = OptionContracts[contractId].Type;
             double delta = 0.0;
             string chainId = OptionContracts[contractId].ChainId;
             double dte = OptionChains[chainId].Dte / 365.0;
@@ -196,9 +190,9 @@ namespace BahamasEngine
             }
             else if (type == 'P')
             {
-                double implVol = pricingHelper.ImpliedVolatility('P', futuresData.Close,
+                double implVol = pricingHelper.ImpliedVolatility('P', underlyingPrice,
                     OptionContracts[contractId].Strike, 0.00691, dte, optionPrice);
-                delta = pricingHelper.PutDelta(futuresData.Close,
+                delta = pricingHelper.PutDelta(underlyingPrice,
                     OptionContracts[contractId].Strike, 0.00691, implVol, dte);
             }
             else
@@ -225,7 +219,7 @@ namespace BahamasEngine
         private string ExtractTimeBarColumn(string line)
         {
             int startIndex = 0;
-            int seperatorCount = 5;
+            int seperatorCount = 1;
 
             while (seperatorCount >= 0)
             {
@@ -234,7 +228,7 @@ namespace BahamasEngine
                 startIndex++;
             }
 
-            return line.Substring(startIndex, 5);
+            return line.Substring(startIndex, 3);
         }
 
         #endregion
