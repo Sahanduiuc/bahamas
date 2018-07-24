@@ -67,6 +67,7 @@ namespace BahamasEngine
                     eventsQueue.Dequeue();
                 }
             }
+            Console.WriteLine("Session completed.");
         }
     }
 }

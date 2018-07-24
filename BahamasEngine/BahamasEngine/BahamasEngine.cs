@@ -29,10 +29,10 @@ namespace BahamasEngine
 
             if (backTestType == BackTestType.Continuous)
             {
-                for(int i = 0; i < 1; i++)
+                for(int i = 0; i < 10; i++)
                 {
-                    for (int j = 600; j <= 600; j += 5)
-                    {
+                    for (int j = InstrumentDataManager.TTIMESTARTINDEX; j <= InstrumentDataManager.TIMEENDINDEX; j += 5)
+                    {                       
                         dataManager.SetTradePeriod(i, j);
                         CreateNewSession();
                     }

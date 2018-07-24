@@ -14,8 +14,11 @@ namespace BahamasEngine
         private readonly string ticker;
         private int currentDateIndex;
         private int timestampIndex;
-        private string dataPath = @"D:\bahamas_data\";
+        private string dataPath = Settings.DataPath;
         private int timeStepSize = 5;
+
+        public static readonly int TTIMESTARTINDEX = 600;
+        public static readonly int TIMEENDINDEX = 900;
 
         private OptionDataManager optionDataManager;
         //private FuturesDataManager futuresDataManager;
@@ -43,7 +46,6 @@ namespace BahamasEngine
         {
             currentDateIndex = dateIndex;
             timestampIndex = timeIndex - timeStepSize;
-            OptionDataManager.OptionData = new ConcurrentDictionary<string, string[]>();
         }
 
         public void StreamNextEvent()
@@ -124,9 +126,9 @@ namespace BahamasEngine
         private void GetNextTradingTimeStamp()
         {
             timestampIndex+=timeStepSize;
-            if (timestampIndex > 600)
+            if (timestampIndex > TIMEENDINDEX)
             {
-                timestampIndex = 600;
+                timestampIndex = TTIMESTARTINDEX;
                 currentDateIndex++;
             }              
         }

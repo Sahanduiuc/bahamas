@@ -10,7 +10,7 @@ from BahamasResearch import TimeSeries as ts
 output_notebook()
 
 def render_backtest():
-    j = json.load(open('D:\\Backtest_Results\\131746912925578610_NZBWB.json'))
+    j = json.load(open('D:\\Backtest_Results\\131767667888794384_NZBWB.json'))
     seriesDates = []
     regTValues = []
 
@@ -21,5 +21,8 @@ def render_backtest():
     
     regTSeries = ts.TimeSeries('NZBWB RegTRisk', 950, 375, 'Date', 'RegTRisk', seriesDates, regTValues)
     regTSeries.render_plot()
+
+def process_report():
+    pass
 
 render_backtest()

@@ -34,14 +34,15 @@ namespace BahamasEngine
     {
         private static readonly string outputDir = @"D:\Backtest_Results\";
         private static TradeReport report = new TradeReport();
-
+ 
         public static void LogTradeExecution(FillEvent fEvent, 
             InstrumentDataManager dataManager)
         {
                                
         }
 
-        public static void LogSeriesData(string name, double value, string date, int timeIndex)
+        public static void LogSeriesData(string name, double value, 
+            string date, int timeIndex)
         {
             if (!report.SeriesData.ContainsKey(name))
                 report.SeriesData.Add(name, new List<Tuple<string, double>>());

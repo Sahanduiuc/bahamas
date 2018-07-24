@@ -39,7 +39,7 @@ namespace BahamasEngine
             double low = 0.0;
             double mid = 0.0;
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 500; i++)
             {
                 mid = (high + low) / 2;
                 if (mid < 0.00001)

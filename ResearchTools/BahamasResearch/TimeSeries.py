@@ -7,7 +7,7 @@ class TimeSeries(object):
             title = title,
             x_axis_label = xLabel, y_axis_label = yLabel,
             x_axis_type="datetime")
-        self.series_plot.circle(xVals, yVals, line_width=1)
+        self.series_plot.line(xVals, yVals, line_width=1)
 
     def render_plot(self):
         show(self.series_plot)
