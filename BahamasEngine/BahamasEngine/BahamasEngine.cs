@@ -1,5 +1,6 @@
 ﻿using BahamasEngine.Strategies;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BahamasEngine
 {
@@ -13,48 +14,47 @@ namespace BahamasEngine
 
         private const string ticker = "SPX";
         private const double initialEquity = 100000.0;
-        private Queue<TradingEvent> eventsQueue = new Queue<TradingEvent>();
-        private InstrumentDataManager dataManager;
-        private ExecutionManager executionManager;
-        private PortfolioManager portfolioManager;
-        private StrategyBase strategy;
-        private TradingSession session;
         private BackTestType backTestType = BackTestType.Continuous;
 
         public BahamasEngine() { }
 
         public void Execute()
         {
-            dataManager = new InstrumentDataManager(ticker, eventsQueue);
+            MetaDataManager.ImportMetaData(ticker);
+            List<Task> sessions = new List<Task>();
 
             if (backTestType == BackTestType.Continuous)
             {
                 for(int i = 0; i < 10; i++)
                 {
-                    for (int j = InstrumentDataManager.TTIMESTARTINDEX; j <= InstrumentDataManager.TIMEENDINDEX; j += 5)
-                    {                       
-                        dataManager.SetTradePeriod(i, j);
-                        CreateNewSession();
+                    for (int j = InstrumentDataManager.TIMESTARTINDEX; j <= InstrumentDataManager.TIMEENDINDEX; j += 5)
+                    {
+                        int iTemp = i;
+                        int jTemp = j;
+                        CreateNewSession(iTemp,jTemp);
+                        //sessions.Add(task);
                     }
                 }               
             }
             else if (backTestType == BackTestType.Standard)
             {
-                CreateNewSession();
+                CreateNewSession(0, Settings.TimeStartIndex);
             }
 
-            Logger.GenerateReport("NZBWB");
+            Task.WaitAll(sessions.ToArray());
+            //Logger.GenerateReport("NZBWB");
         }
 
-        private void CreateNewSession(int sessionStartDate = 0,
-            int sessionStartTime = 600)
+        private void CreateNewSession(int sessionStartDate, int sessionStartTime)
         {
-            eventsQueue.Clear();
-            executionManager = new SimulatedExecutionManager(eventsQueue, dataManager);
-            portfolioManager = new PortfolioManager(eventsQueue, dataManager, initialEquity);
-            strategy = new NetZero(eventsQueue, dataManager, portfolioManager);
+            Queue<TradingEvent> eventsQueue = new Queue<TradingEvent>();
+            InstrumentDataManager dataManager = new InstrumentDataManager(ticker, eventsQueue, 
+                sessionStartDate, sessionStartTime);
+            ExecutionManager executionManager = new SimulatedExecutionManager(eventsQueue, dataManager);
+            PortfolioManager portfolioManager = new PortfolioManager(eventsQueue, dataManager, initialEquity);
+            StrategyBase strategy = new NetZero(eventsQueue, dataManager, portfolioManager);
 
-            session = new TradingSession(
+            TradingSession session = new TradingSession(
                 eventsQueue,
                 dataManager,
                 executionManager,

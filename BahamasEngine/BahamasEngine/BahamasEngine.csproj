@@ -70,6 +70,7 @@
     <Compile Include="ExecutionManager.cs" />
     <Compile Include="FuturesDataManager.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="MetaDataManager.cs" />
     <Compile Include="OptionChain.cs" />
     <Compile Include="OptionContract.cs" />
     <Compile Include="InstrumentDataManager.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RiskManager.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Strategies\NetZero.cs" />
     <Compile Include="Strategies\TrendTrading.cs" />
     <Compile Include="StrategyBase.cs" />

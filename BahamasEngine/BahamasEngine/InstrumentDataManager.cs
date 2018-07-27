@@ -17,7 +17,7 @@ namespace BahamasEngine
         private string dataPath = Settings.DataPath;
         private int timeStepSize = 5;
 
-        public static readonly int TTIMESTARTINDEX = 600;
+        public static readonly int TIMESTARTINDEX = 600;
         public static readonly int TIMEENDINDEX = 900;
 
         private OptionDataManager optionDataManager;
@@ -25,10 +25,9 @@ namespace BahamasEngine
 
         public int TimeStampIndex { get { return timestampIndex; } }
         public const string DATEFORMAT = "yyyyMMdd";
-        public string[] TradingDates { get; private set; }
 
         public InstrumentDataManager(string ticker, Queue<TradingEvent> eventsQueue,
-            int startDateIndex = 0, int startTimeIndex = 1080)
+            int startDateIndex, int startTimeIndex)
         {
             this.ticker = ticker;
             this.eventsQueue = eventsQueue;
@@ -36,16 +35,7 @@ namespace BahamasEngine
             this.timestampIndex = startTimeIndex - timeStepSize;
             this.dataPath += ticker + @"\";
 
-            this.TradingDates = new string[1];
             this.optionDataManager = new OptionDataManager(ticker, dataPath, this);
-
-            LoadMetaData();
-        }
-
-        public void SetTradePeriod(int dateIndex, int timeIndex)
-        {
-            currentDateIndex = dateIndex;
-            timestampIndex = timeIndex - timeStepSize;
         }
 
         public void StreamNextEvent()
@@ -53,7 +43,7 @@ namespace BahamasEngine
             GetNextTradingTimeStamp();
             OptionChainUpdateEvent updateEvent = new OptionChainUpdateEvent(ticker);
 
-            foreach (var element in optionDataManager.OptionChainHistory[currentDateIndex])
+            foreach (var element in MetaDataManager.OptionChainHistory[currentDateIndex])
             {
                 updateEvent.OptionChains.Add(element.Value);
             }
@@ -62,7 +52,7 @@ namespace BahamasEngine
 
         public bool EOD()
         {
-            if (currentDateIndex == TradingDates.Length - 1)
+            if (currentDateIndex == MetaDataManager.TradingDates.Length - 1)
                 return true;
             return false;
         }
@@ -80,12 +70,12 @@ namespace BahamasEngine
 
         public string GetCurrentTradingDate()
         {
-            return TradingDates[currentDateIndex];
+            return MetaDataManager.TradingDates[currentDateIndex];
         }
 
         public OptionContract GetContractData(string contractId)
         {
-            return optionDataManager.OptionContracts[contractId];
+            return MetaDataManager.OptionContracts[contractId];
         }
 
         public double CalculateMidPrice(double bid, double ask)
@@ -110,25 +100,12 @@ namespace BahamasEngine
 
         #region Private Methods
 
-        private void LoadMetaData()
-        {
-            Console.WriteLine("Starting data load...");
-            //Load Trading Dates
-            TradingDates = File.ReadAllLines(dataPath + "TRADINGDATES.txt");
-
-            //Console.WriteLine("     Loading Futures data");
-            //futuresDataManager.LoadFuturesData();
-            Console.WriteLine("     Loading Contract MetaData");
-            optionDataManager.LoadOptionsMetaData();
-            Console.WriteLine("     Loading data complete.");
-        }
-
         private void GetNextTradingTimeStamp()
         {
             timestampIndex+=timeStepSize;
             if (timestampIndex > TIMEENDINDEX)
             {
-                timestampIndex = TTIMESTARTINDEX;
+                timestampIndex = TIMESTARTINDEX;
                 currentDateIndex++;
             }              
         }

@@ -14,10 +14,7 @@ namespace BahamasEngine
         private InstrumentDataManager dataManager;
         private OptionPricingHelper pricingHelper;
 
-        public static ConcurrentDictionary<string, string[]> OptionData;
-        public Dictionary<string, OptionContract> OptionContracts { get; private set; }
-        public Dictionary<string, OptionChainSnapshot>[] OptionChainHistory { get; private set; }
-        public Dictionary<string, OptionChain> OptionChains;
+        public ConcurrentDictionary<string, string[]> OptionDataCache;
 
         public OptionDataManager(string ticker, string dataPath,
             InstrumentDataManager dataManager)
@@ -25,11 +22,9 @@ namespace BahamasEngine
             this.ticker = ticker;
             this.dataPath = dataPath;
             this.dataManager = dataManager;
-            OptionData = new ConcurrentDictionary<string, string[]>();
+            OptionDataCache = new ConcurrentDictionary<string, string[]>();
             
             this.pricingHelper = new OptionPricingHelper();
-            this.OptionContracts = new Dictionary<string, OptionContract>();
-            this.OptionChains = new Dictionary<string, OptionChain>();
         }
 
         public async Task<OptionDataFrame> GetCurrentDataFrameAsync(string contractId, int timeIndex)
@@ -39,13 +34,13 @@ namespace BahamasEngine
 
             string[] contents = null;
             string key = date + "_" + contractId;
-            bool exists = OptionData.TryGetValue(key, out contents);
+            bool exists = OptionDataCache.TryGetValue(key, out contents);
 
             if (!exists)
             {
                 contents = File.ReadAllLines(dataPath + @"OptionData\" + date + @"\" +
                     key + ".csv");
-                OptionData.TryAdd(key, contents);
+                OptionDataCache.TryAdd(key, contents);
             }
 
             for (int i = 1; i < contents.Length; i++)
@@ -79,58 +74,6 @@ namespace BahamasEngine
             };
 
             return dataFrame;
-        }
-
-        public void LoadOptionsMetaData()
-        {
-            OptionChainHistory = new Dictionary<string, OptionChainSnapshot>[dataManager.TradingDates.Length];
-            for (int dateIndex = 0; dateIndex < dataManager.TradingDates.Length; dateIndex++)
-            {
-                OptionChainHistory[dateIndex] = new Dictionary<string, OptionChainSnapshot>();
-
-                string date = dataManager.TradingDates[dateIndex];
-                var manifestData = File.ReadAllText(dataPath + "MANIFEST_" + date + ".csv").Split('\n');
-
-                foreach (var line in manifestData.Skip(1))
-                {
-                    string[] rowData = line.Split(',');
-                    if (rowData.Length < 5)
-                        continue;
-
-                    char type = rowData[4][0];
-                    double strike = Convert.ToDouble(rowData[5]);
-                    string chainId = rowData[0];
-                    string optionId = rowData[1];
-
-                    OptionChain chain = new OptionChain(chainId, ticker, rowData[2], rowData[3], 100, dataManager);
-                    OptionChainSnapshot chainSnapshot = new OptionChainSnapshot(chain);
-                    OptionContract contract = new OptionContract(optionId, ticker, rowData[2], rowData[3], strike, type, chainId, dataManager);
-
-                    if (!OptionChains.ContainsKey(chainId))
-                        OptionChains.Add(chainId, chain);
-
-                    if (!OptionContracts.ContainsKey(contract.ID))
-                        OptionContracts.Add(contract.ID, contract);
-
-                    if (!OptionChainHistory[dateIndex].ContainsKey(chainId))
-                        OptionChainHistory[dateIndex].Add(chainId, chainSnapshot);
-
-                    OptionChainSnapshot targetchain = OptionChainHistory[dateIndex][chainId];
-
-                    if (type == 'C')
-                    {
-                        targetchain.CallOptionContracts.Add(contract);
-                    }
-                    else if (type == 'P')
-                    {
-                        targetchain.PutOptionContracts.Add(contract);
-                    }
-                    else
-                    {
-                        throw new InvalidDataException();
-                    }
-                }
-            }
         }
 
         #region Private Methods
@@ -179,10 +122,10 @@ namespace BahamasEngine
         private double GetOptionDelta(string contractId, double optionPrice, 
             double underlyingPrice)
         {
-            char type = OptionContracts[contractId].Type;
+            char type = MetaDataManager.OptionContracts[contractId].Type;
             double delta = 0.0;
-            string chainId = OptionContracts[contractId].ChainId;
-            double dte = OptionChains[chainId].Dte / 365.0;
+            string chainId = MetaDataManager.OptionContracts[contractId].ChainId;
+            double dte = MetaDataManager.OptionChains[chainId].GetDte(dataManager) / 365.0;
 
             if (type == 'C')
             {
@@ -191,9 +134,9 @@ namespace BahamasEngine
             else if (type == 'P')
             {
                 double implVol = pricingHelper.ImpliedVolatility('P', underlyingPrice,
-                    OptionContracts[contractId].Strike, 0.00691, dte, optionPrice);
+                    MetaDataManager.OptionContracts[contractId].Strike, 0.00691, dte, optionPrice);
                 delta = pricingHelper.PutDelta(underlyingPrice,
-                    OptionContracts[contractId].Strike, 0.00691, implVol, dte);
+                    MetaDataManager.OptionContracts[contractId].Strike, 0.00691, implVol, dte);
             }
             else
             {

@@ -16,11 +16,8 @@ namespace BahamasEngine
         public char Type { get; private set; }
         public string ChainId { get; private set; }
 
-        private InstrumentDataManager priceManager;
-
         public OptionContract(string id, string underlyingTicker, string optionTicker,
-            string expirationDate, double strike, char type, string chainId,
-            InstrumentDataManager priceManager)
+            string expirationDate, double strike, char type, string chainId)
         {
             this.ID = id;
             this.UnderlyingTicker = underlyingTicker;
@@ -29,7 +26,6 @@ namespace BahamasEngine
             this.Strike = strike;
             this.Type = type;
             this.ChainId = chainId;
-            this.priceManager = priceManager;
         }
     }
 }

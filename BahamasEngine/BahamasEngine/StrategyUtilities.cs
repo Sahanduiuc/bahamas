@@ -13,15 +13,15 @@ namespace BahamasEngine
         public StrategyUtilities() { }
 
         public OptionChainSnapshot GetDteTargetChain(IList<OptionChainSnapshot> optionChains,
-            int targetDte)
+            int targetDte, InstrumentDataManager dataManager)
         {
             int minDteDiff = Int32.MaxValue;
             OptionChainSnapshot targetChain = optionChains[0];
 
             foreach (OptionChainSnapshot chain in optionChains)
             {
-                int dteDiff = Math.Abs(chain.OptionChain.Dte - targetDte);
-                if (dteDiff < minDteDiff && chain.OptionChain.Dte >= targetDte)
+                int dteDiff = Math.Abs(chain.OptionChain.GetDte(dataManager) - targetDte);
+                if (dteDiff < minDteDiff && chain.OptionChain.GetDte(dataManager) >= targetDte)
                 {
                     minDteDiff = dteDiff;
                     targetChain = chain;

@@ -44,7 +44,7 @@ namespace BahamasEngine.Strategies
                 Console.WriteLine($"{currentDate}:{DataManager.TimeStampIndex}     Starting new BWB trade");
 
                 OptionChainSnapshot targetChain = Utilities.GetDteTargetChain(
-                    updateEvent.OptionChains, 70);
+                    updateEvent.OptionChains, 70, DataManager);
 
                 OptionContract wingBottom = Utilities.GetDeltaTargetContract(targetChain,
                     0.20, 'P', DataManager);
@@ -70,7 +70,7 @@ namespace BahamasEngine.Strategies
                 lastTradingDate = DataManager.GetCurrentTradingDate();
                 isInvested = true;
 
-                Logger.LogSeriesData("RegTRisk", structureRisk, currentDate, DataManager.TimeStampIndex);
+                //Logger.LogSeriesData("RegTRisk", structureRisk, currentDate, DataManager.TimeStampIndex);
             }
         }
     }

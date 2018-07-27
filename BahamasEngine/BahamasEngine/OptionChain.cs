@@ -10,25 +10,15 @@ namespace BahamasEngine
     public class OptionChain
     {
         private DateTime chainExpDate;
-        private InstrumentDataManager dataManager;
 
         public string ChainId { get; set; }
         public string UnderlyingTicker { get; set; }
         public string OptionTicker { get; set; }
         public string ExpirationDate { get; set; }
         public uint Multiplier { get; set; }
-        public int Dte {
-            get
-            {
-                DateTime currentPeriod = DateTime.ParseExact(dataManager.GetCurrentTradingDate(),
-                    InstrumentDataManager.DATEFORMAT, CultureInfo.InvariantCulture);
-                int dte = (chainExpDate - currentPeriod).Days;
-                return dte;
-            }         
-        }
 
         public OptionChain(string chainId, string underlyingTicker, string optionTicker,
-            string expirationDate, uint multiplier, InstrumentDataManager dataManager)
+            string expirationDate, uint multiplier)
         {
             ChainId = chainId;
             UnderlyingTicker = underlyingTicker;
@@ -36,10 +26,16 @@ namespace BahamasEngine
             ExpirationDate = expirationDate;
             Multiplier = multiplier;
 
-            chainExpDate = DateTime.ParseExact(expirationDate, 
+            chainExpDate = DateTime.ParseExact(expirationDate,
                 InstrumentDataManager.DATEFORMAT, CultureInfo.InvariantCulture);
+        }
 
-            this.dataManager = dataManager;
+        public int GetDte(InstrumentDataManager dataManager)
+        {
+            DateTime currentPeriod = DateTime.ParseExact(dataManager.GetCurrentTradingDate(),
+                        InstrumentDataManager.DATEFORMAT, CultureInfo.InvariantCulture);
+            int dte = (chainExpDate - currentPeriod).Days;
+            return dte;
         }
     }
 
