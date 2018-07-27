@@ -45,17 +45,12 @@ namespace BahamasEngine
             {
                 int contractCount = optionChain.PutOptionContracts.Count;
                 double[] deltaValues = new double[contractCount];
-                List<Task> tasks = new List<Task>();
 
                 for (int i = 0; i < contractCount; i++)
                 {
                     int index = i;
-                    Task t = Task.Run(async () => await CalculateDeltaValueAsync(index, deltaValues,
-                        dataManager, optionChain.PutOptionContracts[index]));
-                    tasks.Add(t);
+                    CalculateDeltaValue(index, deltaValues, dataManager, optionChain.PutOptionContracts[index]);
                 }
-
-                Task.WaitAll(tasks.ToArray());
 
                 for (int i = 0; i < contractCount; i++)
                 {
@@ -72,11 +67,11 @@ namespace BahamasEngine
             return targetContract;
         }
 
-        private async Task CalculateDeltaValueAsync(int index, double[] deltaValues,
+        private void CalculateDeltaValue(int index, double[] deltaValues,
             InstrumentDataManager dataManager, OptionContract contract)
         {
             string contractId = contract.ID;
-            OptionDataFrame dataFrame = await dataManager.GetCurrentOptionDataFrameAsync(contractId);
+            OptionDataFrame dataFrame = dataManager.GetCurrentOptionDataFrame(contractId);
             deltaValues[index] = Math.Abs(dataFrame.Delta);           
         }
     }

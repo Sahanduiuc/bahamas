@@ -26,7 +26,7 @@ namespace BahamasEngine.Strategies
 
             if (isInvested)
             {
-                double shortDelta = DataManager.GetCurrentOptionDataFrameAsync(shortId).GetAwaiter().GetResult().Delta * -100;
+                double shortDelta = DataManager.GetCurrentOptionDataFrame(shortId).Delta * -100;
                 double profitPerc = (PortfolioManager.Portfolio.UnrealisedPnL) / structureRisk * 100.0;
 
                 if ((shortDelta <= 25 || shortDelta >= 55 || profitPerc >= 10) && shortDelta != 0.0)

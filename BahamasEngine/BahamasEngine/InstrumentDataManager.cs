@@ -15,10 +15,6 @@ namespace BahamasEngine
         private int currentDateIndex;
         private int timestampIndex;
         private string dataPath = Settings.DataPath;
-        private int timeStepSize = 5;
-
-        public static readonly int TIMESTARTINDEX = 600;
-        public static readonly int TIMEENDINDEX = 900;
 
         private OptionDataManager optionDataManager;
         //private FuturesDataManager futuresDataManager;
@@ -32,7 +28,7 @@ namespace BahamasEngine
             this.ticker = ticker;
             this.eventsQueue = eventsQueue;
             this.currentDateIndex = startDateIndex;
-            this.timestampIndex = startTimeIndex - timeStepSize;
+            this.timestampIndex = startTimeIndex - Settings.TimeStepSize;
             this.dataPath += ticker + @"\";
 
             this.optionDataManager = new OptionDataManager(ticker, dataPath, this);
@@ -59,13 +55,13 @@ namespace BahamasEngine
 
         public double GetCurrentPrice(string contractId)
         {
-            OptionDataFrame dataFrame = GetCurrentOptionDataFrameAsync(contractId).ConfigureAwait(false).GetAwaiter().GetResult();
+            OptionDataFrame dataFrame = GetCurrentOptionDataFrame(contractId);
             return CalculateMidPrice(dataFrame.Bid, dataFrame.Ask);
         }
 
-        public async Task<OptionDataFrame> GetCurrentOptionDataFrameAsync(string contractId)
+        public OptionDataFrame GetCurrentOptionDataFrame(string contractId)
         {
-            return await optionDataManager.GetCurrentDataFrameAsync(contractId, timestampIndex);
+            return optionDataManager.GetCurrentDataFrame(contractId, timestampIndex);
         }
 
         public string GetCurrentTradingDate()
@@ -102,10 +98,10 @@ namespace BahamasEngine
 
         private void GetNextTradingTimeStamp()
         {
-            timestampIndex+=timeStepSize;
-            if (timestampIndex > TIMEENDINDEX)
+            timestampIndex+=Settings.TimeStepSize;
+            if (timestampIndex > Settings.TimeEndIndex)
             {
-                timestampIndex = TIMESTARTINDEX;
+                timestampIndex = Settings.TimeStartIndex;
                 currentDateIndex++;
             }              
         }

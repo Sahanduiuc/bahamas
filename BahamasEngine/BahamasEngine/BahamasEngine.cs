@@ -27,12 +27,12 @@ namespace BahamasEngine
             {
                 for(int i = 0; i < 10; i++)
                 {
-                    for (int j = InstrumentDataManager.TIMESTARTINDEX; j <= InstrumentDataManager.TIMEENDINDEX; j += 5)
+                    for (int j = Settings.TimeStartIndex; j <= Settings.TimeEndIndex; j += Settings.TimeStepSize)
                     {
                         int iTemp = i;
                         int jTemp = j;
-                        CreateNewSession(iTemp,jTemp);
-                        //sessions.Add(task);
+                        Task task =  Task.Run(()=>CreateNewSession(iTemp,jTemp));
+                        sessions.Add(task);
                     }
                 }               
             }

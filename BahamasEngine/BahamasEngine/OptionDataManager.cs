@@ -27,7 +27,7 @@ namespace BahamasEngine
             this.pricingHelper = new OptionPricingHelper();
         }
 
-        public async Task<OptionDataFrame> GetCurrentDataFrameAsync(string contractId, int timeIndex)
+        public OptionDataFrame GetCurrentDataFrame(string contractId, int timeIndex)
         {
             string date = dataManager.GetCurrentTradingDate();
             int targetIndex = 1;
