@@ -25,7 +25,7 @@ namespace BahamasEngine
 
             if (backTestType == BackTestType.Continuous)
             {
-                for(int i = 0; i < 10; i++)
+                for(int i = 0; i < MetaDataManager.TradingDates.Length; i++)
                 {
                     for (int j = Settings.TimeStartIndex; j <= Settings.TimeEndIndex; j += Settings.TimeStepSize)
                     {
@@ -42,7 +42,7 @@ namespace BahamasEngine
             }
 
             Task.WaitAll(sessions.ToArray());
-            //Logger.GenerateReport("NZBWB");
+            Logger.GenerateReport("NZBWB_5Min");
         }
 
         private void CreateNewSession(int sessionStartDate, int sessionStartTime)

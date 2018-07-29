@@ -45,9 +45,6 @@ namespace BahamasEngine
 
             for (int i = 1; i < contents.Length; i++)
             {
-                if (contents[i].Length < 10)
-                    continue;
-
                 int rowTimeIndex = Convert.ToInt32(contents[i].Substring(0,3));
                 if (rowTimeIndex > timeIndex)
                     break;
@@ -66,9 +63,9 @@ namespace BahamasEngine
             {
                 Ticker = ticker,
                 EventDate = date,
-                Bid = bid * 100.0,
+                Bid = bid * Settings.Multiplier,
                 BidSize = Convert.ToInt32(targetRow[2]),
-                Ask = ask * 100.0,
+                Ask = ask * Settings.Multiplier,
                 Asksize = Convert.ToInt32(targetRow[4]),
                 Delta = GetOptionDelta(contractId, midPrice, Convert.ToDouble(targetRow[5]))
             };
@@ -134,9 +131,9 @@ namespace BahamasEngine
             else if (type == 'P')
             {
                 double implVol = pricingHelper.ImpliedVolatility('P', underlyingPrice,
-                    MetaDataManager.OptionContracts[contractId].Strike, 0.00691, dte, optionPrice);
+                    MetaDataManager.OptionContracts[contractId].Strike, Settings.LIBORRate, dte, optionPrice);
                 delta = pricingHelper.PutDelta(underlyingPrice,
-                    MetaDataManager.OptionContracts[contractId].Strike, 0.00691, implVol, dte);
+                    MetaDataManager.OptionContracts[contractId].Strike, Settings.LIBORRate, implVol, dte);
             }
             else
             {

@@ -34,6 +34,7 @@ namespace BahamasEngine
     {
         private static readonly string outputDir = @"D:\Backtest_Results\";
         private static TradeReport report = new TradeReport();
+        private static object lockObject = new object(); 
  
         public static void LogTradeExecution(FillEvent fEvent, 
             InstrumentDataManager dataManager)
@@ -44,11 +45,14 @@ namespace BahamasEngine
         public static void LogSeriesData(string name, double value, 
             string date, int timeIndex)
         {
-            if (!report.SeriesData.ContainsKey(name))
-                report.SeriesData.Add(name, new List<Tuple<string, double>>());
+            lock (lockObject)
+            {
+                if (!report.SeriesData.ContainsKey(name))
+                    report.SeriesData.Add(name, new List<Tuple<string, double>>());
 
-            string timestamp = GetDateTimeString(date, timeIndex);
-            report.SeriesData[name].Add(new Tuple<string, double>(timestamp, value));
+                string timestamp = GetDateTimeString(date, timeIndex);
+                report.SeriesData[name].Add(new Tuple<string, double>(timestamp, value));
+            }
         }
 
         public static void GenerateReport(string reportId)

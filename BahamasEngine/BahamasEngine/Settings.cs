@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BahamasEngine
+﻿namespace BahamasEngine
 {
     public static class Settings
     {
@@ -19,5 +13,9 @@ namespace BahamasEngine
         public static int TimeEndIndex = 900;
 
         public static int TimeStepSize = 5;
+
+        public static double Multiplier = 100.0;
+
+        public static double LIBORRate = 0.00691;
     }
 }

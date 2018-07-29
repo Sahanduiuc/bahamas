@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace BahamasEngine
 {
@@ -28,7 +29,7 @@ namespace BahamasEngine
 
         public void Execute()
         {
-            Console.WriteLine("Starting new Backtest session...");
+            Console.WriteLine($"Starting new Backtest session on Thread {Thread.CurrentThread.ManagedThreadId}");
 
             while (!dataManager.EOD())
             {
@@ -67,7 +68,7 @@ namespace BahamasEngine
                     eventsQueue.Dequeue();
                 }
             }
-            Console.WriteLine("Session completed.");
+            Console.WriteLine($"Session completed on Thread {Thread.CurrentThread.ManagedThreadId}.");
         }
     }
 }

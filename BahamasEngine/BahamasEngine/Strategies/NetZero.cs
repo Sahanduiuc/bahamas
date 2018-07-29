@@ -70,7 +70,7 @@ namespace BahamasEngine.Strategies
                 lastTradingDate = DataManager.GetCurrentTradingDate();
                 isInvested = true;
 
-                //Logger.LogSeriesData("RegTRisk", structureRisk, currentDate, DataManager.TimeStampIndex);
+                Logger.LogSeriesData("RegTRisk", structureRisk, currentDate, DataManager.TimeStampIndex);
             }
         }
     }

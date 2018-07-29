@@ -38,7 +38,7 @@ namespace BahamasEngine
                 string date = TradingDates[dateIndex];
                 var manifestData = File.ReadAllText(Settings.DataPath + $@"{ticker}\" + "MANIFEST_" + date + ".csv").Split('\n');
 
-                foreach (var line in manifestData.Skip(1))
+                foreach (var line in manifestData)
                 {
                     string[] rowData = line.Split(',');
                     if (rowData.Length < 5)
