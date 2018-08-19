@@ -248,3 +248,6 @@ Bahamas/__pycache__/spread.cpython-36.pyc
 *.ipynb
 *.ipynb
 Notebooks/Data_Preprocess.ipynb
+*.csv
+
+BahamasEngine/data/
