@@ -27,8 +27,9 @@ class Portfolio(object):
             price = self.data_manager.get_current_price(id)
             position.update_market_value(price)
             self.unrealised_pnl += position.unrealised_pnl
+            netPnL = position.realised_pnl - position.unrealised_pnl
             self.equity += (
-                position.market_value - position.cost_basis + position.realised_pnl
+                position.market_value - position.cost_basis + netPnL
             )
 
     def process_position(self, option_id, action, price, units, commission):

@@ -1,5 +1,4 @@
 from numpy import sign
-from numba import jit
 
 class Poistion(object):
 
@@ -44,7 +43,6 @@ class Poistion(object):
         self.net_value = self.total_sell_value - self.total_buy_value
         self.net_value_after_commission = self.net_value - self.net_commission
 
-    @jit
     def update_market_value(self, price):
         
         self.mid_value = price
@@ -52,7 +50,6 @@ class Poistion(object):
         self.unrealised_pnl = self.market_value - self.cost_basis
         self.realised_pnl = self.market_value + self.net_value_after_commission
 
-    @jit
     def update_position(self, action, units, price, commission):
 
         self.net_commission += commission

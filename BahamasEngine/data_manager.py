@@ -93,11 +93,11 @@ class OptionDataManager(object):
 
         bid = float(target_row[1])
         bid_size = int(target_row[2])
-        ask = float(target_row[3])
+        ask = float(target_row[3]) 
         ask_size = int(target_row[4])
         underlying_price = float(target_row[5])
 
-        mid_price = calculate_mid_price(bid, ask)        
+        mid_price = calculate_mid_price(bid, ask)  
         chain_id = md_manager.option_contracts[contract_id].chain_id
         dte = md_manager.option_chains[chain_id].get_dte(self.data_manager)
         option_type = md_manager.option_contracts[contract_id].option_type
@@ -107,12 +107,20 @@ class OptionDataManager(object):
         if calc_greeks:
             delta = calculate_option_delta(mid_price, underlying_price, strike, dte, option_type)
 
-        data_frame = df.OptionDataFrame(contract_id, date, timeindex, bid,
-            bid_size, ask, ask_size, delta)
+        data_frame = df.OptionDataFrame(
+            contract_id, 
+            date, 
+            timeindex, 
+            bid * settings.multiplier,
+            bid_size, 
+            ask * settings.multiplier, 
+            ask_size, 
+            delta)
 
         return data_frame
 
 def calculate_option_delta(price, underlying_price, strike, dte, option_type):
+
     iv = p_helper.calculate_iv(underlying_price, strike, dte/365.0, price, option_type)
 
     if option_type == 'C':

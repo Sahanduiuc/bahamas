@@ -16,6 +16,12 @@ class NetZero(sb.Strategy):
     def execute_strategy(self, update_event):
 
         current_date = self.data_manager.current_trading_date
+    
+        print("{0} {1} PnL {2}".format(            
+            current_date,
+            self.data_manager.current_timestamp_index,
+            self.p_manager.get_portfolio_value() - 10000.0     
+        ))
 
         if current_date == self.last_traded_date:
             return

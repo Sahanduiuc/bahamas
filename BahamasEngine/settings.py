@@ -6,14 +6,14 @@ date_format = 'yyyyMMdd'
 
 time_start_index = 600
 
-time_end_index = 900
+time_end_index = 600
 
 time_step_size = 5
 
-multiplier = 100
+multiplier = 100.0
 
 LIBOR_rate = 0.00691
 
-account_balance = 100000.0
+account_balance = 10000.0
 
-commission = 1.55
+commission = 0.0

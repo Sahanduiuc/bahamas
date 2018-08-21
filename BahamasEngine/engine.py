@@ -37,7 +37,8 @@ def run():
         for t_i in range(settings.time_start_index, settings.time_end_index, settings.time_step_size):
             tasks.append((d_i,t_i))
 
-    p = Pool(1)
-    L = p.starmap(create_new_session, tasks)
+    p = Pool(10)
+    #L = p.starmap(create_new_session, tasks)
+    create_new_session(0,600)
 
 run()
