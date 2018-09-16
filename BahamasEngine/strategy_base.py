@@ -23,16 +23,14 @@ def get_dte_target_chain(option_chains, target_dte, data_manager):
 
     return target_chain             
 
-def get_delta_target_contract(option_chain, tartget_delta, option_type, data_manager):
-
-    target_contract = None
-    min_delta_diff = sys.maxsize
+def get_delta_target_contracts(option_chain, target_delta_list, option_type, data_manager):
+    target_contracts = [None] * len(target_delta_list)
 
     if option_type == 'C':
-        raise Exception("Not Implemented for Option Type 'Call'")
+        raise Exception("Not implemented for Option Type 'Call'")
     elif option_type == 'P':
         contract_count = len(option_chain.put_options)
-        detla_values = [0.0] * contract_count
+        delta_values = [0.0] * contract_count
 
         for i in range(contract_count):
             contract_id = option_chain.put_options[i].contract_id
@@ -41,12 +39,20 @@ def get_delta_target_contract(option_chain, tartget_delta, option_type, data_man
                 continue
 
             data_frame = data_manager.get_current_dataframe(contract_id)
-            detla_values[i] = abs(data_frame.delta)
+            delta_values[i] = abs(data_frame.delta)
 
-        for i in range(contract_count):
-            delta_diff = abs(detla_values[i] - tartget_delta)
-            if delta_diff < min_delta_diff:
-                min_delta_diff = delta_diff
-                target_contract = option_chain.put_options[i]
+        for t_i in range(len(target_delta_list)):
+            min_delta_diff = sys.maxsize
+            for i in range(contract_count):
+                delta_diff = abs(delta_values[i] - target_delta_list[t_i])
+                
+                if delta_diff < min_delta_diff:
+                    min_delta_diff = delta_diff
+                    target_contracts[t_i] = option_chain.put_options[i]
 
-    return target_contract
+    return target_contracts
+
+def get_strike_target_contracts(option_chain, option_type, lower_diff, upper_diff, data_manager):
+        
+    
+    return None

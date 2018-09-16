@@ -6,9 +6,9 @@ date_format = 'yyyyMMdd'
 
 time_start_index = 600
 
-time_end_index = 600
+time_end_index = 900
 
-time_step_size = 5
+time_step_size = 60
 
 multiplier = 100.0
 

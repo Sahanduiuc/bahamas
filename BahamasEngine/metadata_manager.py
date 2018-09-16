@@ -7,6 +7,7 @@ import option_contract
 trading_dates = []
 option_contracts = {}
 option_chains = {}
+underlying_data = {}
 
 def import_metadata():
     print("Loading metadata...")
@@ -15,9 +16,31 @@ def import_metadata():
     tdates_fpath = '{0}{1}//TRADINGDATES.txt'.format(settings.data_path, settings.ticker)
     trading_dates = open(tdates_fpath, 'r').read().splitlines()
 
+    import_underlying_data()
     import_option_data()
 
     print("Loading metadata complete.")
+
+def import_underlying_data():
+    global underlying_data
+
+    prices_fpath = '{0}{1}//UNDERLYINGDATA.csv'.format(settings.data_path, 
+    settings.ticker)
+
+    with open(prices_fpath, mode='r') as prices_file:
+
+        csv_reader = csv.reader(prices_file, delimiter=',')
+        for row in csv_reader:
+            date = row[0]
+            time_index = row[1]
+            price = float(row[2])
+
+            if date not in underlying_data:
+                underlying_data[date] = []
+
+            underlying_data[date].append((time_index, price))
+
+    pass                      
 
 def import_option_data():
     global option_contracts

@@ -1,5 +1,6 @@
 import queue as queue 
 import os.path
+from datetime import timedelta
 
 import settings
 import trading_event as te
@@ -45,6 +46,9 @@ class InstrumentDataManager(object):
             True
         )
 
+    def get_underlying_price(self):
+        return md_manager.underlying_data[self.current_trading_date][self.timestampindex - 571][1]
+
     def check_option_data(self, contract_id):
         date  = self.current_trading_date
         key = '{0}_{1}'.format(date, contract_id)
@@ -66,6 +70,13 @@ class InstrumentDataManager(object):
     @property
     def current_timestamp_index(self):
         return self.timestampindex
+
+    @property
+    def current_timestamp_string(self):
+        return "{0} {1}".format(
+            self.current_trading_date,
+            str(timedelta(minutes=self.timestampindex))
+        )      
 
 
 class OptionDataManager(object):
@@ -115,7 +126,8 @@ class OptionDataManager(object):
             bid_size, 
             ask * settings.multiplier, 
             ask_size, 
-            delta)
+            delta,
+            underlying_price)
 
         return data_frame
 
