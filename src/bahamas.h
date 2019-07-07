@@ -8,6 +8,7 @@
 #include <cmath>
 #include <unordered_map>
 #include <boost/algorithm/string.hpp>
+#include <sqlite3.h> 
 
 /*
 The MIT License
@@ -34,24 +35,59 @@ THE SOFTWARE.
 */
 
 namespace constants {
+    const char* DB_PATH = "./data/data";
+}
 
-#pragma region Trade Features
+namespace bahamas_db {
 
-    const char* TRADE_FEATURE_VOLUMES_PATH = "./data/tick_1000/volumes.bin";
+struct query {
+    std::string sql;
+};
 
-    const char* TRADE_FEATURE_SETTLE_PRICES_PATH = "./data/tick_1000/settle_prices.bin";
+struct select_query : query {
+    char* columns;
+    char* table_name;
+    char* where_clause;
+    char* order_by;
+    
+    select_query(char* table_name, char* columns) :
+        table_name(table_name), columns(columns) {
+        std::stringstream ss;
+        ss << "SELECT " << columns << " FROM " << table_name;
+        sql = ss.str();
+    }
+};
 
-    const char* TRADE_FEATURE_HIGH_PRICES_PATH = "./data/tick_1000/high_prices.bin";
+struct database_engine {
+    sqlite3 *engine;
+    using Callback = void(*)(sqlite3_stmt*, size_t, void*);
 
-    const char* TRADE_FEATURE_LOW_PRICES_PATH = "./data/tick_1000/low_prices.bin";
+    database_engine(){
+        sqlite3_open(constants::DB_PATH, &engine);
+    }
 
-    const char* TRADE_FEATURE_OPEN_PRICES_PATH = "./data/tick_1000/open_prices.bin";
+    ~database_engine(){
+        sqlite3_close(engine);
+    }
 
-    const char* TRADE_FEATURE_OPEN_TIMESTAMPS_PATH = "./data/tick_1000/open_timestamps.bin";
+    void execute_query(query& sql_query, Callback callback, void* obj_ptr){
+        sqlite3_stmt *stmt;
+        sqlite3_prepare_v2(engine, sql_query.sql.c_str(), -1, &stmt, NULL);
+        size_t row_number = 0;
+        while ((sqlite3_step(stmt)) == SQLITE_ROW) {
+            row_number++;
+            callback(stmt, row_number, obj_ptr);
+        }        
+    }
 
-    const char* TRADE_FEATURE_SETTLE_TIMESTAMPS_PATH = "./data/tick_1000/settle_timestamps.bin";
+    template <typename T>
+    static void db_callback(sqlite3_stmt* stmt, size_t row, void* obj_ptr){
+        T* ref_ptr = static_cast<T*>(obj_ptr);
+        ref_ptr->db_loader(stmt, row);
+    }    
+};
 
-#pragma endregion
+database_engine db_engine;
 }
 
 double* populate_buffer(const char*, size_t);
@@ -68,17 +104,32 @@ struct trade_feature_data {
     double* settle_prices = nullptr;
     double* low_prices = nullptr;
     double* volumes = nullptr;
-    size_t buff_size = 10000000UL, data_point_size = 530UL;
+    size_t buff_size = 10000000UL, data_point_size;
     static const char* dir_name;
 
     trade_feature_data(){
-        open_timestamps = populate_buffer(constants::TRADE_FEATURE_OPEN_TIMESTAMPS_PATH, buff_size);
-        close_timestamps = populate_buffer(constants::TRADE_FEATURE_SETTLE_TIMESTAMPS_PATH, buff_size);
-        open_prices = populate_buffer(constants::TRADE_FEATURE_OPEN_PRICES_PATH, buff_size);
-        high_prices = populate_buffer(constants::TRADE_FEATURE_HIGH_PRICES_PATH, buff_size);
-        low_prices = populate_buffer(constants::TRADE_FEATURE_LOW_PRICES_PATH, buff_size);
-        settle_prices = populate_buffer(constants::TRADE_FEATURE_SETTLE_PRICES_PATH, buff_size);
-        volumes = populate_buffer(constants::TRADE_FEATURE_VOLUMES_PATH, buff_size);
+        
+        open_timestamps = (double*)malloc(buff_size*sizeof(double));
+        close_timestamps = (double*)malloc(buff_size*sizeof(double));
+        open_prices = (double*)malloc(buff_size*sizeof(double));
+        high_prices = (double*)malloc(buff_size*sizeof(double));
+        low_prices = (double*)malloc(buff_size*sizeof(double));
+        settle_prices = (double*)malloc(buff_size*sizeof(double));
+        volumes = (double*)malloc(buff_size*sizeof(double));
+        
+        bahamas_db::select_query query("features_test","*");
+        bahamas_db::db_engine.execute_query(query, &bahamas_db::database_engine::db_callback<trade_feature_data>, this);
+    }
+
+    void db_loader(sqlite3_stmt* stmt, size_t row){
+        this->open_timestamps[row] = sqlite3_column_double(stmt, 0);
+        this->close_timestamps[row] = sqlite3_column_double(stmt, 1);
+        this->open_prices[row] = sqlite3_column_double(stmt, 2);
+        this->high_prices[row] = sqlite3_column_double(stmt, 3);
+        this->low_prices[row] = sqlite3_column_double(stmt, 4);
+        this->settle_prices[row] = sqlite3_column_double(stmt, 5);
+        this->volumes[row] = sqlite3_column_double(stmt, 6);
+        data_point_size++;
     }
 
 }; const char* trade_feature_data::dir_name = "./data/tick_1000/";
@@ -93,12 +144,24 @@ struct quote_feature_data{
     double* q_ask_price = nullptr;
 
     quote_feature_data(){
-        q_timestamps = populate_buffer("./data/XBTUSD_q_timestamp.bin", buff_size);
-        q_bid_size = populate_buffer("./data/XBTUSD_q_bid_size.bin", buff_size);
-        q_bid_price = populate_buffer("./data/XBTUSD_q_bid_price.bin", buff_size);
-        q_ask_size = populate_buffer("./data/XBTUSD_q_ask_size.bin", buff_size);
-        q_ask_price = populate_buffer("./data/XBTUSD_q_ask_price.bin", buff_size);
-        data_point_size = get_file_size("./data/XBTUSD_q_timestamp.bin")/sizeof(double);
+
+        q_timestamps = (double*)malloc(buff_size*sizeof(double));
+        q_bid_size = (double*)malloc(buff_size*sizeof(double));
+        q_bid_price = (double*)malloc(buff_size*sizeof(double));
+        q_ask_size = (double*)malloc(buff_size*sizeof(double));
+        q_ask_price = (double*)malloc(buff_size*sizeof(double));
+
+        bahamas_db::select_query query("quotes_test","*");
+        bahamas_db::db_engine.execute_query(query, &bahamas_db::database_engine::db_callback<quote_feature_data>, this);        
+    }
+
+    void db_loader(sqlite3_stmt* stmt, size_t row){
+        this->q_timestamps[row] = sqlite3_column_double(stmt, 0);
+        this->q_ask_size[row] = sqlite3_column_double(stmt, 1);
+        this->q_ask_price[row] = sqlite3_column_double(stmt, 2);
+        this->q_bid_size[row] = sqlite3_column_double(stmt, 3);
+        this->q_bid_price[row] = sqlite3_column_double(stmt, 4);
+        data_point_size++;
     }
 }; 
 
@@ -341,13 +404,13 @@ struct expression_config {
         std::cout << ss.str() << std::endl;
     }
 
-    void eval(size_t c_begin, size_t quote_count, std::vector<double>& signals) noexcept {
+    void eval(size_t quote_count, std::vector<double>& signals) noexcept {
         size_t c, i, calc_index;
         double op_val00, op_val01, temp_store = 0.0;
         double calc_store[100];
         data_container::trade_iterator it = container.begin_trades();
 
-        for(c = c_begin; c < quote_count; c++){
+        for(c = 0; c < quote_count; c++){
             calc_index = 0;
             
             for (i = 0; i < config_sz; i++) {
@@ -375,69 +438,72 @@ struct expression_config {
 
 #pragma endregion
 
-/*
-Liquidate all positions for Instrument if current quote price is n standard deviations from the Average True Range.
-*/
-struct atr_exit {
-    template <typename... Ts>
-    static bool evaluate(Ts... args){
-        return true;
-    };
-};
-
-/*
-Liquidate all positions for Instrument on next feature bar.
-*/
-struct feature_update_exit {
-    template <typename... Ts>
-    static bool evaluate(Ts... args){
-        return true;
-    }
-};
-
 class trading_engine{
 public:
     static const uint16_t ls_direction = 1;
 
-    struct position{        
-        uint8_t units = 0;
+    struct position {
+        uint16_t instrument;    
+        uint16_t units = 0;
+        size_t entry_index = 0;
         double entry_price = 0.0;
     };
 
-    template <typename ExitStrategy>
-    static double evaluate_strategy(expression_config& config){
-        size_t i, feature_elem_count = container.size(), quote_count = container.quote_size();
+    static double evaluate_strategies(expression_config& ex_config) {
+        size_t feature_elem_count = container.size(),quote_count = container.quote_size();
  
-        std::vector<double> equity_series(feature_elem_count);
         std::vector<double> signals(feature_elem_count);
-        config.eval(0, feature_elem_count, signals);
+        ex_config.eval(feature_elem_count, signals);
 
         data_container::trade_iterator t_it = container.begin_trades();
         data_container::quote_iterator q_it = container.begin_quotes();
-       
-        double equity = 10000.0, cur_bid_price = 0.0, cur_ask_price = 0.0;
-        position register btcusd_position;
 
-        for(size_t i = 0; i < quote_count; i++, q_it++){
-            if (t_it.index < feature_elem_count &&
-                q_it.get_value(q_it.data_ptr->q_timestamps) > t_it.get_value(t_it.data_ptr->close_timestamps)){
+        position ring_buffer[feature_elem_count];
+        double cur_bid_price = 0.0,cur_ask_price = 0.0; 
+        uint16_t direction_score,magnitude_score;     
+        uint16_t* direction_scores = (uint16_t*)malloc(quote_count*sizeof(uint16_t));
+        uint16_t* magnitude_scores = (uint16_t*)malloc(quote_count*sizeof(uint16_t));
+        size_t buffer_head = 0,buffer_tail = 0;
 
+        while (q_it.index < quote_count){
+            if (t_it.index < feature_elem_count && q_it.get_value(q_it.data_ptr->q_timestamps) > t_it.get_value(t_it.data_ptr->close_timestamps)){
+                
                 cur_bid_price = q_it.get_value(q_it.data_ptr->q_bid_price);
                 cur_ask_price = q_it.get_value(q_it.data_ptr->q_ask_price);                
 
-                if (btcusd_position.units == 0 && signals[t_it.index] == 1.0){                    
-                    btcusd_position.entry_price = cur_ask_price;
-                    btcusd_position.units = 1;
-                }else if (btcusd_position.units > 0 && ExitStrategy::evaluate()){
-                    equity += (cur_bid_price - btcusd_position.entry_price);                   
-                    btcusd_position.units = 0;
+                if (signals[t_it.index] == 1.0){
+                    ring_buffer[buffer_head].entry_index = t_it.index;
+                    ring_buffer[buffer_head].entry_price = cur_ask_price;
+                    ring_buffer[buffer_head].units = 1;                    
+                    buffer_head = 0;
                 }
 
-                equity_series[t_it.index] = equity;
+                {
+                    direction_score = 0, magnitude_score = 0;
+                    /*
+                    for (stack_idx = 0; stack_idx < stack_count; stack_idx++){
+                        if (false){
+
+                        }else{
+                            {
+                                direction_score = 0;
+                            }
+                            {
+                                magnitude_score = 0;
+                            }
+                        }
+                    }
+                    */
+
+                    direction_scores[q_it.index] = direction_score;
+                    magnitude_scores[q_it.index] = magnitude_score;
+                }
+                
                 t_it++;
             }
+            q_it++;
         }
-        return equity;
+        return 0.0;
     }
 private:
     trading_engine(){}
@@ -445,7 +511,7 @@ private:
 };
 
 #pragma region FunctionNames
-enum FTypes {INT, CLOSE_N, WEEKDAY, PERIOD, CURRENT_PRICE};
+enum FTypes {INT, CLOSE_N, WEEKDAY, PERIOD, CURRENT_PRICE, VOLUME_N};
 
 template <FTypes FType, int V>
 void add_f_name(char* f_name){
@@ -459,6 +525,8 @@ void add_f_name(char* f_name){
         operand_f_names[get_period] = f_name;
     }else if (FType == CURRENT_PRICE){
         operand_f_names[get_current_price] = f_name;
+    }else if (FType == VOLUME_N){
+        operand_f_names[get_volume_n<V>] = f_name;
     }
 }
 
@@ -497,9 +565,11 @@ void populate_f_mappings(){
     char weekday_name[] = "Weekday";
     char period_name[] = "Period";
     char current_price_name[] = "Current_Price";
+    char volume_n_name[] = "Volume_N";
 
     operand_name_parser<INT,9,0>::populate(int_name);
     operand_name_parser<CLOSE_N,9,0>::populate(close_n_name);
+    operand_name_parser<VOLUME_N,9,0>::populate(volume_n_name);
     operand_name_parser<WEEKDAY>::populate(weekday_name);
     operand_name_parser<PERIOD>::populate(period_name);
     operand_name_parser<CURRENT_PRICE>::populate(current_price_name);
