@@ -404,13 +404,15 @@ struct expression_config {
         std::cout << ss.str() << std::endl;
     }
 
-    void eval(size_t quote_count, std::vector<double>& signals) noexcept {
-        size_t c, i, calc_index;
+    std::vector<double> generate_signals() noexcept {
         double op_val00, op_val01, temp_store = 0.0;
-        double calc_store[100];
-        data_container::trade_iterator it = container.begin_trades();
+        double calc_store[100U];
+        size_t feature_elem_count = container.size(),c, i, calc_index;;
 
-        for(c = 0; c < quote_count; c++){
+        std::vector<double> signals(feature_elem_count);
+        data_container::trade_iterator it = container.begin_trades();  
+
+        for(c = 0; c < feature_elem_count; c++){
             calc_index = 0;
             
             for (i = 0; i < config_sz; i++) {
@@ -433,7 +435,11 @@ struct expression_config {
             signals[c] = calc_store[0];
             it++;
         }
+        return signals;
     }
+
+    size_t length = 0;
+    size_t types[100U];
 };
 
 #pragma endregion
@@ -449,20 +455,18 @@ public:
         double entry_price = 0.0;
     };
 
-    static double evaluate_strategies(expression_config& ex_config) {
+    static double evaluate_strategies(expression_config& ex_config, expression expression, size_t generation_size) {
         size_t feature_elem_count = container.size(),quote_count = container.quote_size();
  
-        std::vector<double> signals(feature_elem_count);
-        ex_config.eval(feature_elem_count, signals);
+        auto signals = ex_config.generate_signals();
 
         data_container::trade_iterator t_it = container.begin_trades();
         data_container::quote_iterator q_it = container.begin_quotes();
 
-        position ring_buffer[feature_elem_count];
+        position ring_buffer[100U];
         double cur_bid_price = 0.0,cur_ask_price = 0.0; 
-        uint16_t direction_score,magnitude_score;     
-        uint16_t* direction_scores = (uint16_t*)malloc(quote_count*sizeof(uint16_t));
-        uint16_t* magnitude_scores = (uint16_t*)malloc(quote_count*sizeof(uint16_t));
+        uint16_t strategy_score;     
+        uint16_t* strategy_scores = (uint16_t*)malloc(quote_count*sizeof(uint16_t));
         size_t buffer_head = 0,buffer_tail = 0;
 
         while (q_it.index < quote_count){
@@ -479,7 +483,7 @@ public:
                 }
 
                 {
-                    direction_score = 0, magnitude_score = 0;
+                    strategy_score = 0;
                     /*
                     for (stack_idx = 0; stack_idx < stack_count; stack_idx++){
                         if (false){
@@ -488,15 +492,11 @@ public:
                             {
                                 direction_score = 0;
                             }
-                            {
-                                magnitude_score = 0;
-                            }
                         }
                     }
                     */
 
-                    direction_scores[q_it.index] = direction_score;
-                    magnitude_scores[q_it.index] = magnitude_score;
+                    strategy_scores[q_it.index] = strategy_score;
                 }
                 
                 t_it++;
@@ -509,6 +509,19 @@ private:
     trading_engine(){}
     ~trading_engine(){}
 };
+
+namespace bahamas_ge{
+    
+    template <typename Configurator>
+    void begin_ge_session(const expression& ex, size_t generation_size, size_t generation_count){
+        size_t size_idx;
+        Configurator configurator;
+
+        for (size_idx = 0; size_idx < generation_size; size_idx++) {
+            expression_config ex_config(&ex, configurator);
+        }
+    }
+}
 
 #pragma region FunctionNames
 enum FTypes {INT, CLOSE_N, WEEKDAY, PERIOD, CURRENT_PRICE, VOLUME_N};
